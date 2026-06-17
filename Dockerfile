@@ -29,8 +29,11 @@ RUN apt-get update && \
         && rm -rf /var/lib/apt/lists/*
 
 # ---- Configure MySQL ----
-RUN service mysql start && \
-    mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'admin'; FLUSH PRIVILEGES;" && \
+RUN sed -i 's/bind-address.*/bind-address = 0.0.0.0/' /etc/mysql/mysql.conf.d/mysqld.cnf && \
+    service mysql start && \
+    mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'admin';" && \
+    mysql -u root -padmin -e "CREATE USER IF NOT EXISTS 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'admin';" && \
+    mysql -u root -padmin -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION; FLUSH PRIVILEGES;" && \
     mysql -u root -padmin -e "CREATE DATABASE IF NOT EXISTS smart_pg;" && \
     service mysql stop
 

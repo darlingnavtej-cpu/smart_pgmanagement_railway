@@ -7,6 +7,11 @@ mkdir -p /var/lib/mysql /var/run/mysqld
 chown -R mysql:mysql /var/lib/mysql
 chown -R mysql:mysql /var/run/mysqld
 
+# Ensure MySQL allows remote connections (bind to 0.0.0.0 instead of 127.0.0.1)
+if [ -f "/etc/mysql/mysql.conf.d/mysqld.cnf" ]; then
+  sed -i 's/bind-address.*/bind-address = 0.0.0.0/' /etc/mysql/mysql.conf.d/mysqld.cnf
+fi
+
 # Initialize MySQL data directory if a blank persistent volume is mounted
 if [ ! -d "/var/lib/mysql/mysql" ]; then
   echo "MySQL data directory is empty. Initializing database..."
@@ -23,7 +28,9 @@ if [ ! -d "/var/lib/mysql/mysql" ]; then
   done
   
   # Configure root privileges & load schema
-  mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'admin'; FLUSH PRIVILEGES;"
+  mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'admin';"
+  mysql -u root -padmin -e "CREATE USER IF NOT EXISTS 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'admin';"
+  mysql -u root -padmin -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION; FLUSH PRIVILEGES;"
   mysql -u root -padmin -e "CREATE DATABASE IF NOT EXISTS smart_pg;"
   if [ -f "/opt/init.sql" ]; then
     mysql -u root -padmin smart_pg < /opt/init.sql
