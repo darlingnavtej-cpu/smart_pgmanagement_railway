@@ -17,7 +17,7 @@ public class ActivityUtility {
 
 			con = DriverManager.getConnection(
 
-					"jdbc:mysql://localhost:3306/tenant_table",
+					"jdbc:mysql://localhost:3306/smart_pg",
 
 					"root",
 

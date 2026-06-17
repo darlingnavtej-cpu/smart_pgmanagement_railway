@@ -1526,6 +1526,16 @@ a {
 
 					<p>View complete PG performance reports.</p>
 
+				</a> <a class="action-card" href="<%=ctx%>/logout" onclick="return confirm('Are you sure you want to logout?')">
+
+					<div class="icon bg-red">
+						<i class="fa-solid fa-right-from-bracket"></i>
+					</div>
+
+					<h6>Logout</h6>
+
+					<p>Sign out of your admin account securely.</p>
+
 				</a>
 			</div>
 		</section>
