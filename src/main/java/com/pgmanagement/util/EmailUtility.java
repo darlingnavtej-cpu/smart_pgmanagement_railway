@@ -26,7 +26,6 @@ public class EmailUtility {
 		// 2. Fallback to standard SMTP with short timeouts (fail fast instead of hanging thread)
 		final String envPassword = System.getenv("SMTP_PASSWORD");
 
-		final String fromEmail = (envEmail != null && !envEmail.trim().isEmpty()) ? envEmail : "smartpgmanage@gmail.com";
 		final String appPassword = (envPassword != null && !envPassword.trim().isEmpty()) ? envPassword : "tjwfbjowdcskqdqu";
 
 		Properties properties = new Properties();
