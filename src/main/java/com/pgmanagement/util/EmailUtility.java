@@ -14,9 +14,12 @@ public class EmailUtility {
 
 	public static void sendEmail(String toEmail, String subject, String body) {
 
-		final String fromEmail = "smartpgmanage@gmail.com";
+		// Load credentials from environment variables if present, otherwise fall back to defaults
+		final String envEmail = System.getenv("SMTP_EMAIL");
+		final String envPassword = System.getenv("SMTP_PASSWORD");
 
-		final String appPassword = "tjwfbjowdcskqdqu";
+		final String fromEmail = (envEmail != null && !envEmail.trim().isEmpty()) ? envEmail : "smartpgmanage@gmail.com";
+		final String appPassword = (envPassword != null && !envPassword.trim().isEmpty()) ? envPassword : "tjwfbjowdcskqdqu";
 
 		Properties properties = new Properties();
 
