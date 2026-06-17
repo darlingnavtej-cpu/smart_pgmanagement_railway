@@ -14,14 +14,16 @@ public class EmailUtility {
 	public static void sendEmail(String toEmail, String subject, String body) {
 
 		// 1. If Brevo API Key is present, use HTTP API (port 443, never blocked)
+		final String envEmail = System.getenv("SMTP_EMAIL");
+		final String fromEmail = (envEmail != null && !envEmail.trim().isEmpty()) ? envEmail : "smartpgmanage@gmail.com";
+
 		final String brevoApiKey = System.getenv("BREVO_API_KEY");
 		if (brevoApiKey != null && !brevoApiKey.trim().isEmpty()) {
-			sendEmailViaBrevo(brevoApiKey, toEmail, subject, body);
+			sendEmailViaBrevo(brevoApiKey, fromEmail, toEmail, subject, body);
 			return;
 		}
 
 		// 2. Fallback to standard SMTP with short timeouts (fail fast instead of hanging thread)
-		final String envEmail = System.getenv("SMTP_EMAIL");
 		final String envPassword = System.getenv("SMTP_PASSWORD");
 
 		final String fromEmail = (envEmail != null && !envEmail.trim().isEmpty()) ? envEmail : "smartpgmanage@gmail.com";
@@ -60,7 +62,7 @@ public class EmailUtility {
 		}
 	}
 
-	private static void sendEmailViaBrevo(String apiKey, String toEmail, String subject, String body) {
+	private static void sendEmailViaBrevo(String apiKey, String fromEmail, String toEmail, String subject, String body) {
 		try {
 			System.out.println("Attempting to send email via Brevo API...");
 			java.net.URL url = new java.net.URL("https://api.brevo.com/v3/smtp/email");
@@ -79,7 +81,7 @@ public class EmailUtility {
 			                         .replace("\r", "");
 			
 			String jsonPayload = "{"
-				+ "\"sender\":{\"name\":\"Smart PG Management\",\"email\":\"smartpgmanage@gmail.com\"},"
+				+ "\"sender\":{\"name\":\"Smart PG Management\",\"email\":\"" + fromEmail + "\"},"
 				+ "\"to\":[{\"email\":\"" + toEmail + "\"}],"
 				+ "\"subject\":\"" + subject + "\","
 				+ "\"textContent\":\"" + escapedBody + "\""
