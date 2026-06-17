@@ -35,6 +35,7 @@ RUN service mysql start && \
     service mysql stop
 
 # Copy and execute init SQL
+COPY init.sql /opt/init.sql
 COPY init.sql /docker-entrypoint-initdb.d/init.sql
 RUN service mysql start && \
     sleep 3 && \
