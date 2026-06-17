@@ -93,7 +93,7 @@ CREATE TABLE IF NOT EXISTS `newreg` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Seed admin user
-INSERT INTO `newreg` VALUES ('admin','admin123','admin@smartpg.com')
+INSERT INTO `newreg` VALUES ('admin','admin123','smartpgmanage@gmail.com')
 ON DUPLICATE KEY UPDATE `username`=`username`;
 
 -- ----------------------------
