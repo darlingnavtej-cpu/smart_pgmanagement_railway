@@ -43,9 +43,11 @@ if [ ! -d "/var/lib/mysql/mysql" ]; then
 fi
 
 # Configure Tomcat to listen on the dynamic port assigned by Railway
-if [ -n "$PORT" ]; then
+if [ -n "$PORT" ] && [ "$PORT" != "3306" ] && [ "$PORT" != "33060" ]; then
   echo "Configuring Tomcat to listen on port $PORT"
   sed -i "s/port=\"8080\"/port=\"$PORT\"/g" /opt/tomcat/conf/server.xml
+else
+  echo "PORT is empty or reserved for MySQL ($PORT). Tomcat will use default 8080."
 fi
 
 # Start supervisord (which manages both MySQL and Tomcat)
