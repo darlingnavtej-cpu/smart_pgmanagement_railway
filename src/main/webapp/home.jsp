@@ -1100,7 +1100,13 @@ a {
 					onclick="closeSidebar()"><i class="fa-solid fa-bullhorn"></i>
 					Notices</a> <a class="nav-link" href="<%=ctx%>/fetch-expenses"
 					onclick="closeSidebar()"><i class="fa-solid fa-wallet"></i>
-					Expenses</a>
+					Expenses</a> <a class="nav-link" href="<%=ctx%>/fetch-admin-weekly-menu"
+					onclick="closeSidebar()"><i class="fa-solid fa-utensils"></i>
+					Weekly Menu</a> <a class="nav-link" href="<%=ctx%>/fetch-pg-info"
+					onclick="closeSidebar()"><i class="fa-solid fa-circle-info"></i>
+					PG Info</a> <a class="nav-link" href="<%=ctx%>/fetch-payment-details"
+					onclick="closeSidebar()"><i class="fa-solid fa-credit-card"></i>
+					Payment Settings</a>
 			</div>
 
 			<div class="nav-group">
@@ -1516,6 +1522,24 @@ a {
 					</div>
 					<h6>Activity Log</h6>
 					<p>Track important system actions.</p>
+				</a> <a class="action-card" href="<%=ctx%>/fetch-admin-weekly-menu">
+					<div class="icon bg-amber">
+						<i class="fa-solid fa-utensils"></i>
+					</div>
+					<h6>Weekly Food Menu</h6>
+					<p>Update and manage the weekly food menu.</p>
+				</a> <a class="action-card" href="<%=ctx%>/fetch-pg-info">
+					<div class="icon bg-blue">
+						<i class="fa-solid fa-circle-info"></i>
+					</div>
+					<h6>PG Information</h6>
+					<p>Manage PG rules, ratings, maps, images and info.</p>
+				</a> <a class="action-card" href="<%=ctx%>/fetch-payment-details">
+					<div class="icon bg-green">
+						<i class="fa-solid fa-credit-card"></i>
+					</div>
+					<h6>Payment Settings</h6>
+					<p>Update Bank, UPI, and QR payment details.</p>
 				</a> <a class="action-card" href="<%=ctx%>/reports">
 
 					<div class="icon bg-blue">

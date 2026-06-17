@@ -495,7 +495,7 @@
 
 							<div class="action-buttons">
 
-								<a href="tel:<%=rs.getString(" phone")%>"
+								<a href="tel:<%=rs.getString("phone")%>"
 									class="btn call-btn">
 
 									<i class="fa-solid fa-phone"></i>
@@ -504,7 +504,7 @@
 
 								</a>
 
-								<a href="mailto:<%=rs.getString(" email")%>"
+								<a href="mailto:<%=rs.getString("email")%>"
 									class="btn mail-btn">
 
 									<i class="fa-solid fa-envelope"></i>
