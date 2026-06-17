@@ -1,568 +1,540 @@
-```jsp
-<%@page import="java.sql.*"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@page import="java.sql.*" %>
+	<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
-<%
-if (session.getAttribute("tenantId") == null) {
+		<% if (session.getAttribute("tenantId")==null) { response.sendRedirect("tenantLogin.jsp"); return; } Connection
+			con=null; PreparedStatement pstmt=null; ResultSet rs=null; try { Class.forName("com.mysql.cj.jdbc.Driver");
+			con=DriverManager.getConnection( "jdbc:mysql://localhost:3306/pg_info_table" , "root" , "admin" );
+			pstmt=con.prepareStatement( "select * from pg_info where id=1" ); rs=pstmt.executeQuery(); } catch
+			(Exception e) { e.printStackTrace(); } %>
 
-	response.sendRedirect("tenantLogin.jsp");
-	return;
-}
+			<!DOCTYPE html>
+			<html>
 
-Connection con = null;
-PreparedStatement pstmt = null;
-ResultSet rs = null;
+			<head>
 
-try {
+				<meta charset="UTF-8">
+				<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-	Class.forName("com.mysql.cj.jdbc.Driver");
+				<title>Contact Admin</title>
 
-	con = DriverManager.getConnection(
-	"jdbc:mysql://localhost:3306/pg_info_table",
-	"root",
-	"admin");
+				<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
-	pstmt = con.prepareStatement(
-	"select * from pg_info where id=1");
+				<style>
+					:root {
+						--primary: #1e3a8a;
+						--secondary: #4f46e5;
+						--bg: #f8fafc;
+						--card: #ffffff;
+						--text: #0f172a;
+						--muted: #64748b;
+						--border: #e2e8f0;
+					}
 
-	rs = pstmt.executeQuery();
+					* {
+						margin: 0;
+						padding: 0;
+						box-sizing: border-box;
+						font-family: Segoe UI, sans-serif;
+					}
 
-} catch (Exception e) {
+					body {
+						background: var(--bg);
+						min-height: 100vh;
+						display: flex;
+						flex-direction: column;
+					}
 
-	e.printStackTrace();
-}
-%>
+					/* HEADER */
 
-<!DOCTYPE html>
-<html>
-<head>
+					.header {
 
-<meta charset="UTF-8">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1.0">
+						background:
+							linear-gradient(135deg,
+								#1e3a8a,
+								#4f46e5);
 
-<title>Contact Admin</title>
+						color: white;
+						padding: 20px;
+						box-shadow: 0 4px 15px rgba(0, 0, 0, .15);
+					}
 
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+					.header-inner {
 
-<style>
+						max-width: 1200px;
+						margin: auto;
 
-:root{
-	--primary:#1e3a8a;
-	--secondary:#4f46e5;
-	--bg:#f8fafc;
-	--card:#ffffff;
-	--text:#0f172a;
-	--muted:#64748b;
-	--border:#e2e8f0;
-}
+						display: flex;
+						align-items: center;
+						justify-content: space-between;
 
-*{
-	margin:0;
-	padding:0;
-	box-sizing:border-box;
-	font-family:Segoe UI,sans-serif;
-}
+						flex-wrap: wrap;
+						gap: 15px;
+					}
 
-body{
-	background:var(--bg);
-	min-height:100vh;
-	display:flex;
-	flex-direction:column;
-}
+					.logo {
 
-/* HEADER */
+						display: flex;
+						align-items: center;
+						gap: 12px;
+					}
 
-.header{
+					.logo-icon {
 
-	background:
-	linear-gradient(
-	135deg,
-	#1e3a8a,
-	#4f46e5
-	);
+						width: 55px;
+						height: 55px;
 
-	color:white;
-	padding:20px;
-	box-shadow:0 4px 15px rgba(0,0,0,.15);
-}
+						border-radius: 15px;
 
-.header-inner{
+						background: white;
+						color: #1e3a8a;
 
-	max-width:1200px;
-	margin:auto;
+						display: flex;
+						align-items: center;
+						justify-content: center;
 
-	display:flex;
-	align-items:center;
-	justify-content:space-between;
+						font-size: 24px;
+					}
 
-	flex-wrap:wrap;
-	gap:15px;
-}
+					.logo-text h1 {
 
-.logo{
+						font-size: 24px;
+					}
 
-	display:flex;
-	align-items:center;
-	gap:12px;
-}
+					.logo-text p {
 
-.logo-icon{
+						font-size: 13px;
+						opacity: .9;
+						margin-top: 4px;
+					}
 
-	width:55px;
-	height:55px;
+					.dashboard-btn {
 
-	border-radius:15px;
+						text-decoration: none;
+						color: white;
 
-	background:white;
-	color:#1e3a8a;
+						padding: 10px 18px;
 
-	display:flex;
-	align-items:center;
-	justify-content:center;
+						border-radius: 10px;
 
-	font-size:24px;
-}
+						background:
+							rgba(255, 255, 255, .15);
 
-.logo-text h1{
+						transition: .3s;
+					}
 
-	font-size:24px;
-}
+					.dashboard-btn:hover {
 
-.logo-text p{
+						background:
+							rgba(255, 255, 255, .25);
+					}
 
-	font-size:13px;
-	opacity:.9;
-	margin-top:4px;
-}
+					/* CONTAINER */
 
-.dashboard-btn{
+					.container {
 
-	text-decoration:none;
-	color:white;
+						width: min(95%, 1100px);
+						margin: 35px auto;
+					}
 
-	padding:10px 18px;
+					/* CARD */
 
-	border-radius:10px;
+					.card {
 
-	background:
-	rgba(255,255,255,.15);
+						background: white;
 
-	transition:.3s;
-}
+						padding: 35px;
 
-.dashboard-btn:hover{
+						border-radius: 25px;
 
-	background:
-	rgba(255,255,255,.25);
-}
+						box-shadow:
+							0 20px 40px rgba(0, 0, 0, .08);
 
-/* CONTAINER */
+						border: 1px solid rgba(226, 232, 240, .8);
+					}
 
-.container{
+					.page-title {
 
-	width:min(95%,1100px);
-	margin:35px auto;
-}
+						text-align: center;
+						margin-bottom: 30px;
+					}
 
-/* CARD */
+					.page-title h2 {
 
-.card{
+						color: #1e3a8a;
+						font-size: 30px;
+						margin-bottom: 8px;
+					}
 
-	background:white;
+					.page-title p {
 
-	padding:35px;
+						color: #64748b;
+					}
 
-	border-radius:25px;
+					/* INFO GRID */
 
-	box-shadow:
-	0 20px 40px rgba(0,0,0,.08);
+					.contact-grid {
 
-	border:1px solid rgba(226,232,240,.8);
-}
+						display: grid;
 
-.page-title{
+						grid-template-columns:
+							repeat(2, 1fr);
 
-	text-align:center;
-	margin-bottom:30px;
-}
+						gap: 20px;
+					}
 
-.page-title h2{
+					.info-card {
 
-	color:#1e3a8a;
-	font-size:30px;
-	margin-bottom:8px;
-}
+						background: #f8fafc;
 
-.page-title p{
+						border: 1px solid var(--border);
 
-	color:#64748b;
-}
+						padding: 25px;
 
-/* INFO GRID */
+						border-radius: 18px;
 
-.contact-grid{
+						text-align: center;
 
-	display:grid;
+						transition: .3s;
+					}
 
-	grid-template-columns:
-	repeat(2,1fr);
+					.info-card:hover {
 
-	gap:20px;
-}
+						transform: translateY(-4px);
 
-.info-card{
+						box-shadow:
+							0 10px 25px rgba(0, 0, 0, .08);
+					}
 
-	background:#f8fafc;
+					.info-card i {
 
-	border:1px solid var(--border);
+						font-size: 28px;
 
-	padding:25px;
+						color: #1e3a8a;
 
-	border-radius:18px;
+						margin-bottom: 12px;
+					}
 
-	text-align:center;
+					.info-card h3 {
 
-	transition:.3s;
-}
+						color: #1e3a8a;
+						margin-bottom: 10px;
+					}
 
-.info-card:hover{
+					.info-card p {
 
-	transform:translateY(-4px);
+						color: #475569;
+						word-break: break-word;
+						font-size: 15px;
+					}
 
-	box-shadow:
-	0 10px 25px rgba(0,0,0,.08);
-}
+					.address-card {
 
-.info-card i{
+						grid-column: span 2;
+					}
 
-	font-size:28px;
+					/* BUTTONS */
 
-	color:#1e3a8a;
+					.action-buttons {
 
-	margin-bottom:12px;
-}
+						display: flex;
 
-.info-card h3{
+						justify-content: center;
 
-	color:#1e3a8a;
-	margin-bottom:10px;
-}
+						flex-wrap: wrap;
 
-.info-card p{
+						gap: 15px;
 
-	color:#475569;
-	word-break:break-word;
-	font-size:15px;
-}
+						margin-top: 30px;
+					}
 
-.address-card{
+					.btn {
 
-	grid-column:span 2;
-}
+						text-decoration: none;
 
-/* BUTTONS */
+						padding: 14px 22px;
 
-.action-buttons{
+						border-radius: 12px;
 
-	display:flex;
+						color: white;
 
-	justify-content:center;
+						font-weight: 600;
 
-	flex-wrap:wrap;
+						display: flex;
+						align-items: center;
+						gap: 8px;
 
-	gap:15px;
+						transition: .3s;
+					}
 
-	margin-top:30px;
-}
+					.call-btn {
 
-.btn{
+						background: #16a34a;
+					}
 
-	text-decoration:none;
+					.call-btn:hover {
 
-	padding:14px 22px;
+						background: #15803d;
+					}
 
-	border-radius:12px;
+					.mail-btn {
 
-	color:white;
+						background: #4f46e5;
+					}
 
-	font-weight:600;
+					.mail-btn:hover {
 
-	display:flex;
-	align-items:center;
-	gap:8px;
+						background: #4338ca;
+					}
 
-	transition:.3s;
-}
+					.back-btn {
 
-.call-btn{
+						background: #1e3a8a;
+					}
 
-	background:#16a34a;
-}
+					.back-btn:hover {
 
-.call-btn:hover{
+						background: #163172;
+					}
 
-	background:#15803d;
-}
+					/* FOOTER */
 
-.mail-btn{
+					.footer {
 
-	background:#4f46e5;
-}
+						margin-top: auto;
 
-.mail-btn:hover{
+						background: #1e3a8a;
 
-	background:#4338ca;
-}
+						color: white;
 
-.back-btn{
+						text-align: center;
 
-	background:#1e3a8a;
-}
+						padding: 18px;
+					}
 
-.back-btn:hover{
+					/* TABLET */
 
-	background:#163172;
-}
+					@media(max-width:768px) {
 
-/* FOOTER */
+						.header-inner {
 
-.footer{
+							flex-direction: column;
+							text-align: center;
+						}
 
-	margin-top:auto;
+						.contact-grid {
 
-	background:#1e3a8a;
+							grid-template-columns: 1fr;
+						}
 
-	color:white;
+						.address-card {
 
-	text-align:center;
+							grid-column: span 1;
+						}
 
-	padding:18px;
-}
+						.action-buttons {
 
-/* TABLET */
+							flex-direction: column;
+						}
 
-@media(max-width:768px){
+						.btn {
 
-	.header-inner{
+							width: 100%;
+							justify-content: center;
+						}
+					}
 
-		flex-direction:column;
-		text-align:center;
-	}
+					/* MOBILE */
 
-	.contact-grid{
+					@media(max-width:480px) {
 
-		grid-template-columns:1fr;
-	}
+						.container {
 
-	.address-card{
+							width: 95%;
+							margin: 20px auto;
+						}
 
-		grid-column:span 1;
-	}
+						.card {
 
-	.action-buttons{
+							padding: 20px;
+						}
 
-		flex-direction:column;
-	}
+						.page-title h2 {
 
-	.btn{
+							font-size: 24px;
+						}
 
-		width:100%;
-		justify-content:center;
-	}
-}
+						.logo-text h1 {
 
-/* MOBILE */
+							font-size: 18px;
+						}
 
-@media(max-width:480px){
+						.logo-icon {
 
-	.container{
+							width: 42px;
+							height: 42px;
+							font-size: 18px;
+						}
+					}
+				</style>
 
-		width:95%;
-		margin:20px auto;
-	}
+			</head>
 
-	.card{
+			<body>
 
-		padding:20px;
-	}
+				<header class="header">
 
-	.page-title h2{
+					<div class="header-inner">
 
-		font-size:24px;
-	}
+						<div class="logo">
 
-	.logo-text h1{
+							<div class="logo-icon">
+								<i class="fa-solid fa-headset"></i>
+							</div>
 
-		font-size:18px;
-	}
+							<div class="logo-text">
+								<h1>SMART PG MANAGEMENT</h1>
+								<p>Contact PG Management</p>
+							</div>
 
-	.logo-icon{
+						</div>
 
-		width:42px;
-		height:42px;
-		font-size:18px;
-	}
-}
+						<a href="tenant-dashboard" class="dashboard-btn">
 
-</style>
+							<i class="fa-solid fa-house"></i>
 
-</head>
+							Dashboard
 
-<body>
+						</a>
 
-<header class="header">
+					</div>
 
-	<div class="header-inner">
+				</header>
 
-		<div class="logo">
+				<div class="container">
 
-			<div class="logo-icon">
-				<i class="fa-solid fa-headset"></i>
-			</div>
+					<div class="card">
 
-			<div class="logo-text">
-				<h1>SMART PG MANAGEMENT</h1>
-				<p>Contact PG Management</p>
-			</div>
+						<div class="page-title">
 
-		</div>
+							<h2>
+								<i class="fa-solid fa-address-book"></i>
+								Contact Admin
+							</h2>
 
-		<a href="tenant-dashboard"
-			class="dashboard-btn">
+							<p>
+								Reach out to PG Management anytime
+							</p>
 
-			<i class="fa-solid fa-house"></i>
+						</div>
 
-			Dashboard
+						<% if(rs!=null && rs.next()){ %>
 
-		</a>
+							<div class="contact-grid">
 
-	</div>
+								<div class="info-card">
 
-</header>
+									<i class="fa-solid fa-building"></i>
 
-<div class="container">
+									<h3>PG Name</h3>
 
-	<div class="card">
+									<p>
+										<%=rs.getString("pg_name")%>
+									</p>
 
-		<div class="page-title">
+								</div>
 
-			<h2>
-				<i class="fa-solid fa-address-book"></i>
-				Contact Admin
-			</h2>
+								<div class="info-card">
 
-			<p>
-				Reach out to PG Management anytime
-			</p>
+									<i class="fa-solid fa-user-tie"></i>
 
-		</div>
+									<h3>Owner Name</h3>
 
-		<%
-		if(rs!=null && rs.next()){
-		%>
+									<p>
+										<%=rs.getString("owner_name")%>
+									</p>
 
-		<div class="contact-grid">
+								</div>
 
-			<div class="info-card">
+								<div class="info-card">
 
-				<i class="fa-solid fa-building"></i>
+									<i class="fa-solid fa-phone"></i>
 
-				<h3>PG Name</h3>
+									<h3>Phone Number</h3>
 
-				<p><%=rs.getString("pg_name")%></p>
+									<p>
+										<%=rs.getString("phone")%>
+									</p>
 
-			</div>
+								</div>
 
-			<div class="info-card">
+								<div class="info-card">
 
-				<i class="fa-solid fa-user-tie"></i>
+									<i class="fa-solid fa-envelope"></i>
 
-				<h3>Owner Name</h3>
+									<h3>Email Address</h3>
 
-				<p><%=rs.getString("owner_name")%></p>
+									<p>
+										<%=rs.getString("email")%>
+									</p>
 
-			</div>
+								</div>
 
-			<div class="info-card">
+								<div class="info-card address-card">
 
-				<i class="fa-solid fa-phone"></i>
+									<i class="fa-solid fa-location-dot"></i>
 
-				<h3>Phone Number</h3>
+									<h3>Address</h3>
 
-				<p><%=rs.getString("phone")%></p>
+									<p>
+										<%=rs.getString("address")%>
+									</p>
 
-			</div>
+								</div>
 
-			<div class="info-card">
+							</div>
 
-				<i class="fa-solid fa-envelope"></i>
+							<div class="action-buttons">
 
-				<h3>Email Address</h3>
+								<a href="tel:<%=rs.getString(" phone")%>"
+									class="btn call-btn">
 
-				<p><%=rs.getString("email")%></p>
+									<i class="fa-solid fa-phone"></i>
 
-			</div>
+									Call Admin
 
-			<div class="info-card address-card">
+								</a>
 
-				<i class="fa-solid fa-location-dot"></i>
+								<a href="mailto:<%=rs.getString(" email")%>"
+									class="btn mail-btn">
 
-				<h3>Address</h3>
+									<i class="fa-solid fa-envelope"></i>
 
-				<p><%=rs.getString("address")%></p>
+									Send Email
 
-			</div>
+								</a>
 
-		</div>
+								<a href="tenant-dashboard" class="btn back-btn">
 
-		<div class="action-buttons">
+									<i class="fa-solid fa-arrow-left"></i>
 
-			<a href="tel:<%=rs.getString("phone")%>"
-				class="btn call-btn">
+									Back To Dashboard
 
-				<i class="fa-solid fa-phone"></i>
+								</a>
 
-				Call Admin
+							</div>
 
-			</a>
+							<% } %>
 
-			<a href="mailto:<%=rs.getString("email")%>"
-				class="btn mail-btn">
+					</div>
 
-				<i class="fa-solid fa-envelope"></i>
+				</div>
 
-				Send Email
+				<div class="footer">
 
-			</a>
+					Smart PG Management System © 2026
 
-			<a href="tenant-dashboard"
-				class="btn back-btn">
+				</div>
 
-				<i class="fa-solid fa-arrow-left"></i>
+			</body>
 
-				Back To Dashboard
-
-			</a>
-
-		</div>
-
-		<%
-		}
-		%>
-
-	</div>
-
-</div>
-
-<div class="footer">
-
-	Smart PG Management System © 2026
-
-</div>
-
-</body>
-</html>
-```
+			</html>
