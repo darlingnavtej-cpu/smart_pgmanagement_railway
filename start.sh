@@ -29,7 +29,7 @@ else
   # Connect using Railway default credentials and set root password to 'admin'
   # (Crucial because Java code is hardcoded to use password 'admin')
   mysql -h "$MYSQLHOST" -P "$MYSQLPORT" -u "$MYSQLUSER" -p"$MYSQLPASSWORD" -e "
-    ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'admin';
+    ALTER USER 'root'@'%' IDENTIFIED BY 'admin';
     FLUSH PRIVILEGES;
   "
   if [ $? -eq 0 ]; then
