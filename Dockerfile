@@ -13,37 +13,35 @@ RUN mvn dependency:resolve -q
 COPY src ./src
 RUN mvn clean package -q -DskipTests
 
-# ---- Stage 2: Runtime (Tomcat + MySQL) ----
+# ---- Stage 2: Runtime (Tomcat + Remote MySQL Proxy) ----
 FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Install OpenJDK 8, MySQL 8, Supervisor, curl
+# Install OpenJDK 8, MySQL Client, Supervisor, curl, socat
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         openjdk-8-jre-headless \
-        mysql-server \
+        mysql-client \
         supervisor \
         curl \
         sed \
+        socat \
         && rm -rf /var/lib/apt/lists/*
 
-# ---- Configure MySQL ----
-RUN sed -i 's/bind-address.*/bind-address = 0.0.0.0/' /etc/mysql/mysql.conf.d/mysqld.cnf && \
-    service mysql start && \
-    mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'admin';" && \
-    mysql -u root -padmin -e "CREATE USER IF NOT EXISTS 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'admin';" && \
-    mysql -u root -padmin -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION; FLUSH PRIVILEGES;" && \
-    mysql -u root -padmin -e "CREATE DATABASE IF NOT EXISTS smart_pg;" && \
-    service mysql stop
-
-# Copy and execute init SQL
+# Copy init SQL
 COPY init.sql /opt/init.sql
-COPY init.sql /docker-entrypoint-initdb.d/init.sql
-RUN service mysql start && \
-    sleep 3 && \
-    mysql -u root -padmin smart_pg < /docker-entrypoint-initdb.d/init.sql && \
-    service mysql stop
+
+# Create socat startup script
+RUN echo '#!/bin/bash\n\
+if [ -z "$MYSQLHOST" ] || [ -z "$MYSQLPORT" ]; then\n\
+  echo "MYSQLHOST or MYSQLPORT env vars are missing. socat cannot start."\n\
+  exit 1\n\
+fi\n\
+echo "Starting socat proxy: localhost:3306 -> $MYSQLHOST:$MYSQLPORT"\n\
+exec socat TCP-LISTEN:3306,fork,reuseaddr TCP:$MYSQLHOST:$MYSQLPORT\n\
+' > /usr/local/bin/start_socat.sh && chmod +x /usr/local/bin/start_socat.sh
+
 
 # ---- Install Tomcat 9 ----
 ENV CATALINA_HOME=/opt/tomcat

@@ -261,3 +261,18 @@ CREATE TABLE IF NOT EXISTS `weekly_menu` (
   `dinner` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`menu_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- -------------------------------------------------------------
+-- Additional databases & views to match hardcoded JSP/Servlet JDBC URLs
+-- -------------------------------------------------------------
+CREATE DATABASE IF NOT EXISTS `pg_info_table`;
+USE `pg_info_table`;
+CREATE OR REPLACE VIEW `pg_info` AS SELECT * FROM `smart_pg`.`pg_info`;
+
+CREATE DATABASE IF NOT EXISTS `tenant_table`;
+USE `tenant_table`;
+CREATE OR REPLACE VIEW `tenant` AS SELECT * FROM `smart_pg`.`tenant`;
+
+-- Switch back to smart_pg
+USE `smart_pg`;
+
