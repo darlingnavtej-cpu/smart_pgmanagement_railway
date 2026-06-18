@@ -23,6 +23,13 @@ public class TenantRoutingFilter implements Filter {
 
     private static final Map<String, String> tenantDbCache = new ConcurrentHashMap<>();
 
+    static {
+        // Pre-populate default static mappings to prevent database query on startup/healthchecks
+        tenantDbCache.put("admin", "smart_pg");
+        tenantDbCache.put("royal", "smart_pg_royal");
+        tenantDbCache.put("palms", "smart_pg_palms");
+    }
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {}
 
@@ -31,6 +38,18 @@ public class TenantRoutingFilter implements Filter {
             throws IOException, ServletException {
         
         HttpServletRequest req = (HttpServletRequest) request;
+        
+        // Bypass connection routing for static resources (CSS, JS, images, etc.) to optimize performance
+        String path = req.getRequestURI().substring(req.getContextPath().length());
+        if (path.startsWith("/css/") || path.startsWith("/js/") || path.startsWith("/images/") ||
+            path.endsWith(".css") || path.endsWith(".js") || path.endsWith(".png") ||
+            path.endsWith(".jpg") || path.endsWith(".jpeg") || path.endsWith(".gif") ||
+            path.endsWith(".svg") || path.endsWith(".ico") || path.endsWith(".woff") ||
+            path.endsWith(".woff2") || path.endsWith(".ttf")) {
+            chain.doFilter(request, response);
+            return;
+        }
+
         String tenant = null;
 
         // 1. Check for 'tenant' query parameter first (ideal for local development/testing)
