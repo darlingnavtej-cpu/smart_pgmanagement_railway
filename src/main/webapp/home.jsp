@@ -26,8 +26,7 @@
 			totalSalaryExpense=safeInt(totalSalaryExpenseAttr); int paidTenants=safeInt(paidTenantsAttr); int
 			totalOccupied=safeInt(totalOccupiedAttr); int totalAvailable=safeInt(totalAvailableAttr); int
 			totalExpense=safeInt(totalExpenseAttr); int netProfit=safeInt(netProfitAttr); String today=new
-			java.text.SimpleDateFormat("dd MMMM yyyy").format(new java.util.Date()); System.out.println("home.jsp
-			Loaded"); %>
+			java.text.SimpleDateFormat("dd MMMM yyyy").format(new java.util.Date()); System.out.println("home.jsp Loaded"); %>
 
 			<!DOCTYPE html>
 			<html lang="en">
