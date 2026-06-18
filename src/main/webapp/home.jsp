@@ -4,7 +4,7 @@
 		value).intValue(); try { return Integer.parseInt(String.valueOf(value)); } catch (Exception e) { return 0; } }
 		private String fmt(int value) { return java.text.NumberFormat.getIntegerInstance().format(value); }%>
 
-		<% // Protect dashboard if (session.getAttribute("adminUsername")==null) { response.sendRedirect("login.jsp");
+		<% /* Protect dashboard */ if (session.getAttribute("adminUsername")==null) { response.sendRedirect("login.jsp");
 			return; } String ctx=request.getContextPath(); String adminUsername=(String)
 			session.getAttribute("adminUsername"); if (adminUsername==null || adminUsername.trim().isEmpty()) {
 			adminUsername="Admin" ; } Integer totalTenantsAttr=(Integer) request.getAttribute("totalTenants"); Integer
