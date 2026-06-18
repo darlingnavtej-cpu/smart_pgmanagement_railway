@@ -759,6 +759,7 @@
 			<a href="#features">Features</a>
 			<a href="#facilities">Facilities</a>
 			<a href="#access">Login</a>
+			<a href="<%=ctx%>/pamphlet.jsp"><i class="fa-solid fa-file-pdf"></i> Owner Brochure</a>
 			<a href="#about">About</a>
 		</nav>
 
@@ -783,6 +784,7 @@
 		<a href="#features" onclick="toggleMenu()"><i class="fa-solid fa-star"></i> Features</a>
 		<a href="#facilities" onclick="toggleMenu()"><i class="fa-solid fa-wand-magic-sparkles"></i> Facilities</a>
 		<a href="#access" onclick="toggleMenu()"><i class="fa-solid fa-right-to-bracket"></i> Login</a>
+		<a href="<%=ctx%>/pamphlet.jsp"><i class="fa-solid fa-file-pdf"></i> Owner Brochure</a>
 		<a href="#about" onclick="toggleMenu()"><i class="fa-solid fa-circle-info"></i> About</a>
 		<a href="<%=ctx%>/login.jsp" onclick="toggleMenu()"><i class="fa-solid fa-user-shield"></i> Admin Login</a>
 		<a href="<%=ctx%>/tenantLogin.jsp" onclick="toggleMenu()"><i class="fa-solid fa-user"></i> Tenant Login</a>
@@ -813,6 +815,10 @@
 				<a class="btn btn-secondary" href="<%=ctx%>/tenantLogin.jsp">
 					<i class="fa-solid fa-user"></i>
 					Tenant Login
+				</a>
+				<a class="btn btn-secondary" href="<%=ctx%>/pamphlet.jsp" style="background:#eef2ff; color:var(--primary); border-color:rgba(79,70,229,0.25);">
+					<i class="fa-solid fa-file-pdf"></i>
+					Owner Brochure
 				</a>
 			</div>
 		</div>

@@ -7,6 +7,10 @@ ResultSet rs = (ResultSet) request.getAttribute("resultSet");
 
 int totalPendingTenants = 0;
 int totalPendingAmount = 0;
+String selectedMonth = (String) request.getAttribute("selectedMonth");
+if (selectedMonth == null) {
+	selectedMonth = "All";
+}
 %>
 
 <!DOCTYPE html>
@@ -153,6 +157,29 @@ to {
 
 .page-title p {
 	color: var(--muted);
+}
+
+/* ACTION BAR */
+.action-bar {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 15px;
+	flex-wrap: wrap;
+	margin-bottom: 25px;
+}
+.action-btn {
+	text-decoration: none;
+	color: white;
+	padding: 12px 18px;
+	border-radius: 12px;
+	font-weight: 600;
+	transition: .3s;
+	background: linear-gradient(135deg, #1e3a8a, #4f46e5);
+}
+.action-btn:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 10px 25px rgba(79, 70, 229, .25);
 }
 
 /* TABLE */
@@ -338,6 +365,27 @@ tr:hover {
 
 				<p>Tenants with outstanding rent payments</p>
 
+			</div>
+
+			<div class="action-bar">
+				<form action="fetch-pending-fees" method="get" id="filterForm" style="display: flex; align-items: center; gap: 10px;">
+					<label for="monthFilter" style="font-weight: 600; color: #1e3a8a;"><i class="fa-solid fa-filter"></i> Filter by Month:</label>
+					<select name="month" id="monthFilter" onchange="this.form.submit()" style="padding: 10px 14px; border-radius: 12px; border: 1px solid var(--border); background: white; font-weight: 600; color: #1e3a8a; cursor: pointer; min-width: 140px; outline: none; box-shadow: 0 4px 10px rgba(0,0,0,0.03);">
+						<option value="All" <%= "All".equals(selectedMonth) ? "selected" : "" %>>All Months</option>
+						<% 
+						String[] months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+						for(String m : months) {
+						%>
+							<option value="<%= m %>" <%= m.equals(selectedMonth) ? "selected" : "" %>><%= m %></option>
+						<% } %>
+					</select>
+				</form>
+
+				<a href="dashboard" class="action-btn"> <i
+					class="fa-solid fa-house"></i> Dashboard
+				</a> <a href="fetch-pending-fees?month=<%= selectedMonth %>" class="action-btn"> <i
+					class="fa-solid fa-rotate-right"></i> Refresh
+				</a>
 			</div>
 
 			<div class="table-wrapper">

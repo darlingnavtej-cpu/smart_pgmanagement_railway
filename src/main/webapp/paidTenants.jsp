@@ -4,6 +4,10 @@
 
 <%
 ResultSet rs = (ResultSet) request.getAttribute("resultSet");
+String selectedMonth = (String) request.getAttribute("selectedMonth");
+if (selectedMonth == null) {
+	selectedMonth = "All";
+}
 %>
 
 <!DOCTYPE html>
@@ -323,10 +327,22 @@ tr:hover {
 			</div>
 
 			<div class="action-bar">
+				<form action="fetch-paid-tenants" method="get" id="filterForm" style="display: flex; align-items: center; gap: 10px;">
+					<label for="monthFilter" style="font-weight: 600; color: #1e3a8a;"><i class="fa-solid fa-filter"></i> Filter by Month:</label>
+					<select name="month" id="monthFilter" onchange="this.form.submit()" style="padding: 10px 14px; border-radius: 12px; border: 1px solid var(--border); background: white; font-weight: 600; color: #1e3a8a; cursor: pointer; min-width: 140px; outline: none; box-shadow: 0 4px 10px rgba(0,0,0,0.03);">
+						<option value="All" <%= "All".equals(selectedMonth) ? "selected" : "" %>>All Months</option>
+						<% 
+						String[] months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+						for(String m : months) {
+						%>
+							<option value="<%= m %>" <%= m.equals(selectedMonth) ? "selected" : "" %>><%= m %></option>
+						<% } %>
+					</select>
+				</form>
 
 				<a href="dashboard" class="action-btn"> <i
 					class="fa-solid fa-house"></i> Dashboard
-				</a> <a href="fetch-paid-tenants" class="action-btn"> <i
+				</a> <a href="fetch-paid-tenants?month=<%= selectedMonth %>" class="action-btn"> <i
 					class="fa-solid fa-rotate-right"></i> Refresh
 				</a>
 
