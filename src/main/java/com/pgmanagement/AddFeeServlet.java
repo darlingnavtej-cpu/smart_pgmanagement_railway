@@ -48,7 +48,7 @@ public class AddFeeServlet extends HttpServlet {
 
 			// Create Connection
 
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/smart_pg", "root", "admin");
+			con = com.pgmanagement.util.DBUtil.getConnection();
 
 			// Insert Query
 
@@ -69,15 +69,7 @@ public class AddFeeServlet extends HttpServlet {
 
 				String tenantName = "";
 
-				Connection tenantCon = DriverManager.getConnection(
-
-						"jdbc:mysql://localhost:3306/tenant_table",
-
-						"root",
-
-						"admin"
-
-				);
+				Connection tenantCon = com.pgmanagement.util.DBUtil.getConnection();
 
 				PreparedStatement tenantStmt = tenantCon.prepareStatement(
 

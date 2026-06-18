@@ -12,7 +12,7 @@ try {
 
 	Class.forName("com.mysql.cj.jdbc.Driver");
 
-	con = DriverManager.getConnection("jdbc:mysql://localhost:3306/pg_info_table", "root", "admin");
+	con = com.pgmanagement.util.DBUtil.getConnection();
 
 	pstmt = con.prepareStatement("select * from pg_info where id=1");
 

@@ -29,7 +29,7 @@ public class FetchFeeServlet extends HttpServlet {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 
 			// Create Connection
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/smart_pg", "root", "admin");
+			con = com.pgmanagement.util.DBUtil.getConnection();
 
 			// Fetch All Fee Records
 			String type = req.getParameter("type");

@@ -54,7 +54,7 @@ public class AdminDashboardServlet extends HttpServlet {
 			int totalExpense = 0;
 			int netProfit = 0;
 
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/smart_pg", "root", "admin");
+			con = com.pgmanagement.util.DBUtil.getConnection();
 
 			pstmt = con
 					.prepareStatement("SELECT COUNT(*) AS totalRooms, " + "IFNULL(SUM(occupied),0) AS totalOccupied, "
@@ -72,7 +72,7 @@ public class AdminDashboardServlet extends HttpServlet {
 			pstmt.close();
 			con.close();
 
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/smart_pg", "root", "admin");
+			con = com.pgmanagement.util.DBUtil.getConnection();
 
 			pstmt = con.prepareStatement("SELECT COUNT(*) FROM fee WHERE status='Paid'");
 
@@ -92,7 +92,7 @@ public class AdminDashboardServlet extends HttpServlet {
 
 			con.close();
 			// Total Tenants
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/smart_pg", "root", "admin");
+			con = com.pgmanagement.util.DBUtil.getConnection();
 
 			pstmt = con.prepareStatement("SELECT COUNT(*) FROM tenant");
 
@@ -108,7 +108,7 @@ public class AdminDashboardServlet extends HttpServlet {
 
 			// Occupied Rooms
 
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/smart_pg", "root", "admin");
+			con = com.pgmanagement.util.DBUtil.getConnection();
 
 			pstmt = con.prepareStatement("SELECT COUNT(DISTINCT room_no) FROM tenant");
 
@@ -124,7 +124,7 @@ public class AdminDashboardServlet extends HttpServlet {
 
 			// Total Rooms
 
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/smart_pg", "root", "admin");
+			con = com.pgmanagement.util.DBUtil.getConnection();
 
 			pstmt = con.prepareStatement("SELECT COUNT(*) FROM room");
 
@@ -144,7 +144,7 @@ public class AdminDashboardServlet extends HttpServlet {
 
 			// Pending Fees
 
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/smart_pg", "root", "admin");
+			con = com.pgmanagement.util.DBUtil.getConnection();
 
 			pstmt = con.prepareStatement("SELECT COUNT(*) FROM fee WHERE status='Pending'");
 
@@ -160,7 +160,7 @@ public class AdminDashboardServlet extends HttpServlet {
 
 			// Total Collection
 
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/smart_pg", "root", "admin");
+			con = com.pgmanagement.util.DBUtil.getConnection();
 
 			pstmt = con.prepareStatement(
 
@@ -184,7 +184,7 @@ public class AdminDashboardServlet extends HttpServlet {
 
 			// Pending Complaints
 
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/smart_pg", "root", "admin");
+			con = com.pgmanagement.util.DBUtil.getConnection();
 
 			pstmt = con.prepareStatement("SELECT COUNT(*) FROM complaint WHERE status='Pending'");
 
@@ -199,15 +199,7 @@ public class AdminDashboardServlet extends HttpServlet {
 
 			// Visitors Today
 
-			con = DriverManager.getConnection(
-
-					"jdbc:mysql://localhost:3306/smart_pg",
-
-					"root",
-
-					"admin"
-
-			);
+			con = com.pgmanagement.util.DBUtil.getConnection();
 
 			pstmt = con.prepareStatement(
 
@@ -228,15 +220,7 @@ public class AdminDashboardServlet extends HttpServlet {
 			con.close();
 			// Total Employees
 
-			con = DriverManager.getConnection(
-
-					"jdbc:mysql://localhost:3306/smart_pg",
-
-					"root",
-
-					"admin"
-
-			);
+			con = com.pgmanagement.util.DBUtil.getConnection();
 
 			pstmt = con.prepareStatement(
 
@@ -261,15 +245,7 @@ public class AdminDashboardServlet extends HttpServlet {
 
 			// Total Salary Expense
 
-			con = DriverManager.getConnection(
-
-					"jdbc:mysql://localhost:3306/smart_pg",
-
-					"root",
-
-					"admin"
-
-			);
+			con = com.pgmanagement.util.DBUtil.getConnection();
 
 			pstmt = con.prepareStatement(
 
@@ -301,15 +277,7 @@ public class AdminDashboardServlet extends HttpServlet {
 			// Total Expenses
 			// ============================
 
-			con = DriverManager.getConnection(
-
-					"jdbc:mysql://localhost:3306/smart_pg",
-
-					"root",
-
-					"admin"
-
-			);
+			con = com.pgmanagement.util.DBUtil.getConnection();
 
 			pstmt = con.prepareStatement(
 

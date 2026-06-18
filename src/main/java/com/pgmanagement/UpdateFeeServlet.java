@@ -43,7 +43,7 @@ public class UpdateFeeServlet extends HttpServlet {
 
 			// Create Connection
 
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/smart_pg", "root", "admin");
+			con = com.pgmanagement.util.DBUtil.getConnection();
 
 			// Update Query
 

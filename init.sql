@@ -276,3 +276,27 @@ CREATE OR REPLACE VIEW `tenant` AS SELECT * FROM `smart_pg`.`tenant`;
 -- Switch back to smart_pg
 USE `smart_pg`;
 
+-- -------------------------------------------------------------
+-- Master Database for Tenant Routing (SaaS Registry)
+-- -------------------------------------------------------------
+CREATE DATABASE IF NOT EXISTS `smart_pg_master`;
+USE `smart_pg_master`;
+
+CREATE TABLE IF NOT EXISTS `tenant_routing` (
+  `subdomain` varchar(100) NOT NULL,
+  `db_name` varchar(100) NOT NULL,
+  `status` varchar(20) DEFAULT 'active',
+  PRIMARY KEY (`subdomain`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Seed default test tenants
+INSERT INTO `tenant_routing` (`subdomain`, `db_name`, `status`) VALUES
+('admin', 'smart_pg', 'active'),
+('royal', 'smart_pg_royal', 'active'),
+('palms', 'smart_pg_palms', 'active')
+ON DUPLICATE KEY UPDATE `subdomain`=`subdomain`;
+
+-- Switch back to default smart_pg
+USE `smart_pg`;
+
+

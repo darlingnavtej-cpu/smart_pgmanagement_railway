@@ -34,15 +34,7 @@ public class RevenueChartServlet extends HttpServlet {
 
 			// Connect to fee database
 
-			con = DriverManager.getConnection(
-
-					"jdbc:mysql://localhost:3306/smart_pg",
-
-					"root",
-
-					"admin"
-
-			);
+			con = com.pgmanagement.util.DBUtil.getConnection();
 
 			// Fetch Monthly Revenue
 

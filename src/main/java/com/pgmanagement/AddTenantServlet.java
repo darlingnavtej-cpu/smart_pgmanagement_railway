@@ -44,7 +44,7 @@ public class AddTenantServlet extends HttpServlet {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 
 			// Connect to tenant_table schema
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/smart_pg", "root", "admin");
+			con = com.pgmanagement.util.DBUtil.getConnection();
 
 			// Insert Query
 			pstmt = con.prepareStatement("INSERT INTO tenant VALUES(?,?,?,?,?,?,?,?,?,?,?)");
@@ -86,15 +86,7 @@ public class AddTenantServlet extends HttpServlet {
 
 				// Update Room Occupancy
 
-				Connection roomCon = DriverManager.getConnection(
-
-						"jdbc:mysql://localhost:3306/smart_pg",
-
-						"root",
-
-						"admin"
-
-				);
+				Connection roomCon = com.pgmanagement.util.DBUtil.getConnection();
 
 				PreparedStatement roomStmt = roomCon.prepareStatement(
 

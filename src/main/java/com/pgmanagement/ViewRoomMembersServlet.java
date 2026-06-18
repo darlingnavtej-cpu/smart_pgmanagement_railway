@@ -32,7 +32,7 @@ public class ViewRoomMembersServlet extends HttpServlet {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 
 			// Connect to Tenant Database
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/smart_pg", "root", "admin");
+			con = com.pgmanagement.util.DBUtil.getConnection();
 
 			// Fetch All Members in that Room
 			pstmt = con.prepareStatement("SELECT * FROM tenant WHERE room_no=?");

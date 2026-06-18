@@ -47,13 +47,7 @@ public class TodayMenuServlet extends HttpServlet {
 					"com.mysql.cj.jdbc.Driver");
 
 			con =
-					DriverManager.getConnection(
-
-							"jdbc:mysql://localhost:3306/smart_pg",
-
-							"root",
-
-							"admin");
+					com.pgmanagement.util.DBUtil.getConnection();
 
 			pstmt =
 					con.prepareStatement(

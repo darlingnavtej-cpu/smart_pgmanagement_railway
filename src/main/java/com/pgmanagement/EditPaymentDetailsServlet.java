@@ -37,15 +37,7 @@ public class EditPaymentDetailsServlet extends HttpServlet {
 
 			);
 
-			con = DriverManager.getConnection(
-
-					"jdbc:mysql://localhost:3306/smart_pg",
-
-					"root",
-
-					"admin"
-
-			);
+			con = com.pgmanagement.util.DBUtil.getConnection();
 
 			pstmt = con.prepareStatement(
 

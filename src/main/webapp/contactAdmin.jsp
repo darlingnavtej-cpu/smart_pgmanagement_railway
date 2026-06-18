@@ -3,7 +3,7 @@
 
 		<% if (session.getAttribute("tenantId")==null) { response.sendRedirect("tenantLogin.jsp"); return; } Connection
 			con=null; PreparedStatement pstmt=null; ResultSet rs=null; try { Class.forName("com.mysql.cj.jdbc.Driver");
-			con=DriverManager.getConnection( "jdbc:mysql://localhost:3306/pg_info_table" , "root" , "admin" );
+			con=com.pgmanagement.util.DBUtil.getConnection();
 			pstmt=con.prepareStatement( "select * from pg_info where id=1" ); rs=pstmt.executeQuery(); } catch
 			(Exception e) { e.printStackTrace(); } %>
 

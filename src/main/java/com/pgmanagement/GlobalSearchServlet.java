@@ -41,11 +41,7 @@ public class GlobalSearchServlet extends HttpServlet {
 			// Search Tenant
 			// ==========================
 
-			tenantCon = DriverManager.getConnection(
-
-					"jdbc:mysql://localhost:3306/smart_pg", "root", "admin"
-
-			);
+			tenantCon = com.pgmanagement.util.DBUtil.getConnection();
 
 			tenantStmt = tenantCon.prepareStatement(
 
@@ -114,15 +110,7 @@ public class GlobalSearchServlet extends HttpServlet {
 			// Search Employee
 			// ==========================
 
-			employeeCon = DriverManager.getConnection(
-
-					"jdbc:mysql://localhost:3306/smart_pg",
-
-					"root",
-
-					"admin"
-
-			);
+			employeeCon = com.pgmanagement.util.DBUtil.getConnection();
 
 			employeeStmt = employeeCon.prepareStatement(
 

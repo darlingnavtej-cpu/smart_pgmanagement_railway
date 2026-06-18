@@ -51,7 +51,10 @@ if ! mysql -h "$MYSQLHOST" -P "$MYSQLPORT" -u root -padmin -e "USE smart_pg;" >/
     exit 1
   fi
 else
-  echo "Database smart_pg already initialized. Checking compatibility views..."
+  echo "Database smart_pg already initialized. Checking compatibility views and master schema..."
+  if [ -f "/opt/init.sql" ]; then
+    mysql -h "$MYSQLHOST" -P "$MYSQLPORT" -u root -padmin < /opt/init.sql
+  fi
   # Ensure the compatibility views exist even if the DB was already created
   mysql -h "$MYSQLHOST" -P "$MYSQLPORT" -u root -padmin -e "
     CREATE DATABASE IF NOT EXISTS pg_info_table;
@@ -59,8 +62,20 @@ else
     CREATE DATABASE IF NOT EXISTS tenant_table;
     CREATE OR REPLACE VIEW tenant_table.tenant AS SELECT * FROM smart_pg.tenant;
   "
-  echo "Compatibility views verified."
+  echo "Compatibility views and master schema verified."
 fi
+
+# Initialize smart_pg_royal and smart_pg_palms test databases if they don't exist
+for test_db in smart_pg_royal smart_pg_palms; do
+  if ! mysql -h "$MYSQLHOST" -P "$MYSQLPORT" -u root -padmin -e "USE $test_db;" >/dev/null 2>&1; then
+    echo "Creating and initializing test database $test_db..."
+    mysql -h "$MYSQLHOST" -P "$MYSQLPORT" -u root -padmin -e "CREATE DATABASE IF NOT EXISTS $test_db;"
+    # Run schema replacing USE `smart_pg` with USE `test_db`
+    sed "s/USE \`smart_pg\`/USE \`$test_db\`/g" /opt/init.sql | mysql -h "$MYSQLHOST" -P "$MYSQLPORT" -u root -padmin
+    echo "Test database $test_db successfully initialized!"
+  fi
+done
+
 
 # Configure Tomcat to listen on the dynamic port assigned by Railway
 if [ -n "$PORT" ]; then

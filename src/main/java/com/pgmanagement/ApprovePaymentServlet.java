@@ -30,7 +30,7 @@ public class ApprovePaymentServlet extends HttpServlet {
             int tenantId = Integer.parseInt(req.getParameter("tenantId"));
 
             Class.forName("com.mysql.cj.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/smart_pg", "root", "admin");
+            con = com.pgmanagement.util.DBUtil.getConnection();
 
             monthStmt = con.prepareStatement(
                     "SELECT month_name, amount FROM payment_request WHERE request_id=?"

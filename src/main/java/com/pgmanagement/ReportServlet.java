@@ -37,7 +37,7 @@ public class ReportServlet extends HttpServlet {
 			// Total Tenants
 			// -------------------------
 
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/smart_pg", "root", "admin");
+			con = com.pgmanagement.util.DBUtil.getConnection();
 
 			pstmt = con.prepareStatement("select count(*) from tenant");
 
@@ -55,7 +55,7 @@ public class ReportServlet extends HttpServlet {
 			// Total Rooms
 			// -------------------------
 
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/smart_pg", "root", "admin");
+			con = com.pgmanagement.util.DBUtil.getConnection();
 
 			pstmt = con.prepareStatement("select count(*) from room");
 
@@ -73,7 +73,7 @@ public class ReportServlet extends HttpServlet {
 			// Fee Statistics
 			// -------------------------
 
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/smart_pg", "root", "admin");
+			con = com.pgmanagement.util.DBUtil.getConnection();
 
 			// Total Fee Records
 

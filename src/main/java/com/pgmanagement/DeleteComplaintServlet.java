@@ -28,10 +28,7 @@ public class DeleteComplaintServlet extends HttpServlet{
             "com.mysql.cj.jdbc.Driver");
 
             Connection con =
-            DriverManager.getConnection(
-            "jdbc:mysql://localhost:3306/smart_pg",
-            "root",
-            "admin");
+            com.pgmanagement.util.DBUtil.getConnection();
 
             PreparedStatement pstmt =
             con.prepareStatement(
