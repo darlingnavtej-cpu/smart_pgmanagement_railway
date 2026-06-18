@@ -65,8 +65,7 @@ COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY start.sh /start.sh
 RUN chmod +x /start.sh
 
-# Railway uses PORT env var; default 8080
-ENV PORT=8080
+# Railway uses PORT env var
 EXPOSE 8080
 
 CMD ["/start.sh"]
