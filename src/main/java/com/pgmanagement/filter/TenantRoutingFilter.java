@@ -68,12 +68,22 @@ public class TenantRoutingFilter implements Filter {
         // 2. Fallback to Subdomain routing if no query param or session is set
         if (tenant == null) {
             String serverName = req.getServerName(); // e.g. royal.smartpg.com
-            String[] parts = serverName.split("\\.");
-            if (parts.length > 2 && !parts[0].equalsIgnoreCase("www")) {
-                tenant = parts[0];
-            } else if (parts.length == 2 && serverName.endsWith(".localhost")) {
-                // e.g. royal.localhost
-                tenant = parts[0];
+            
+            // Check for direct IP address, localhost, or Railway internal domains
+            if (serverName.equalsIgnoreCase("localhost") || 
+                serverName.equals("127.0.0.1") || 
+                serverName.contains("internal") || 
+                serverName.contains("railway") ||
+                serverName.contains("smart-pg-management")) {
+                tenant = "admin";
+            } else {
+                String[] parts = serverName.split("\\.");
+                if (parts.length > 2 && !parts[0].equalsIgnoreCase("www")) {
+                    tenant = parts[0];
+                } else if (parts.length == 2 && serverName.endsWith(".localhost")) {
+                    // e.g. royal.localhost
+                    tenant = parts[0];
+                }
             }
         }
 
@@ -114,8 +124,9 @@ public class TenantRoutingFilter implements Filter {
 
             if (rs.next()) {
                 dbSchema = rs.getString("db_name");
-                tenantDbCache.put(subdomain, dbSchema);
             }
+            // Cache the resolved DB schema (whether default or custom) to avoid future DB lookups
+            tenantDbCache.put(subdomain, dbSchema);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
