@@ -87,9 +87,26 @@ public class RegisterTenantServlet extends HttpServlet {
             TenantRoutingFilter.clearCacheForTenant(subdomain);
 
             // 7. Redirect or output success
+            String serverName = req.getServerName();
+            int serverPort = req.getServerPort();
+            String contextPath = req.getContextPath();
+            String scheme = req.getScheme();
+            String portStr = (serverPort == 80 || serverPort == 443) ? "" : ":" + serverPort;
+
             out.println("<h2>Tenant registered successfully!</h2>");
-            out.println("<p>Your PG SaaS portal is ready at: <a href='http://" + subdomain + ".localhost:8080/spg/login.jsp'>http://" + subdomain + ".localhost:8080/spg/login.jsp</a></p>");
-            out.println("<p>(Or test locally at: <a href='login.jsp?tenant=" + subdomain + "'>login.jsp?tenant=" + subdomain + "</a>)</p>");
+
+            if (serverName.contains("railway") || serverName.contains("smart-pg-management")) {
+                // Production Railway URL using query parameter routing
+                String productionUrl = scheme + "://" + serverName + portStr + contextPath + "/login.jsp?tenant=" + subdomain;
+                out.println("<p>Your PG SaaS portal is ready at: <a href='" + productionUrl + "'>" + productionUrl + "</a></p>");
+            } else {
+                // Local development URLs
+                String localSubdomainUrl = scheme + "://" + subdomain + ".localhost" + portStr + contextPath + "/login.jsp";
+                String localParamUrl = scheme + "://" + serverName + portStr + contextPath + "/login.jsp?tenant=" + subdomain;
+
+                out.println("<p>Your PG SaaS portal is ready at: <a href='" + localSubdomainUrl + "'>" + localSubdomainUrl + "</a></p>");
+                out.println("<p>(Or test locally at: <a href='" + localParamUrl + "'>" + localParamUrl + "</a>)</p>");
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
