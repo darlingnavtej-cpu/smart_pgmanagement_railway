@@ -39,10 +39,11 @@ public class LoginServlet extends HttpServlet {
 			con = com.pgmanagement.util.DBUtil.getConnection();
 
 			// Validation Query
-			pstmt = con.prepareStatement("SELECT * FROM newreg WHERE username=? AND password=?");
+			pstmt = con.prepareStatement("SELECT * FROM newreg WHERE (username=? OR email=?) AND password=?");
 
 			pstmt.setString(1, username);
-			pstmt.setString(2, password);
+			pstmt.setString(2, username);
+			pstmt.setString(3, password);
 
 			rs = pstmt.executeQuery();
 
