@@ -205,7 +205,7 @@ public class SuperAdminServlet extends HttpServlet {
             // 2. Drop the isolated database
             String dbName = "smart_pg_" + subdomain;
             dropStmt = masterCon.createStatement();
-            dropStmt.executeUpdate("DROP DATABASE " + dbName);
+            dropStmt.executeUpdate("DROP DATABASE `" + dbName + "`");
 
             // 3. Invalidate route cache
             TenantRoutingFilter.clearCacheForTenant(subdomain);

@@ -67,7 +67,7 @@ public class RegisterTenantServlet extends HttpServlet {
 
             // 2. Create the Database Schema
             Statement createDbStmt = masterCon.createStatement();
-            createDbStmt.executeUpdate("CREATE DATABASE " + dbName);
+            createDbStmt.executeUpdate("CREATE DATABASE `" + dbName + "`");
             createDbStmt.close();
             System.out.println("RegisterTenantServlet: Database schema '" + dbName + "' created.");
 
