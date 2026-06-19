@@ -516,8 +516,8 @@
                                 <td style="text-align: center;">
                                     <div class="action-cell">
                                         <!-- Bypass Access -->
-                                        <a href="login.jsp?tenant=<%= sub %>" target="_blank" class="act-btn btn-access">
-                                            <i class="fa-solid fa-arrow-up-right-from-square"></i> Access
+                                        <a href="super-admin?action=impersonate&subdomain=<%= sub %>" target="_blank" class="act-btn btn-access">
+                                            <i class="fa-solid fa-user-secret"></i> Impersonate
                                         </a>
 
                                         <!-- Toggle Status -->

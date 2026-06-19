@@ -79,6 +79,15 @@ public class SuperAdminServlet extends HttpServlet {
                         toggleTenantStatus(subdomain);
                     } else if ("delete".equals(action)) {
                         deleteTenant(subdomain);
+                    } else if ("impersonate".equals(action)) {
+                        // Bind tenant database context to browser session
+                        session.setAttribute("current_tenant", subdomain);
+                        // Bind administrator role credentials to bypass login page
+                        session.setAttribute("adminUsername", "admin");
+                        session.setAttribute("role", "admin");
+                        
+                        resp.sendRedirect(req.getContextPath() + "/dashboard");
+                        return;
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
