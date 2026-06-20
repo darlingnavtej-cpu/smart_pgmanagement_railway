@@ -159,6 +159,20 @@ public class TenantRoutingFilter implements Filter {
 
     private boolean isTenantPath(String path) {
         String lower = path.toLowerCase();
+        
+        // Admin-specific paths that might contain 'complaint' or other keyword matches
+        if (lower.startsWith("/fetch-") || 
+            lower.contains("display") || 
+            lower.contains("resolve") || 
+            lower.contains("delete") || 
+            lower.contains("update") || 
+            lower.contains("find-") ||
+            lower.contains("approve") ||
+            lower.contains("reject") ||
+            lower.contains("salary")) {
+            return false;
+        }
+
         return lower.contains("tenant") || 
                lower.contains("complaint") || 
                lower.contains("submit") || 
