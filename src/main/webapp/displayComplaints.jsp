@@ -348,6 +348,8 @@ tr:hover {
 
 						<th>Complaint ID</th>
 						<th>Tenant ID</th>
+						<th>Tenant Name</th>
+						<th>Room No</th>
 						<th>Problem</th>
 						<th>Complaint Date</th>
 						<th>Status</th>
@@ -367,23 +369,27 @@ tr:hover {
 
 					<tr>
 
-						<td><%=rs.getInt(1)%></td>
+						<td><%=rs.getInt("complaint_id")%></td>
 
-						<td><%=rs.getInt(2)%></td>
+						<td><%=rs.getInt("tenant_id")%></td>
 
-						<td><%=rs.getString(3)%></td>
+						<td><%=rs.getString("tenant_name") != null ? rs.getString("tenant_name") : "N/A"%></td>
 
-						<td><%=rs.getString(4)%></td>
+						<td><%=rs.getInt("room_no") > 0 ? rs.getInt("room_no") : "N/A"%></td>
+
+						<td><%=rs.getString("problem")%></td>
+
+						<td><%=rs.getString("complaint_date")%></td>
 
 						<td>
 							<%
 							if (rs.getString("status").equalsIgnoreCase("Resolved")) {
 							%> <span class="solved"> <i
-								class="fa-solid fa-circle-check"></i> <%=rs.getString(5)%>
+								class="fa-solid fa-circle-check"></i> <%=rs.getString("status")%>
 
 						</span> <%
  } else {
- %> <span class="pending"> <i class="fa-solid fa-clock"></i> <%=rs.getString(5)%>
+ %> <span class="pending"> <i class="fa-solid fa-clock"></i> <%=rs.getString("status")%>
 
 						</span> <%
  }
@@ -392,13 +398,13 @@ tr:hover {
 						</td>
 
 						<td><a class="update-btn"
-							href="find-complaint-by-id?complaintId=<%=rs.getInt(1)%>"> <i
+							href="find-complaint-by-id?complaintId=<%=rs.getInt("complaint_id")%>"> <i
 								class="fa-solid fa-pen"></i> Update
 
 						</a></td>
 
 						<td><a class="delete-btn"
-							href="delete-complaint?complaintId=<%=rs.getInt(1)%>"
+							href="delete-complaint?complaintId=<%=rs.getInt("complaint_id")%>"
 							onclick="return confirm('Are you sure you want to delete this complaint?')">
 
 								<i class="fa-solid fa-trash"></i> Delete
@@ -432,7 +438,7 @@ tr:hover {
 
 					<tr>
 
-						<td colspan="8" class="no-data"><i
+						<td colspan="10" class="no-data"><i
 							class="fa-solid fa-circle-info"></i> No Complaint Records Found</td>
 
 					</tr>

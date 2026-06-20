@@ -29,7 +29,11 @@ public class FetchComplaintServlet extends HttpServlet {
 
 			con = com.pgmanagement.util.DBUtil.getConnection();
 
-			pstmt = con.prepareStatement("SELECT * FROM complaint");
+			pstmt = con.prepareStatement(
+				"SELECT c.complaint_id, c.tenant_id, t.tenant_name, t.room_no, c.problem, c.complaint_date, c.status " +
+				"FROM complaint c " +
+				"LEFT JOIN tenant t ON c.tenant_id = t.tenant_id"
+			);
 
 			rs = pstmt.executeQuery();
 
@@ -45,6 +49,14 @@ public class FetchComplaintServlet extends HttpServlet {
 
 			resp.getWriter().println("<h2>Error : " + e.getMessage() + "</h2>");
 
+		} finally {
+			try {
+				if (rs != null) rs.close();
+				if (pstmt != null) pstmt.close();
+				if (con != null) con.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }
