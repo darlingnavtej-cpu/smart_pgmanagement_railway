@@ -2,7 +2,6 @@ package com.pgmanagement;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -19,181 +18,68 @@ public class GlobalSearchServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-		Connection tenantCon = null;
-		Connection roomCon = null;
-		Connection employeeCon = null;
-
+		Connection con = null;
 		PreparedStatement tenantStmt = null;
 		PreparedStatement roomStmt = null;
 		PreparedStatement employeeStmt = null;
-
 		ResultSet tenantRs = null;
 		ResultSet roomRs = null;
 		ResultSet employeeRs = null;
 
 		try {
-
 			String keyword = req.getParameter("keyword");
+			if (keyword == null) {
+				keyword = "";
+			}
+			keyword = keyword.trim();
 
-			Class.forName("com.mysql.cj.jdbc.Driver");
+			con = com.pgmanagement.util.DBUtil.getConnection();
 
-			// ==========================
-			// Search Tenant
-			// ==========================
-
-			tenantCon = com.pgmanagement.util.DBUtil.getConnection();
-
-			tenantStmt = tenantCon.prepareStatement(
-
-					"SELECT * FROM tenant WHERE tenant_name LIKE ?"
-
+			// 1. Search Tenant (by name or exact room number)
+			tenantStmt = con.prepareStatement(
+				"SELECT * FROM tenant WHERE tenant_name LIKE ? OR CAST(room_no AS CHAR) = ?"
 			);
-
 			tenantStmt.setString(1, "%" + keyword + "%");
-
+			tenantStmt.setString(2, keyword);
 			tenantRs = tenantStmt.executeQuery();
-
 			req.setAttribute("tenantResult", tenantRs);
 
-//			// ==========================
-//			// Search Room
-//			// ==========================
-//
-//			roomCon = DriverManager.getConnection(
-//
-//					"jdbc:mysql://localhost:3306/room_table",
-//
-//					"root",
-//
-//					"admin"
-//
-//			);
-//
-//			roomStmt = roomCon.prepareStatement("SELECT * FROM room");
-////			roomStmt.setString(
-////
-////					1,
-////
-////					"%"
-////
-////							+
-////
-////							keyword
-////
-////							+
-////
-////							"%"
-////
-////			);
-//
-//			roomRs = roomStmt.executeQuery();
-//			boolean found = false;
-//
-//			while (roomRs.next()) {
-//
-//				found = true;
-//
-//				System.out.println("Room Found : " + roomRs.getInt("room_no"));
-//			}
-//
-//			System.out.println("Room Search Found = " + found);
-//
-//			req.setAttribute(
-//
-//					"roomResult",
-//
-//					roomRs
-//
-//			);
-
-			// ==========================
-			// Search Employee
-			// ==========================
-
-			employeeCon = com.pgmanagement.util.DBUtil.getConnection();
-
-			employeeStmt = employeeCon.prepareStatement(
-
-					"SELECT * FROM employee "
-
-							+
-
-							"WHERE employee_name LIKE ?"
-
+			// 2. Search Room (by exact room number)
+			roomStmt = con.prepareStatement(
+				"SELECT * FROM room WHERE CAST(room_no AS CHAR) = ?"
 			);
+			roomStmt.setString(1, keyword);
+			roomRs = roomStmt.executeQuery();
+			req.setAttribute("roomResult", roomRs);
 
-			employeeStmt.setString(
-
-					1,
-
-					"%"
-
-							+
-
-							keyword
-
-							+
-
-							"%"
-
+			// 3. Search Employee (by name)
+			employeeStmt = con.prepareStatement(
+				"SELECT * FROM employee WHERE employee_name LIKE ?"
 			);
-
+			employeeStmt.setString(1, "%" + keyword + "%");
 			employeeRs = employeeStmt.executeQuery();
+			req.setAttribute("employeeResult", employeeRs);
 
-			req.setAttribute(
+			req.setAttribute("keyword", keyword);
 
-					"employeeResult",
+			RequestDispatcher rd = req.getRequestDispatcher("displaySearch.jsp");
+			rd.forward(req, resp);
 
-					employeeRs
-
-			);
-
-			req.setAttribute(
-
-					"keyword",
-
-					keyword
-
-			);
-
-			RequestDispatcher rd =
-
-					req.getRequestDispatcher(
-
-							"displaySearch.jsp"
-
-					);
-
-			rd.forward(
-
-					req,
-
-					resp
-
-			);
-
-		}
-
-		catch (Exception e) {
-
+		} catch (Exception e) {
 			e.printStackTrace();
-
-			resp.getWriter().println(
-
-					"<h2>Error : "
-
-							+
-
-							e.getMessage()
-
-							+
-
-							"</h2>"
-
-			);
-
+			resp.getWriter().println("<h2>Error : " + e.getMessage() + "</h2>");
+		} finally {
+			try {
+				if (tenantRs != null) tenantRs.close();
+				if (roomRs != null) roomRs.close();
+				if (employeeRs != null) employeeRs.close();
+				if (tenantStmt != null) tenantStmt.close();
+				if (roomStmt != null) roomStmt.close();
+				if (employeeStmt != null) employeeStmt.close();
+				if (con != null) con.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
-
 	}
-
 }
