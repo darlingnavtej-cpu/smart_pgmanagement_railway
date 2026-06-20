@@ -5,6 +5,7 @@ pageEncoding="UTF-8"%>
 
 <html>
 <head>
+<link rel="icon" type="image/png" href="<%=request.getContextPath()%>/images/favicon.png">
 
 <meta charset="UTF-8">
 <meta name="viewport"

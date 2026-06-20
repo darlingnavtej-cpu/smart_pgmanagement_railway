@@ -14,6 +14,7 @@ if(rs.next()){
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="icon" type="image/png" href="<%=request.getContextPath()%>/images/favicon.png">
 <meta charset="UTF-8">
 <title>Update Payment Details</title>
 

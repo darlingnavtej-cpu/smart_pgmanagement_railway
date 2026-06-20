@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="icon" type="image/png" href="<%=request.getContextPath()%>/images/favicon.png">
 <meta charset="UTF-8">
 <title>SaaS Onboarding - Register New PG Owner</title>
 <style>

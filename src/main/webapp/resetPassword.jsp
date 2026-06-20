@@ -4,6 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="icon" type="image/png" href="<%=request.getContextPath()%>/images/favicon.png">
 <meta charset="UTF-8">
 <title>Reset Password</title>
 
