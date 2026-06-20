@@ -8,6 +8,11 @@ Integer roomNo = (Integer) request.getAttribute("roomNo");
 String monthName = (String) request.getAttribute("monthName");
 Double amount = (Double) request.getAttribute("amount");
 java.sql.Date paidDate = (java.sql.Date) request.getAttribute("paidDate");
+
+String backUrl = "tenant-payment-history";
+if (session != null && session.getAttribute("adminUsername") != null) {
+	backUrl = "fetch-paid-tenants";
+}
 %>
 
 <!DOCTYPE html>
@@ -410,7 +415,7 @@ body{
 
 			</button>
 
-			<a href="tenant-payment-history"
+			<a href="<%=backUrl%>"
 				class="btn back-btn">
 
 				<i class="fa-solid fa-arrow-left"></i>
