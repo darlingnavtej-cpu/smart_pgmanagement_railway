@@ -8,8 +8,8 @@ ResultSet rs = (ResultSet) request.getAttribute("resultSet");
 int totalPendingTenants = 0;
 int totalPendingAmount = 0;
 String selectedMonth = (String) request.getAttribute("selectedMonth");
-if (selectedMonth == null) {
-	selectedMonth = "All";
+if (selectedMonth == null || selectedMonth.trim().isEmpty()) {
+	selectedMonth = java.time.LocalDate.now().getMonth().getDisplayName(java.time.format.TextStyle.FULL, java.util.Locale.ENGLISH);
 }
 %>
 

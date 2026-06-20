@@ -31,7 +31,7 @@ public class MonthWiseRentAnalysisServlet extends HttpServlet {
 
 			if (month == null || month.trim().equals("")) {
 
-				month = "June";
+				month = java.time.LocalDate.now().getMonth().getDisplayName(java.time.format.TextStyle.FULL, java.util.Locale.ENGLISH);
 			}
 
 			Class.forName("com.mysql.cj.jdbc.Driver");

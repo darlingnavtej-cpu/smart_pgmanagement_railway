@@ -29,7 +29,7 @@ public class MonthlyRentSummaryServlet extends HttpServlet {
 
 			con = com.pgmanagement.util.DBUtil.getConnection();
 
-			String currentMonth = "June";
+			String currentMonth = java.time.LocalDate.now().getMonth().getDisplayName(java.time.format.TextStyle.FULL, java.util.Locale.ENGLISH);
 
 			// Total Tenants
 

@@ -19,6 +19,9 @@ public class FetchPendingFeesServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String month = req.getParameter("month");
+		if (month == null || month.trim().isEmpty()) {
+			month = java.time.LocalDate.now().getMonth().getDisplayName(java.time.format.TextStyle.FULL, java.util.Locale.ENGLISH);
+		}
 		req.setAttribute("selectedMonth", month);
 
 		Connection con = null;

@@ -36,6 +36,7 @@ public class AdminDashboardServlet extends HttpServlet {
 		try {
 
 			Class.forName("com.mysql.cj.jdbc.Driver");
+			String currentMonth = java.time.LocalDate.now().getMonth().getDisplayName(java.time.format.TextStyle.FULL, java.util.Locale.ENGLISH);
 
 			int totalTenants = 0;
 			int occupiedRooms = 0;
@@ -74,7 +75,9 @@ public class AdminDashboardServlet extends HttpServlet {
 
 			con = com.pgmanagement.util.DBUtil.getConnection();
 
-			pstmt = con.prepareStatement("SELECT COUNT(*) FROM fee WHERE status='Paid'");
+			pstmt = con.prepareStatement("SELECT COUNT(*) FROM fee WHERE status='Paid' AND month_name=?");
+
+			pstmt.setString(1, currentMonth);
 
 			rs = pstmt.executeQuery();
 
@@ -146,7 +149,9 @@ public class AdminDashboardServlet extends HttpServlet {
 
 			con = com.pgmanagement.util.DBUtil.getConnection();
 
-			pstmt = con.prepareStatement("SELECT COUNT(*) FROM fee WHERE status='Pending'");
+			pstmt = con.prepareStatement("SELECT COUNT(*) FROM fee WHERE status='Pending' AND month_name=?");
+
+			pstmt.setString(1, currentMonth);
 
 			rs = pstmt.executeQuery();
 
@@ -164,9 +169,11 @@ public class AdminDashboardServlet extends HttpServlet {
 
 			pstmt = con.prepareStatement(
 
-					"SELECT IFNULL(SUM(amount),0) " + "FROM fee " + "WHERE status='Paid'"
+					"SELECT IFNULL(SUM(amount),0) " + "FROM fee " + "WHERE status='Paid' AND month_name=?"
 
 			);
+
+			pstmt.setString(1, currentMonth);
 
 			rs = pstmt.executeQuery();
 
@@ -285,7 +292,11 @@ public class AdminDashboardServlet extends HttpServlet {
 
 							+
 
-							"FROM expense"
+							"FROM expense "
+
+							+
+
+							"WHERE MONTH(expense_date) = MONTH(CURDATE()) AND YEAR(expense_date) = YEAR(CURDATE())"
 
 			);
 
