@@ -48,6 +48,49 @@ public class AddNoticeServlet extends HttpServlet {
 				ActivityUtility.addActivity(
 						"📢 New Notice Published");
 
+				final String fTitle = title;
+				final String fDescription = description;
+				final String fNoticeDate = noticeDate;
+				final java.util.List<String[]> tenantList = new java.util.ArrayList<>();
+
+				try (PreparedStatement tenantStmt = con.prepareStatement("SELECT tenant_name, email FROM tenant")) {
+					try (java.sql.ResultSet rs = tenantStmt.executeQuery()) {
+						while (rs.next()) {
+							tenantList.add(new String[]{rs.getString("tenant_name"), rs.getString("email")});
+						}
+					}
+				} catch (Exception ex) {
+					System.err.println("Error fetching tenant emails for notice notification:");
+					ex.printStackTrace();
+				}
+
+				if (!tenantList.isEmpty()) {
+					new Thread(new Runnable() {
+						@Override
+						public void run() {
+							for (String[] tenant : tenantList) {
+								String tenantName = tenant[0];
+								String tenantEmail = tenant[1];
+								String subject = "🔔 New Notice: " + fTitle;
+								String body = "Dear " + tenantName + ",\n\n"
+										+ "A new notice has been published by the PG Management:\n\n"
+										+ "Title: " + fTitle + "\n"
+										+ "Date: " + fNoticeDate + "\n\n"
+										+ "Description:\n" + fDescription + "\n\n"
+										+ "Please log in to your dashboard to view more details.\n\n"
+										+ "Regards,\n"
+										+ "Smart PG Management Team";
+								try {
+									com.pgmanagement.util.EmailUtility.sendEmail(tenantEmail, subject, body);
+								} catch (Exception e) {
+									System.err.println("Failed to send notice email to " + tenantEmail);
+									e.printStackTrace();
+								}
+							}
+						}
+					}).start();
+				}
+
 				resp.sendRedirect("fetch-notices");
 
 			}
