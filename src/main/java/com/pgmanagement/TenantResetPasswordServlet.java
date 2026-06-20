@@ -50,7 +50,7 @@ public class TenantResetPasswordServlet extends HttpServlet {
 
 			PreparedStatement pstmt = con.prepareStatement("UPDATE tenant SET password=? WHERE email=?");
 
-			pstmt.setString(1, newPassword);
+			pstmt.setString(1, com.pgmanagement.util.HashUtil.hashPassword(newPassword));
 			pstmt.setString(2, email);
 
 			int row = pstmt.executeUpdate();

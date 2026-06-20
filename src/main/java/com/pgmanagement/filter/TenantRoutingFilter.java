@@ -98,12 +98,72 @@ public class TenantRoutingFilter implements Filter {
         // 4. Bind connection context to this thread
         DBUtil.setCurrentDb(dbSchema);
 
+        javax.servlet.http.HttpServletResponse resp = (javax.servlet.http.HttpServletResponse) response;
+
+        // 5. Authenticate and authorize tenant database context
+        if (!isPublicPath(path)) {
+            session = req.getSession(false);
+            if (isTenantPath(path)) {
+                if (session == null || session.getAttribute("tenantId") == null) {
+                    resp.sendRedirect(req.getContextPath() + "/tenantLogin.jsp");
+                    return;
+                }
+                String authTenant = (String) session.getAttribute("authenticated_tenant");
+                if (authTenant == null || !authTenant.equalsIgnoreCase(tenant)) {
+                    resp.sendRedirect(req.getContextPath() + "/tenantLogin.jsp?error=unauthorized");
+                    return;
+                }
+            } else {
+                if (session == null || session.getAttribute("adminUsername") == null) {
+                    resp.sendRedirect(req.getContextPath() + "/login.jsp");
+                    return;
+                }
+                String authTenant = (String) session.getAttribute("authenticated_tenant");
+                if (authTenant == null || !authTenant.equalsIgnoreCase(tenant)) {
+                    resp.sendRedirect(req.getContextPath() + "/login.jsp?error=unauthorized");
+                    return;
+                }
+            }
+        }
+
         try {
             chain.doFilter(request, response);
         } finally {
-            // 5. Always clear current DB context to avoid thread pollution
+            // 6. Always clear current DB context to avoid thread pollution
             DBUtil.clear();
         }
+    }
+
+    private boolean isPublicPath(String path) {
+        if (path == null || path.trim().isEmpty() || path.equals("/")) {
+            return true;
+        }
+        String p = path.trim();
+        if (p.equals("/index.jsp") ||
+            p.equals("/login.jsp") || p.equals("/login") ||
+            p.equals("/tenantLogin.jsp") || p.equals("/tenant-login") ||
+            p.equals("/registerSaaS.jsp") || p.equals("/register-tenant") ||
+            p.equals("/super-admin") || p.equals("/superAdmin.jsp") ||
+            p.equals("/forgotPassword.jsp") || p.equals("/forgot-password") ||
+            p.equals("/send-otp") || p.equals("/verify-otp") || p.equals("/verifyOtp.jsp") ||
+            p.equals("/reset-password") || p.equals("/resetPassword.jsp") ||
+            p.equals("/tenantForgotPassword.jsp") || p.equals("/tenant-forgot-password") ||
+            p.equals("/tenant-send-otp") || p.equals("/tenant-verify-otp") || p.equals("/tenantVerifyOtp.jsp") ||
+            p.equals("/tenant-reset-password") || p.equals("/tenantResetPassword.jsp") ||
+            p.equals("/logout") || p.equals("/tenant-logout") ||
+            p.equals("/test-email")) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean isTenantPath(String path) {
+        String lower = path.toLowerCase();
+        return lower.contains("tenant") || 
+               lower.contains("complaint") || 
+               lower.contains("submit") || 
+               lower.contains("contactadmin") || 
+               lower.contains("changepassword");
     }
 
     private String resolveDatabaseName(String subdomain) {

@@ -61,7 +61,7 @@ public class ResetPasswordServlet extends HttpServlet {
 
 					"update newreg " + "set password=? " + "where email=?");
 
-			pstmt.setString(1, password);
+			pstmt.setString(1, com.pgmanagement.util.HashUtil.hashPassword(password));
 
 			pstmt.setString(2, email);
 

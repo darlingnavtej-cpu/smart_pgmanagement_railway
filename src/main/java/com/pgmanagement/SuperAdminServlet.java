@@ -85,6 +85,7 @@ public class SuperAdminServlet extends HttpServlet {
                         // Bind administrator role credentials to bypass login page
                         session.setAttribute("adminUsername", "admin");
                         session.setAttribute("role", "admin");
+                        session.setAttribute("authenticated_tenant", subdomain);
                         
                         resp.sendRedirect(req.getContextPath() + "/dashboard");
                         return;

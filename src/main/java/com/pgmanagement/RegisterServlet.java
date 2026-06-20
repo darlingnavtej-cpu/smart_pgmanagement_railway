@@ -53,8 +53,8 @@ public class RegisterServlet extends HttpServlet {
 			);
 
 			pstmt.setString(1, username);
-			pstmt.setString(2, password);
-			pstmt.setString(3, confirmPassword);
+			pstmt.setString(2, com.pgmanagement.util.HashUtil.hashPassword(password));
+			pstmt.setString(3, com.pgmanagement.util.HashUtil.hashPassword(confirmPassword));
 
 			int row = pstmt.executeUpdate();
 

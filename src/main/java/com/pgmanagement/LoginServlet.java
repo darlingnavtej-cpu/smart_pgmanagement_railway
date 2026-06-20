@@ -43,7 +43,7 @@ public class LoginServlet extends HttpServlet {
 
 			pstmt.setString(1, username);
 			pstmt.setString(2, username);
-			pstmt.setString(3, password);
+			pstmt.setString(3, com.pgmanagement.util.HashUtil.hashPassword(password));
 
 			rs = pstmt.executeQuery();
 
@@ -61,6 +61,9 @@ public class LoginServlet extends HttpServlet {
 			        "role",
 			        "admin"
 			    );
+
+			    String currentTenant = (String) session.getAttribute("current_tenant");
+			    session.setAttribute("authenticated_tenant", currentTenant != null ? currentTenant : "admin");
 
 			    resp.sendRedirect("dashboard");
 			}

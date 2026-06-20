@@ -207,9 +207,10 @@ public class RegisterTenantServlet extends HttpServlet {
             String insertAdmin = "INSERT INTO newreg (username, password, email) VALUES ('admin', ?, ?) " +
                                  "ON DUPLICATE KEY UPDATE password=?, email=?";
             try (PreparedStatement pstmt = conn.prepareStatement(insertAdmin)) {
-                pstmt.setString(1, password);
+                String hashedPassword = com.pgmanagement.util.HashUtil.hashPassword(password);
+                pstmt.setString(1, hashedPassword);
                 pstmt.setString(2, email != null ? email : "admin@smartpg.com");
-                pstmt.setString(3, password);
+                pstmt.setString(3, hashedPassword);
                 pstmt.setString(4, email != null ? email : "admin@smartpg.com");
                 pstmt.executeUpdate();
             }

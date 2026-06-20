@@ -34,6 +34,7 @@ public class AddTenantServlet extends HttpServlet {
 		int roomnum = Integer.parseInt(req.getParameter("roomnnum"));
 		String email = req.getParameter("email");
 		String password = phone.substring(phone.length() - 4);
+		String hashedPassword = com.pgmanagement.util.HashUtil.hashPassword(password);
 
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -58,7 +59,7 @@ public class AddTenantServlet extends HttpServlet {
 			pstmt.setString(8, joiningDate);
 			pstmt.setInt(9, roomnum);
 			pstmt.setString(10, email);
-			pstmt.setString(11, password);
+			pstmt.setString(11, hashedPassword);
 
 			int row = pstmt.executeUpdate();
 

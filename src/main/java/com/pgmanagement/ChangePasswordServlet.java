@@ -62,7 +62,7 @@ public class ChangePasswordServlet extends HttpServlet {
 
             pstmt.setInt(1, tenantId);
 
-            pstmt.setString(2, oldPassword);
+            pstmt.setString(2, com.pgmanagement.util.HashUtil.hashPassword(oldPassword));
 
             rs = pstmt.executeQuery();
 
@@ -76,7 +76,7 @@ public class ChangePasswordServlet extends HttpServlet {
 
                 pstmt.setString(
                 1,
-                newPassword);
+                com.pgmanagement.util.HashUtil.hashPassword(newPassword));
 
                 pstmt.setInt(
                 2,

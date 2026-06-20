@@ -39,26 +39,29 @@ public class TenantLoginServlet extends HttpServlet {
 
 			pstmt.setString(1, email);
 
-			pstmt.setString(2, password);
+			pstmt.setString(2, com.pgmanagement.util.HashUtil.hashPassword(password));
 
 			rs = pstmt.executeQuery();
 			if (rs.next()) {
 
-				req.getSession().setAttribute("tenantId", rs.getInt("tenant_id"));
+				javax.servlet.http.HttpSession session = req.getSession();
+				session.setAttribute("tenantId", rs.getInt("tenant_id"));
 				System.out.println("LOGIN TENANT ID = " + rs.getInt("tenant_id"));
 
-				req.getSession().setAttribute("tenantName", rs.getString("tenant_name"));
+				session.setAttribute("tenantName", rs.getString("tenant_name"));
 
-				req.getSession().setAttribute("roomNo", rs.getInt("room_no"));
+				session.setAttribute("roomNo", rs.getInt("room_no"));
 
-				req.getSession().setAttribute("phone", rs.getString("phone"));
+				session.setAttribute("phone", rs.getString("phone"));
 
-				req.getSession().setAttribute("occupation", rs.getString("occupation"));
+				session.setAttribute("occupation", rs.getString("occupation"));
 
-				req.getSession().setAttribute("email", rs.getString("email"));
+				session.setAttribute("email", rs.getString("email"));
 
-				// Add this line
-				req.getSession().setAttribute("role", "tenant");
+				session.setAttribute("role", "tenant");
+
+				String currentTenant = (String) session.getAttribute("current_tenant");
+				session.setAttribute("authenticated_tenant", currentTenant != null ? currentTenant : "admin");
 
 				resp.sendRedirect("tenant-dashboard");
 
