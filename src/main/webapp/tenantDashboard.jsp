@@ -997,9 +997,7 @@ String today = new java.text.SimpleDateFormat("dd MMMM yyyy").format(new java.ut
 
 <aside class="sidebar" id="sidebar">
 	<div class="brand">
-		<div class="brand-logo">
-			<i class="fa-solid fa-house-user"></i>
-		</div>
+		<img src="<%=request.getContextPath()%>/images/logo.jpg" alt="Smart PG Logo" style="width:44px; height:44px; border-radius:14px; object-fit:cover; box-shadow: 0 10px 24px rgba(79, 70, 229, .35); flex-shrink:0;">
 		<div class="brand-title">
 			<h1>Smart PG Tenant</h1>
 			<span>Personal dashboard</span>

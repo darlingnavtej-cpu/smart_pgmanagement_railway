@@ -746,9 +746,7 @@
 <header class="topbar">
 	<div class="topbar-inner">
 		<div class="brand">
-			<div class="brand-logo">
-				<i class="fa-solid fa-house-chimney-user"></i>
-			</div>
+			<img src="<%=request.getContextPath()%>/images/logo.jpg" alt="Smart PG Logo" style="width:46px; height:46px; border-radius:14px; object-fit:cover; box-shadow:0 10px 24px rgba(79,70,229,.24); flex-shrink:0;">
 			<div class="brand-title">
 				<h1>Smart PG Management System</h1>
 				<span>Admin & Tenant access portal</span>
@@ -758,8 +756,9 @@
 		<nav class="nav-links">
 			<a href="#features">Features</a>
 			<a href="#facilities">Facilities</a>
+			<a href="#pricing">Pricing</a>
+			<a href="#contact">Contact</a>
 			<a href="#access">Login</a>
-			<a href="#about">About</a>
 		</nav>
 
 		<div class="header-actions">
@@ -782,8 +781,9 @@
 	<div class="mobile-menu-inner">
 		<a href="#features" onclick="toggleMenu()"><i class="fa-solid fa-star"></i> Features</a>
 		<a href="#facilities" onclick="toggleMenu()"><i class="fa-solid fa-wand-magic-sparkles"></i> Facilities</a>
+		<a href="#pricing" onclick="toggleMenu()"><i class="fa-solid fa-tag"></i> Pricing</a>
+		<a href="#contact" onclick="toggleMenu()"><i class="fa-solid fa-envelope"></i> Contact</a>
 		<a href="#access" onclick="toggleMenu()"><i class="fa-solid fa-right-to-bracket"></i> Login</a>
-		<a href="#about" onclick="toggleMenu()"><i class="fa-solid fa-circle-info"></i> About</a>
 		<a href="<%=ctx%>/login.jsp" onclick="toggleMenu()"><i class="fa-solid fa-user-shield"></i> Admin Login</a>
 		<a href="<%=ctx%>/tenantLogin.jsp" onclick="toggleMenu()"><i class="fa-solid fa-user"></i> Tenant Login</a>
 	</div>
@@ -1030,6 +1030,69 @@
 			<div class="icon bg-green"><i class="fa-solid fa-user"></i></div>
 			<h5>Tenant Login</h5>
 			<p>Open the tenant login screen.</p>
+		</a>
+	</div>
+</section>
+
+<section class="section" id="pricing">
+	<div class="section-title">
+		<h3>Flexible SaaS Pricing Plans</h3>
+		<span>Choose the best plan for your PG business needs</span>
+	</div>
+
+	<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 10px;">
+		<!-- Basic Plan -->
+		<div class="panel" style="text-align: center; padding: 24px; border-radius: 24px; background: #fff; border: 1px solid var(--border); box-shadow: var(--shadow-soft); display: flex; flex-direction: column;">
+			<h4 style="font-size: 18px; font-weight: 800; text-transform: uppercase; color: var(--muted); letter-spacing: 0.05em; margin-bottom: 8px;">Basic Plan</h4>
+			<div style="font-size: 38px; font-weight: 900; margin: 18px 0; color: var(--text);">₹499<span style="font-size: 14px; font-weight: 600; color: var(--muted);">/month</span></div>
+			<ul style="list-style: none; padding: 0; margin: 18px 0; text-align: left; font-size: 14px; color: #475569; line-height: 2; flex-grow: 1;">
+				<li><i class="fa-solid fa-circle-check" style="color: var(--success); margin-right: 8px;"></i> Up to 1 PG Branch</li>
+				<li><i class="fa-solid fa-circle-check" style="color: var(--success); margin-right: 8px;"></i> Max 20 Tenants</li>
+				<li><i class="fa-solid fa-circle-check" style="color: var(--success); margin-right: 8px;"></i> Basic Rent Reminders</li>
+				<li><i class="fa-solid fa-circle-check" style="color: var(--success); margin-right: 8px;"></i> Standard Support</li>
+			</ul>
+			<a href="<%=ctx%>/registerSaaS.jsp" class="btn btn-secondary" style="width: 100%; border-radius: 12px; margin-top: 10px;">Get Started</a>
+		</div>
+
+		<!-- Standard Plan -->
+		<div class="panel" style="text-align: center; padding: 24px; border-radius: 24px; background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%); border: 2px solid var(--primary); box-shadow: var(--shadow); position: relative; display: flex; flex-direction: column;">
+			<div style="position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: var(--primary); color: #fff; padding: 4px 12px; border-radius: 999px; font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.05em;">Most Popular</div>
+			<h4 style="font-size: 18px; font-weight: 800; text-transform: uppercase; color: var(--primary); letter-spacing: 0.05em; margin-top: 6px; margin-bottom: 8px;">Standard Plan</h4>
+			<div style="font-size: 38px; font-weight: 900; margin: 18px 0; color: var(--text);">₹999<span style="font-size: 14px; font-weight: 600; color: var(--muted);">/month</span></div>
+			<ul style="list-style: none; padding: 0; margin: 18px 0; text-align: left; font-size: 14px; color: #475569; line-height: 2; flex-grow: 1;">
+				<li><i class="fa-solid fa-circle-check" style="color: var(--success); margin-right: 8px;"></i> Up to 3 PG Branches</li>
+				<li><i class="fa-solid fa-circle-check" style="color: var(--success); margin-right: 8px;"></i> Max 100 Tenants</li>
+				<li><i class="fa-solid fa-circle-check" style="color: var(--success); margin-right: 8px;"></i> Automated Rent Reminders</li>
+				<li><i class="fa-solid fa-circle-check" style="color: var(--success); margin-right: 8px;"></i> Priority Email Support</li>
+			</ul>
+			<a href="<%=ctx%>/registerSaaS.jsp" class="btn btn-primary" style="width: 100%; border-radius: 12px; margin-top: 10px;">Get Started</a>
+		</div>
+
+		<!-- Premium Plan -->
+		<div class="panel" style="text-align: center; padding: 24px; border-radius: 24px; background: #fff; border: 1px solid var(--border); box-shadow: var(--shadow-soft); display: flex; flex-direction: column;">
+			<h4 style="font-size: 18px; font-weight: 800; text-transform: uppercase; color: var(--muted); letter-spacing: 0.05em; margin-bottom: 8px;">Premium Plan</h4>
+			<div style="font-size: 38px; font-weight: 900; margin: 18px 0; color: var(--text);">₹1499<span style="font-size: 14px; font-weight: 600; color: var(--muted);">/month</span></div>
+			<ul style="list-style: none; padding: 0; margin: 18px 0; text-align: left; font-size: 14px; color: #475569; line-height: 2; flex-grow: 1;">
+				<li><i class="fa-solid fa-circle-check" style="color: var(--success); margin-right: 8px;"></i> Unlimited PG Branches</li>
+				<li><i class="fa-solid fa-circle-check" style="color: var(--success); margin-right: 8px;"></i> Unlimited Tenants</li>
+				<li><i class="fa-solid fa-circle-check" style="color: var(--success); margin-right: 8px;"></i> Advanced SMS/Email Alerts</li>
+				<li><i class="fa-solid fa-circle-check" style="color: var(--success); margin-right: 8px;"></i> 24/7 Dedicated Support</li>
+			</ul>
+			<a href="<%=ctx%>/registerSaaS.jsp" class="btn btn-secondary" style="width: 100%; border-radius: 12px; margin-top: 10px;">Get Started</a>
+		</div>
+	</div>
+</section>
+
+<section class="section" id="contact" style="margin-bottom: 30px;">
+	<div class="panel" style="display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 30px; border-radius: 24px; background: linear-gradient(135deg, rgba(79,70,229,.05), rgba(99,102,241,.02)); border: 1px solid var(--border); flex-wrap: wrap;">
+		<div style="min-width: 0; flex: 1;">
+			<h4 style="font-size: 22px; font-weight: 900; color: var(--text);">Need Commercial Assistance?</h4>
+			<p style="margin-top: 6px; font-size: 14px; color: var(--muted); line-height: 1.6;">
+				Have questions about custom features, pricing plans, or need server deployment support? Reach out to our team directly.
+			</p>
+		</div>
+		<a href="mailto:smartpgmanage@gmail.com" class="btn btn-primary" style="flex-shrink: 0; white-space: nowrap; border-radius: 14px;">
+			<i class="fa-solid fa-envelope"></i> Contact Support: smartpgmanage@gmail.com
 		</a>
 	</div>
 </section>
