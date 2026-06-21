@@ -92,6 +92,9 @@ public class TenantRoutingFilter implements Filter {
             tenant = "admin"; // default to default smart_pg DB
         }
 
+        // Save resolved tenant in session to keep context in login servlets
+        req.getSession(true).setAttribute("current_tenant", tenant);
+
         // 3. Resolve database name from cache or database lookup
         String dbSchema = resolveDatabaseName(tenant);
 
