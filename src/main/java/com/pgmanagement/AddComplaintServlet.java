@@ -70,33 +70,20 @@ public class AddComplaintServlet extends HttpServlet {
 			        "📝 Complaint Submitted by tenantId : " + tenantId
 			    );
 
-			    resp.setContentType("text/html");
-
-			    resp.getWriter().println(
-
-			        "<script>"
-
-			        + "var choice = confirm('Complaint Submitted Successfully!\\n\\nDo you want to submit another complaint?');"
-
-			        + "if(choice){"
-
-			        + "window.location='addComplaint.jsp';"
-
-			        + "}else{"
-
-			        + "window.location='tenant-dashboard';"
-
-			        + "}"
-
-			        + "</script>"
-
+			    com.pgmanagement.util.JSResponse.showSweetAlertConfirm(
+			        resp, 
+			        "Complaint Submitted", 
+			        "Your complaint has been submitted successfully. Do you want to submit another complaint?", 
+			        "success", 
+			        "addComplaint.jsp", 
+			        "tenant-dashboard", 
+			        "Submit Another", 
+			        "Go to Dashboard"
 			    );
 
 			} 
 			else {
-
-				resp.getWriter().println("<h2>Complaint Not Added</h2>");
-
+				com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Submission Failed", "Complaint Not Added.", "error", "addComplaint.jsp");
 			}
 
 		}
@@ -104,8 +91,7 @@ public class AddComplaintServlet extends HttpServlet {
 		catch (Exception e) {
 
 			e.printStackTrace();
-
-			resp.getWriter().println("<h2>Error : " + e.getMessage() + "</h2>");
+			com.pgmanagement.util.JSResponse.showSweetAlert(resp, "System Error", e.getMessage(), "error", null);
 
 		}
 

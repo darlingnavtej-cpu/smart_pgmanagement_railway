@@ -50,26 +50,26 @@ public class UpdateNoticeServlet extends HttpServlet {
 
 			if (result > 0) {
 
-				resp.sendRedirect("fetch-notices");
+				pstmt.close();
+				con.close();
+				com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Updated", "Notice Updated Successfully", "success", "fetch-notices");
 
 			}
 
 			else {
 
-				resp.getWriter().println(
-
-						"<h2>Notice Update Failed!</h2>");
+				pstmt.close();
+				con.close();
+				com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Failed", "Notice Update Failed!", "error", null);
 
 			}
-
-			pstmt.close();
-			con.close();
 
 		}
 
 		catch (Exception e) {
 
 			e.printStackTrace();
+			com.pgmanagement.util.JSResponse.showSweetAlert(resp, "System Error", e.getMessage(), "error", null);
 
 		}
 

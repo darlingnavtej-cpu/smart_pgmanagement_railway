@@ -110,73 +110,13 @@ public class UpdatePgInfoServlet extends HttpServlet {
 
 			if (result > 0) {
 
-				resp.getWriter().println(
-
-						"<html><body style='font-family:Arial;text-align:center;margin-top:100px;'>"
-
-								+
-
-								"<h2 style='color:green;'>"
-
-								+
-
-								"PG Information Updated Successfully!"
-
-								+
-
-								"</h2><br>"
-
-								+
-
-								"<a href='home.jsp'>"
-
-								+
-
-								"Back To Dashboard"
-
-								+
-
-								"</a>"
-
-								+
-
-								"</body></html>");
+				com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Updated", "PG Information Updated Successfully!", "success", "home.jsp");
 
 			}
 
 			else {
 
-				resp.getWriter().println(
-
-						"<html><body style='font-family:Arial;text-align:center;margin-top:100px;'>"
-
-								+
-
-								"<h2 style='color:red;'>"
-
-								+
-
-								"Update Failed!"
-
-								+
-
-								"</h2><br>"
-
-								+
-
-								"<a href='fetch-pg-info'>"
-
-								+
-
-								"Try Again"
-
-								+
-
-								"</a>"
-
-								+
-
-								"</body></html>");
+				com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Failed", "Update Failed!", "error", "fetch-pg-info");
 
 			}
 
@@ -185,6 +125,7 @@ public class UpdatePgInfoServlet extends HttpServlet {
 		catch (Exception e) {
 
 			e.printStackTrace();
+			com.pgmanagement.util.JSResponse.showSweetAlert(resp, "System Error", e.getMessage(), "error", null);
 
 		}
 

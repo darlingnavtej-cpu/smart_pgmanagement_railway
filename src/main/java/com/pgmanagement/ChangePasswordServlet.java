@@ -38,8 +38,7 @@ public class ChangePasswordServlet extends HttpServlet {
 
         if(!newPassword.equals(confirmPassword)){
 
-            resp.getWriter().println(
-            "<h2>New Password and Confirm Password do not match</h2>");
+			com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Validation Error", "New Password and Confirm Password do not match", "warning", "changePassword.jsp");
 
             return;
         }
@@ -87,34 +86,14 @@ public class ChangePasswordServlet extends HttpServlet {
 
                 if(row > 0){
 
-                    resp.getWriter().println(
-
-                    "<script>" +
-
-                    "alert('Password Changed Successfully');" +
-
-                    "window.location='tenant-dashboard';" +
-
-                    "</script>"
-
-                    );
+					com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Success", "Password Changed Successfully", "success", "tenant-dashboard");
 
                 }
 
             }
             else{
 
-                resp.getWriter().println(
-
-                "<script>" +
-
-                "alert('Current Password Incorrect');" +
-
-                "window.location='changePassword.jsp';" +
-
-                "</script>"
-
-                );
+				com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Incorrect Password", "Current Password Incorrect", "error", "changePassword.jsp");
 
             }
 
@@ -122,6 +101,7 @@ public class ChangePasswordServlet extends HttpServlet {
         catch(Exception e){
 
             e.printStackTrace();
+			com.pgmanagement.util.JSResponse.showSweetAlert(resp, "System Error", e.getMessage(), "error", "changePassword.jsp");
 
         }
 

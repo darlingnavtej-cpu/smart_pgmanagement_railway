@@ -38,26 +38,26 @@ public class DeleteNoticeServlet extends HttpServlet {
 
 			if (result > 0) {
 
+				pstmt.close();
+				con.close();
 				resp.sendRedirect("fetch-notices");
 
 			}
 
 			else {
 
-				resp.getWriter().println(
-
-						"<h2>Notice Not Deleted!</h2>");
+				pstmt.close();
+				con.close();
+				com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Failed", "Notice Not Deleted!", "error", "fetch-notices");
 
 			}
-
-			pstmt.close();
-			con.close();
 
 		}
 
 		catch (Exception e) {
 
 			e.printStackTrace();
+			com.pgmanagement.util.JSResponse.showSweetAlert(resp, "System Error", e.getMessage(), "error", "fetch-notices");
 
 		}
 

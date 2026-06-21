@@ -67,18 +67,18 @@ public class UpdateTenantServlet extends HttpServlet {
 
 			if (row > 0) {
 
-				resp.sendRedirect("fetch-tenants");
+				com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Updated", "Tenant Updated Successfully", "success", "fetch-tenants");
 
 			} else {
 
-				resp.getWriter().println("<h2>Update Failed</h2>");
+				com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Failed", "Update Failed", "error", null);
 
 			}
 
 		} catch (ClassNotFoundException | SQLException e) {
 
 			e.printStackTrace();
-			resp.getWriter().println("<h2>Error : " + e.getMessage() + "</h2>");
+			com.pgmanagement.util.JSResponse.showSweetAlert(resp, "System Error", e.getMessage(), "error", null);
 
 		} finally {
 

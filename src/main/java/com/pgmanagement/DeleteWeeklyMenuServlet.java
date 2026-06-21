@@ -50,27 +50,26 @@ public class DeleteWeeklyMenuServlet extends HttpServlet {
 
 			if (result > 0) {
 
-				resp.sendRedirect(
-						"fetch-weekly-menu");
+				pstmt.close();
+				con.close();
+				resp.sendRedirect("fetch-weekly-menu");
 
 			}
 
 			else {
 
-				resp.getWriter().println(
-
-						"<h2>Menu Deletion Failed!</h2>");
+				pstmt.close();
+				con.close();
+				com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Failed", "Menu Deletion Failed!", "error", "fetch-weekly-menu");
 
 			}
-
-			pstmt.close();
-			con.close();
 
 		}
 
 		catch (Exception e) {
 
 			e.printStackTrace();
+			com.pgmanagement.util.JSResponse.showSweetAlert(resp, "System Error", e.getMessage(), "error", "fetch-weekly-menu");
 
 		}
 

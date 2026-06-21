@@ -120,33 +120,22 @@ public class AddEmployeeServlet extends HttpServlet {
 
 				);
 
-				resp.getWriter().println(
-
-						"<script>"
-
-								+
-
-								"alert('Employee Added Successfully');"
-
-								+
-
-								"window.location='fetch-employees';"
-
-								+
-
-								"</script>"
-
+				com.pgmanagement.util.JSResponse.showSweetAlertConfirm(
+					resp,
+					"Employee Added",
+					"Employee Added Successfully. Do you want to add another employee?",
+					"success",
+					"addEmployee.jsp",
+					"fetch-employees",
+					"Add Another",
+					"Go to List"
 				);
 
 			}
 
 			else {
 
-				resp.getWriter().println(
-
-						"<h2>Failed To Add Employee</h2>"
-
-				);
+				com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Failed", "Failed To Add Employee", "error", "addEmployee.jsp");
 
 			}
 
@@ -155,20 +144,7 @@ public class AddEmployeeServlet extends HttpServlet {
 		catch (Exception e) {
 
 			e.printStackTrace();
-
-			resp.getWriter().println(
-
-					"<h2>Error : "
-
-							+
-
-							e.getMessage()
-
-							+
-
-							"</h2>"
-
-			);
+			com.pgmanagement.util.JSResponse.showSweetAlert(resp, "System Error", e.getMessage(), "error", null);
 
 		}
 

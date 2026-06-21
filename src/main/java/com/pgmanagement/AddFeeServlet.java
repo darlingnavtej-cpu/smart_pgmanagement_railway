@@ -134,37 +134,31 @@ public class AddFeeServlet extends HttpServlet {
 
 				);
 
-				pw.println("<html>");
-				pw.println("<body style='font-family:Arial;text-align:center;margin-top:100px;'>");
-
-				pw.println("<h1 style='color:green;'>Fee Details Added Successfully</h1>");
-
-				pw.println("<br>");
-
-				pw.println("<a href='addFee.jsp'>Add Another Fee Record</a>");
-
-				pw.println("<br><br>");
-
-				pw.println("<a href='dashboard'>Go To Dashboard</a>");
-
-				pw.println("</body>");
-				pw.println("</html>");
+				com.pgmanagement.util.JSResponse.showSweetAlertConfirm(
+					resp, 
+					"Fee Added", 
+					"Fee Details Added Successfully. Do you want to add another fee record?", 
+					"success", 
+					"addFee.jsp", 
+					"dashboard", 
+					"Add Another", 
+					"Go to Dashboard"
+				);
 
 			} else {
 
-				pw.println("<h2>Failed To Add Fee Details</h2>");
+				com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Failed", "Failed To Add Fee Details", "error", "addFee.jsp");
 
 			}
 
 		} catch (ClassNotFoundException | SQLException e) {
 
 			e.printStackTrace();
-
-			resp.getWriter().println("<h2>Error : " + e.getMessage() + "</h2>");
+			com.pgmanagement.util.JSResponse.showSweetAlert(resp, "System Error", e.getMessage(), "error", null);
 
 		} catch (NumberFormatException e) {
 
-			resp.getWriter().println("<h2>Please Enter Valid Numbers</h2>");
+			com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Validation Error", "Please Enter Valid Numbers", "warning", null);
 
 		} finally {
 

@@ -61,13 +61,22 @@ public class AddExpenseServlet extends HttpServlet {
 
 				);
 
-				resp.sendRedirect("fetch-expenses");
+				com.pgmanagement.util.JSResponse.showSweetAlertConfirm(
+					resp,
+					"Expense Added",
+					"Expense Added Successfully. Do you want to add another expense?",
+					"success",
+					"addExpense.jsp",
+					"fetch-expenses",
+					"Add Another",
+					"Go to List"
+				);
 
 			}
 
 			else {
 
-				resp.getWriter().println("<h2>Expense Add Failed</h2>");
+				com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Failed", "Expense Add Failed", "error", "addExpense.jsp");
 
 			}
 
@@ -75,21 +84,14 @@ public class AddExpenseServlet extends HttpServlet {
 
 		catch (SQLIntegrityConstraintViolationException e) {
 
-			// Duplicate Primary Key
-
-			resp.sendRedirect("addExpense.jsp?error=duplicate");
+			com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Duplicate ID", "Expense ID is already used. Please enter a unique ID.", "warning", "addExpense.jsp");
 
 		}
 
 		catch (Exception e) {
 
 			e.printStackTrace();
-
-			resp.getWriter().println(
-
-					"<h2>Error : " + e.getMessage() + "</h2>"
-
-			);
+			com.pgmanagement.util.JSResponse.showSweetAlert(resp, "System Error", e.getMessage(), "error", null);
 
 		}
 

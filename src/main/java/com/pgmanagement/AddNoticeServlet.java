@@ -91,24 +91,36 @@ public class AddNoticeServlet extends HttpServlet {
 					}).start();
 				}
 
-				resp.sendRedirect("fetch-notices");
+				pstmt.close();
+				con.close();
+
+				com.pgmanagement.util.JSResponse.showSweetAlertConfirm(
+					resp,
+					"Notice Published",
+					"New Notice Published Successfully. Do you want to publish another notice?",
+					"success",
+					"addNotice.jsp",
+					"fetch-notices",
+					"Add Another",
+					"Go to List"
+				);
 
 			}
 
 			else {
 
-				resp.getWriter().println("<h2>Notice Not Added!</h2>");
+				pstmt.close();
+				con.close();
+				com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Failed", "Notice Not Added!", "error", "addNotice.jsp");
 
 			}
-
-			pstmt.close();
-			con.close();
 
 		}
 
 		catch (Exception e) {
 
 			e.printStackTrace();
+			com.pgmanagement.util.JSResponse.showSweetAlert(resp, "System Error", e.getMessage(), "error", null);
 
 		}
 

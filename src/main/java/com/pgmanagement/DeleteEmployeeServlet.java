@@ -72,11 +72,7 @@ public class DeleteEmployeeServlet extends HttpServlet {
 
 			else {
 
-				resp.getWriter().println(
-
-						"<h2>Employee Not Found!</h2>"
-
-				);
+				com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Failed", "Employee Not Found!", "error", "fetch-employees");
 
 			}
 
@@ -85,20 +81,7 @@ public class DeleteEmployeeServlet extends HttpServlet {
 		catch (Exception e) {
 
 			e.printStackTrace();
-
-			resp.getWriter().println(
-
-					"<h2>Error : "
-
-							+
-
-							e.getMessage()
-
-							+
-
-							"</h2>"
-
-			);
+			com.pgmanagement.util.JSResponse.showSweetAlert(resp, "System Error", e.getMessage(), "error", "fetch-employees");
 
 		}
 

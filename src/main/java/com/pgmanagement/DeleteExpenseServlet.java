@@ -98,11 +98,7 @@ public class DeleteExpenseServlet extends HttpServlet {
 
 			else {
 
-				resp.getWriter().println(
-
-						"<h2>Expense Not Deleted!</h2>"
-
-				);
+				com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Failed", "Expense Not Deleted!", "error", "fetch-expenses");
 
 			}
 
@@ -111,20 +107,7 @@ public class DeleteExpenseServlet extends HttpServlet {
 		catch (Exception e) {
 
 			e.printStackTrace();
-
-			resp.getWriter().println(
-
-					"<h2>Error : "
-
-							+
-
-							e.getMessage()
-
-							+
-
-							"</h2>"
-
-			);
+			com.pgmanagement.util.JSResponse.showSweetAlert(resp, "System Error", e.getMessage(), "error", "fetch-expenses");
 
 		}
 

@@ -57,26 +57,22 @@ public class UpdateRoomServlet extends HttpServlet {
 
             if (row > 0) {
 
-                // Redirect to Room List
-                resp.sendRedirect("fetch-rooms");
+                com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Updated", "Room Updated Successfully", "success", "fetch-rooms");
 
             } else {
 
-                resp.getWriter().println("<h2>Room Update Failed</h2>");
+                com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Failed", "Room Update Failed", "error", null);
 
             }
 
         } catch (ClassNotFoundException | SQLException e) {
 
             e.printStackTrace();
-
-            resp.getWriter().println(
-                    "<h2>Error : " + e.getMessage() + "</h2>");
+            com.pgmanagement.util.JSResponse.showSweetAlert(resp, "System Error", e.getMessage(), "error", null);
 
         } catch (NumberFormatException e) {
 
-            resp.getWriter().println(
-                    "<h2>Please Enter Valid Numbers</h2>");
+            com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Validation Error", "Please Enter Valid Numbers", "warning", null);
 
         } finally {
 

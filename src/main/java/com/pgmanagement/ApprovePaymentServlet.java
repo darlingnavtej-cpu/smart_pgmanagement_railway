@@ -82,7 +82,7 @@ public class ApprovePaymentServlet extends HttpServlet {
 
         } catch (Exception e) {
             e.printStackTrace();
-            resp.getWriter().println("<h2>Error : " + e.getMessage() + "</h2>");
+            com.pgmanagement.util.JSResponse.showSweetAlert(resp, "System Error", e.getMessage(), "error", "fetch-payment-requests");
         } finally {
             try {
                 if (rs != null) rs.close();

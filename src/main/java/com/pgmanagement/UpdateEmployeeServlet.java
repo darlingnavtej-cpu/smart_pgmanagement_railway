@@ -116,17 +116,13 @@ public class UpdateEmployeeServlet extends HttpServlet {
 
 			if (result > 0) {
 
-				resp.sendRedirect("fetch-employees");
+				com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Updated", "Employee Updated Successfully", "success", "fetch-employees");
 
 			}
 
 			else {
 
-				resp.getWriter().println(
-
-						"<h2>Employee Update Failed!</h2>"
-
-				);
+				com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Failed", "Employee Update Failed!", "error", null);
 
 			}
 
@@ -135,20 +131,7 @@ public class UpdateEmployeeServlet extends HttpServlet {
 		catch (Exception e) {
 
 			e.printStackTrace();
-
-			resp.getWriter().println(
-
-					"<h2>Error : "
-
-							+
-
-							e.getMessage()
-
-							+
-
-							"</h2>"
-
-			);
+			com.pgmanagement.util.JSResponse.showSweetAlert(resp, "System Error", e.getMessage(), "error", null);
 
 		}
 

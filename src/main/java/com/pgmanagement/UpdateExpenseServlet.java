@@ -138,17 +138,13 @@ public class UpdateExpenseServlet extends HttpServlet {
 
 				// Redirect
 
-				resp.sendRedirect("fetch-expenses");
+				com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Updated", "Expense Updated Successfully", "success", "fetch-expenses");
 
 			}
 
 			else {
 
-				resp.getWriter().println(
-
-						"<h2>Expense Update Failed!</h2>"
-
-				);
+				com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Failed", "Expense Update Failed!", "error", null);
 
 			}
 
@@ -157,20 +153,7 @@ public class UpdateExpenseServlet extends HttpServlet {
 		catch (Exception e) {
 
 			e.printStackTrace();
-
-			resp.getWriter().println(
-
-					"<h2>Error : "
-
-							+
-
-							e.getMessage()
-
-							+
-
-							"</h2>"
-
-			);
+			com.pgmanagement.util.JSResponse.showSweetAlert(resp, "System Error", e.getMessage(), "error", null);
 
 		}
 

@@ -24,25 +24,7 @@ public class ResetPasswordServlet extends HttpServlet {
 
 		if (!password.equals(confirmPassword)) {
 
-			resp.setContentType("text/html");
-
-			resp.getWriter().println(
-
-					"<html><body " + "style='font-family:Arial;" + "text-align:center;" + "margin-top:100px;'>"
-
-							+ "<h2 style='color:red;'>"
-
-							+ "Passwords Do Not Match!"
-
-							+ "</h2>"
-
-							+ "<br><br>"
-
-							+ "<a href='resetPassword.jsp'>" + "Try Again" + "</a>"
-
-							+ "</body></html>"
-
-			);
+			com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Validation Error", "Passwords Do Not Match!", "warning", "resetPassword.jsp");
 
 			return;
 		}
@@ -72,37 +54,13 @@ public class ResetPasswordServlet extends HttpServlet {
 				session.removeAttribute("otp");
 				session.removeAttribute("email");
 
-				resp.setContentType("text/html");
-
-				resp.getWriter().println(
-
-						"<html><body " + "style='font-family:Arial;" + "text-align:center;" + "margin-top:100px;'>"
-
-								+ "<h1 style='color:green;'>"
-
-								+ "Password Updated Successfully!"
-
-								+ "</h1>"
-
-								+ "<br><br>"
-
-								+ "<a href='login.jsp'>"
-
-								+ "Go To Login"
-
-								+ "</a>"
-
-								+ "</body></html>"
-
-				);
+				com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Success", "Password Updated Successfully!", "success", "login.jsp");
 
 			}
 
 			else {
 
-				resp.getWriter().println(
-
-						"<h2>Password Update Failed!</h2>");
+				com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Failed", "Password Update Failed!", "error", "resetPassword.jsp");
 
 			}
 
@@ -113,6 +71,7 @@ public class ResetPasswordServlet extends HttpServlet {
 		catch (Exception e) {
 
 			e.printStackTrace();
+			com.pgmanagement.util.JSResponse.showSweetAlert(resp, "System Error", e.getMessage(), "error", "resetPassword.jsp");
 
 		}
 

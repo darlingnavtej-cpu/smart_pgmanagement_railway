@@ -48,11 +48,10 @@ public class DeleteComplaintServlet extends HttpServlet{
             pstmt.close();
             con.close();
 
-        }
-
-        catch(Exception e){
+        } catch(Exception e){
 
             e.printStackTrace();
+            com.pgmanagement.util.JSResponse.showSweetAlert(resp, "System Error", e.getMessage(), "error", "fetch-complaints");
 
         }
 

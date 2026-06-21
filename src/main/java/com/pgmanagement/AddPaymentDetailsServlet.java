@@ -126,33 +126,13 @@ public class AddPaymentDetailsServlet extends HttpServlet {
 
 				);
 
-				resp.getWriter().println(
-
-						"<script>"
-
-								+
-
-								"alert('Payment Details Saved Successfully');"
-
-								+
-
-								"window.location='fetch-payment-details';"
-
-								+
-
-								"</script>"
-
-				);
+				com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Saved", "Payment Details Saved Successfully", "success", "fetch-payment-details");
 
 			}
 
 			else {
 
-				resp.getWriter().println(
-
-						"<h2>Failed To Save Details</h2>"
-
-				);
+				com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Failed", "Failed To Save Details", "error", "addPaymentDetails.jsp");
 
 			}
 
@@ -161,20 +141,7 @@ public class AddPaymentDetailsServlet extends HttpServlet {
 		catch (Exception e) {
 
 			e.printStackTrace();
-
-			resp.getWriter().println(
-
-					"<h2>Error : "
-
-							+
-
-							e.getMessage()
-
-							+
-
-							"</h2>"
-
-			);
+			com.pgmanagement.util.JSResponse.showSweetAlert(resp, "System Error", e.getMessage(), "error", null);
 
 		}
 

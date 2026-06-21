@@ -38,11 +38,12 @@ public class DeleteTenantServlet extends HttpServlet {
 			if (row > 0) {
 				resp.sendRedirect("fetch-tenants");
 			} else {
-				resp.getWriter().println("<h2>Delete Failed</h2>");
+				com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Failed", "Delete Failed", "error", "fetch-tenants");
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
+			com.pgmanagement.util.JSResponse.showSweetAlert(resp, "System Error", e.getMessage(), "error", "fetch-tenants");
 		} finally {
 			try {
 

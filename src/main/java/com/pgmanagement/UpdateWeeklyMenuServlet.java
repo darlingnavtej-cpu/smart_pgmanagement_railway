@@ -82,27 +82,26 @@ public class UpdateWeeklyMenuServlet extends HttpServlet {
 
 			if (result > 0) {
 
-				resp.sendRedirect(
-						"fetch-weekly-menu");
+				pstmt.close();
+				con.close();
+				com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Updated", "Menu Updated Successfully", "success", "fetch-weekly-menu");
 
 			}
 
 			else {
 
-				resp.getWriter().println(
-
-						"<h2>Menu Update Failed!</h2>");
+				pstmt.close();
+				con.close();
+				com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Failed", "Menu Update Failed!", "error", null);
 
 			}
-
-			pstmt.close();
-			con.close();
 
 		}
 
 		catch (Exception e) {
 
 			e.printStackTrace();
+			com.pgmanagement.util.JSResponse.showSweetAlert(resp, "System Error", e.getMessage(), "error", null);
 
 		}
 

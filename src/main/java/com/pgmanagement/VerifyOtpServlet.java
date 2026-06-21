@@ -25,29 +25,9 @@ public class VerifyOtpServlet extends HttpServlet {
 
 			resp.sendRedirect("resetPassword.jsp");
 
-		}
+		} else {
 
-		else {
-
-			resp.setContentType("text/html");
-
-			resp.getWriter().println(
-
-					"<html><body " + "style='font-family:Arial;" + "text-align:center;" + "margin-top:100px;'>"
-
-							+ "<h2 style='color:red;'>"
-
-							+ "Invalid OTP!"
-
-							+ "</h2>"
-
-							+ "<br><br>"
-
-							+ "<a href='verifyOtp.jsp'>" + "Try Again" + "</a>"
-
-							+ "</body></html>"
-
-			);
+			com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Invalid OTP", "The entered OTP is incorrect. Please try again.", "error", "verifyOtp.jsp");
 
 		}
 

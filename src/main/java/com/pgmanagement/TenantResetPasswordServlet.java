@@ -28,19 +28,19 @@ public class TenantResetPasswordServlet extends HttpServlet {
 		try {
 
 			if (session == null || session.getAttribute("tenantOtpVerified") == null) {
-				resp.sendRedirect("tenantForgotPassword.jsp");
+				com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Unauthorized", "Session expired or OTP not verified.", "error", "tenantForgotPassword.jsp");
 				return;
 			}
 
 			if (newPassword == null || confirmPassword == null || !newPassword.equals(confirmPassword)) {
-				resp.sendRedirect("tenantResetPassword.jsp?error=nomatch");
+				com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Validation Error", "Passwords do not match!", "warning", "tenantResetPassword.jsp");
 				return;
 			}
 
 			String email = (String) session.getAttribute("tenantResetEmail");
 
 			if (email == null) {
-				resp.sendRedirect("tenantForgotPassword.jsp");
+				com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Error", "Email not found in session.", "error", "tenantForgotPassword.jsp");
 				return;
 			}
 
@@ -63,14 +63,14 @@ public class TenantResetPasswordServlet extends HttpServlet {
 			session.removeAttribute("tenantOtpVerified");
 
 			if (row > 0) {
-				resp.sendRedirect("tenantLogin.jsp?msg=passwordupdated");
+				com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Success", "Password updated successfully!", "success", "tenantLogin.jsp");
 			} else {
-				resp.sendRedirect("tenantResetPassword.jsp?error=updatefailed");
+				com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Failed", "Password update failed.", "error", "tenantResetPassword.jsp");
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			resp.getWriter().println("<h2>Error : " + e.getMessage() + "</h2>");
+			com.pgmanagement.util.JSResponse.showSweetAlert(resp, "System Error", e.getMessage(), "error", "tenantResetPassword.jsp");
 		}
 	}
 }

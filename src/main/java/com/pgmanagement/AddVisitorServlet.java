@@ -80,33 +80,22 @@ public class AddVisitorServlet extends HttpServlet {
 
 				);
 
-				resp.getWriter().println(
-
-						"<script>"
-
-								+
-
-								"alert('Visitor Added Successfully');"
-
-								+
-
-								"window.location='fetch-visitors';"
-
-								+
-
-								"</script>"
-
+				com.pgmanagement.util.JSResponse.showSweetAlertConfirm(
+					resp,
+					"Visitor Added",
+					"Visitor Added Successfully. Do you want to add another visitor?",
+					"success",
+					"addVisitor.jsp",
+					"fetch-visitors",
+					"Add Another",
+					"Go to List"
 				);
 
 			}
 
 			else {
 
-				resp.getWriter().println(
-
-						"<h2>Failed To Add Visitor</h2>"
-
-				);
+				com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Failed", "Failed To Add Visitor", "error", "addVisitor.jsp");
 
 			}
 
@@ -115,20 +104,7 @@ public class AddVisitorServlet extends HttpServlet {
 		catch (Exception e) {
 
 			e.printStackTrace();
-
-			resp.getWriter().println(
-
-					"<h2>Error : "
-
-							+
-
-							e.getMessage()
-
-							+
-
-							"</h2>"
-
-			);
+			com.pgmanagement.util.JSResponse.showSweetAlert(resp, "System Error", e.getMessage(), "error", null);
 
 		}
 

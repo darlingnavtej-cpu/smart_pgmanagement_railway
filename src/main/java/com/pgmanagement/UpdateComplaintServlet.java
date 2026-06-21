@@ -67,13 +67,11 @@ public class UpdateComplaintServlet extends HttpServlet {
 
 			if (row > 0) {
 
-				// Redirect to Complaint Records
-
-				resp.sendRedirect("fetch-complaints");
+				com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Updated", "Complaint Updated Successfully", "success", "fetch-complaints");
 
 			} else {
 
-				resp.getWriter().println("<h2>Complaint Update Failed</h2>");
+				com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Failed", "Complaint Update Failed", "error", null);
 			}
 
 		}
@@ -81,13 +79,12 @@ public class UpdateComplaintServlet extends HttpServlet {
 		catch (ClassNotFoundException | SQLException e) {
 
 			e.printStackTrace();
-
-			resp.getWriter().println("<h2>Error : " + e.getMessage() + "</h2>");
+			com.pgmanagement.util.JSResponse.showSweetAlert(resp, "System Error", e.getMessage(), "error", null);
 		}
 
 		catch (NumberFormatException e) {
 
-			resp.getWriter().println("<h2>Please Enter Valid Numbers</h2>");
+			com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Validation Error", "Please Enter Valid Numbers", "warning", null);
 		}
 
 		finally {

@@ -44,7 +44,7 @@ public class ResolveComplaintServlet extends HttpServlet {
 
 			} else {
 
-				resp.getWriter().println("<h2>Unable to Update Complaint</h2>");
+				com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Failed", "Unable to Update Complaint", "error", "fetch-complaints");
 
 			}
 
@@ -53,6 +53,7 @@ public class ResolveComplaintServlet extends HttpServlet {
 		catch (Exception e) {
 
 			e.printStackTrace();
+			com.pgmanagement.util.JSResponse.showSweetAlert(resp, "System Error", e.getMessage(), "error", "fetch-complaints");
 
 		}
 

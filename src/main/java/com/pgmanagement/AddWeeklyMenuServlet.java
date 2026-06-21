@@ -55,24 +55,35 @@ public class AddWeeklyMenuServlet extends HttpServlet {
 
 			if (result > 0) {
 
-				resp.sendRedirect("fetch-weekly-menu");
+				pstmt.close();
+				con.close();
+				com.pgmanagement.util.JSResponse.showSweetAlertConfirm(
+					resp,
+					"Menu Added",
+					"Menu Added Successfully. Do you want to add another menu item?",
+					"success",
+					"addWeeklyMenu.jsp",
+					"fetch-weekly-menu",
+					"Add Another",
+					"Go to List"
+				);
 
 			}
 
 			else {
 
-				resp.getWriter().println("<h2>Menu Not Added!</h2>");
+				pstmt.close();
+				con.close();
+				com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Failed", "Menu Not Added!", "error", "addWeeklyMenu.jsp");
 
 			}
-
-			pstmt.close();
-			con.close();
 
 		}
 
 		catch (Exception e) {
 
 			e.printStackTrace();
+			com.pgmanagement.util.JSResponse.showSweetAlert(resp, "System Error", e.getMessage(), "error", null);
 
 		}
 

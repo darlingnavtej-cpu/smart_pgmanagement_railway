@@ -38,7 +38,7 @@ public class RegisterTenantServlet extends HttpServlet {
         if (subdomain == null || subdomain.trim().isEmpty() ||
             pgName == null || pgName.trim().isEmpty() ||
             password == null || password.trim().isEmpty()) {
-            out.println("<h2>Error: Missing required fields.</h2>");
+            com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Validation Error", "Missing required fields.", "warning", "registerSaaS.jsp");
             return;
         }
 
@@ -59,7 +59,9 @@ public class RegisterTenantServlet extends HttpServlet {
             checkStmt.setString(1, subdomain);
             rs = checkStmt.executeQuery();
             if (rs.next() && rs.getInt(1) > 0) {
-                out.println("<h2>Error: Subdomain '" + subdomain + "' is already registered.</h2>");
+                rs.close();
+                checkStmt.close();
+                com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Subdomain Taken", "Subdomain '" + subdomain + "' is already registered.", "error", "registerSaaS.jsp");
                 return;
             }
             rs.close();
@@ -93,24 +95,27 @@ public class RegisterTenantServlet extends HttpServlet {
             String scheme = req.getScheme();
             String portStr = (serverPort == 80 || serverPort == 443) ? "" : ":" + serverPort;
 
-            out.println("<h2>Tenant registered successfully!</h2>");
-
+            StringBuilder htmlContent = new StringBuilder();
+            htmlContent.append("<p>Your PG SaaS portal is ready!</p>");
             if (serverName.contains("railway") || serverName.contains("smart-pg-management")) {
                 // Production Railway URL using query parameter routing
                 String productionUrl = scheme + "://" + serverName + portStr + contextPath + "/login.jsp?tenant=" + subdomain;
-                out.println("<p>Your PG SaaS portal is ready at: <a href='" + productionUrl + "'>" + productionUrl + "</a></p>");
+                htmlContent.append("<p><a href='").append(productionUrl).append("'>Go to PG Portal</a></p>");
+                htmlContent.append("<p style='font-size: 12px; color: #64748b;'>").append(productionUrl).append("</p>");
             } else {
                 // Local development URLs
                 String localSubdomainUrl = scheme + "://" + subdomain + ".localhost" + portStr + contextPath + "/login.jsp";
                 String localParamUrl = scheme + "://" + serverName + portStr + contextPath + "/login.jsp?tenant=" + subdomain;
 
-                out.println("<p>Your PG SaaS portal is ready at: <a href='" + localSubdomainUrl + "'>" + localSubdomainUrl + "</a></p>");
-                out.println("<p>(Or test locally at: <a href='" + localParamUrl + "'>" + localParamUrl + "</a>)</p>");
+                htmlContent.append("<p><a href='").append(localSubdomainUrl).append("'>Go to PG Portal (Subdomain)</a></p>");
+                htmlContent.append("<p><a href='").append(localParamUrl).append("'>Go to PG Portal (Parameter)</a></p>");
             }
+
+            com.pgmanagement.util.JSResponse.showSweetAlertHtml(resp, "Registration Successful", htmlContent.toString(), "success");
 
         } catch (Exception e) {
             e.printStackTrace();
-            out.println("<h2>Registration Error: " + e.getMessage() + "</h2>");
+            com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Registration Error", e.getMessage(), "error", "registerSaaS.jsp");
         } finally {
             try {
                 if (rs != null) rs.close();

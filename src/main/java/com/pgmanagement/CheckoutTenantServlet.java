@@ -177,29 +177,14 @@ public class CheckoutTenantServlet extends HttpServlet {
 
 			// -------------------------
 
-			resp.sendRedirect(
-
-					"fetch-tenants"
-
-			);
+			com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Checked Out", tenantName + " checked out successfully", "success", "fetch-tenants");
 
 		}
 
 		catch (Exception e) {
 
 			e.printStackTrace();
-
-			resp.getWriter().println(
-
-					"<h2>Error : "
-
-							+
-
-							e.getMessage()
-
-							+
-
-							"</h2>");
+			com.pgmanagement.util.JSResponse.showSweetAlert(resp, "System Error", e.getMessage(), "error", "fetch-tenants");
 
 		}
 

@@ -46,7 +46,7 @@ public class DeleteFeeServlet extends HttpServlet {
 
 			} else {
 
-				resp.getWriter().println("<h2>Fee Record Deletion Failed</h2>");
+				com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Failed", "Fee Record Deletion Failed", "error", "fetch-fees");
 
 			}
 
@@ -54,7 +54,7 @@ public class DeleteFeeServlet extends HttpServlet {
 
 			e.printStackTrace();
 
-			resp.getWriter().println("<h2>Error : " + e.getMessage() + "</h2>");
+			com.pgmanagement.util.JSResponse.showSweetAlert(resp, "System Error", e.getMessage(), "error", "fetch-fees");
 
 		} finally {
 

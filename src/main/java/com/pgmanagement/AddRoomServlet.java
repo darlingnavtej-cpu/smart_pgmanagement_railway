@@ -70,13 +70,7 @@ public class AddRoomServlet extends HttpServlet {
 
 			if (rs.next()) {
 
-				resp.getWriter().println(
-
-						"<h2 style='color:red;'>"
-						+ "Room Number Already Exists!"
-						+ "</h2>"
-						+ "<br>"
-						+ "<a href='addRoom.jsp'>Go Back</a>");
+				com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Duplicate Room", "Room Number Already Exists!", "warning", "addRoom.jsp");
 
 				return;
 			}
@@ -102,13 +96,20 @@ public class AddRoomServlet extends HttpServlet {
 
 			if (result > 0) {
 
-				resp.sendRedirect("fetch-rooms");
+				com.pgmanagement.util.JSResponse.showSweetAlertConfirm(
+					resp,
+					"Room Added",
+					"Room Added Successfully. Do you want to add another room?",
+					"success",
+					"addRoom.jsp",
+					"fetch-rooms",
+					"Add Another",
+					"Go to List"
+				);
 
 			} else {
 
-				resp.getWriter().println(
-
-						"<h2>Room Not Added!</h2>");
+				com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Failed", "Room Not Added!", "error", "addRoom.jsp");
 			}
 
 		}
@@ -116,12 +117,7 @@ public class AddRoomServlet extends HttpServlet {
 		catch (Exception e) {
 
 			e.printStackTrace();
-
-			resp.getWriter().println(
-
-					"<h2>Error : "
-					+ e.getMessage()
-					+ "</h2>");
+			com.pgmanagement.util.JSResponse.showSweetAlert(resp, "System Error", e.getMessage(), "error", null);
 		}
 
 		finally {

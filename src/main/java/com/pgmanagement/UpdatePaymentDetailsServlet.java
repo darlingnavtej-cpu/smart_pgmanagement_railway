@@ -136,17 +136,13 @@ public class UpdatePaymentDetailsServlet extends HttpServlet {
 
 				);
 
-				resp.sendRedirect("fetch-payment-details");
+				com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Updated", "Payment Details Updated Successfully", "success", "fetch-payment-details");
 
 			}
 
 			else {
 
-				resp.getWriter().println(
-
-						"<h2>Update Failed</h2>"
-
-				);
+				com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Failed", "Update Failed", "error", null);
 
 			}
 
@@ -155,20 +151,7 @@ public class UpdatePaymentDetailsServlet extends HttpServlet {
 		catch (Exception e) {
 
 			e.printStackTrace();
-
-			resp.getWriter().println(
-
-					"<h2>Error : "
-
-							+
-
-							e.getMessage()
-
-							+
-
-							"</h2>"
-
-			);
+			com.pgmanagement.util.JSResponse.showSweetAlert(resp, "System Error", e.getMessage(), "error", null);
 
 		}
 

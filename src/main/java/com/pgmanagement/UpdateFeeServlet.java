@@ -61,13 +61,11 @@ public class UpdateFeeServlet extends HttpServlet {
 
 			if (row > 0) {
 
-				// Redirect to Fee Records
-
-				resp.sendRedirect("fetch-fees");
+				com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Updated", "Fee Details Updated Successfully", "success", "fetch-fees");
 
 			} else {
 
-				resp.getWriter().println("<h2>Fee Update Failed</h2>");
+				com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Failed", "Fee Update Failed", "error", null);
 
 			}
 
@@ -76,14 +74,13 @@ public class UpdateFeeServlet extends HttpServlet {
 		catch (ClassNotFoundException | SQLException e) {
 
 			e.printStackTrace();
-
-			resp.getWriter().println("<h2>Error : " + e.getMessage() + "</h2>");
+			com.pgmanagement.util.JSResponse.showSweetAlert(resp, "System Error", e.getMessage(), "error", null);
 
 		}
 
 		catch (NumberFormatException e) {
 
-			resp.getWriter().println("<h2>Please Enter Valid Numbers</h2>");
+			com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Validation Error", "Please Enter Valid Numbers", "warning", null);
 
 		}
 

@@ -78,28 +78,14 @@ public class CheckoutVisitorServlet extends HttpServlet {
 
 			}
 
-			resp.sendRedirect(
-					"fetch-visitors");
+			com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Checked Out", "Visitor checked out successfully", "success", "fetch-visitors");
 
 		}
 
 		catch (Exception e) {
 
 			e.printStackTrace();
-
-			resp.getWriter().println(
-
-					"<h2>Error : "
-
-							+
-
-							e.getMessage()
-
-							+
-
-							"</h2>"
-
-			);
+			com.pgmanagement.util.JSResponse.showSweetAlert(resp, "System Error", e.getMessage(), "error", "fetch-visitors");
 
 		}
 

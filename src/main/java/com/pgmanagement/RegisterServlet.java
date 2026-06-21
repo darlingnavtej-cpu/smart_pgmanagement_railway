@@ -30,10 +30,7 @@ public class RegisterServlet extends HttpServlet {
 		PrintWriter pw = resp.getWriter();
 
 		if (!password.equals(confirmPassword)) {
-
-			pw.println("<script>" + "alert('Password and Confirm Password do not match');"
-					+ "window.location='register.jsp';" + "</script>");
-
+			com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Validation Error", "Password and Confirm Password do not match", "warning", "register.jsp");
 			return;
 		}
 
@@ -59,27 +56,15 @@ public class RegisterServlet extends HttpServlet {
 			int row = pstmt.executeUpdate();
 
 			if (row > 0) {
-
-				pw.println(
-
-						"<script>" + "alert('Registration Successful');" + "window.location='login.jsp';" + "</script>"
-
-				);
-
+				com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Registration Successful", "You can now log in with your credentials.", "success", "login.jsp");
 			} else {
-
-				pw.println("<h2>Registration Failed</h2>");
+				com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Registration Failed", "Please try again.", "error", "register.jsp");
 			}
 
 		} catch (ClassNotFoundException | SQLException e) {
 
 			e.printStackTrace();
-
-			pw.println(
-
-					"<h2>Error : " + e.getMessage() + "</h2>"
-
-			);
+			com.pgmanagement.util.JSResponse.showSweetAlert(resp, "System Error", e.getMessage(), "error", "register.jsp");
 		} finally {
 
 			try {

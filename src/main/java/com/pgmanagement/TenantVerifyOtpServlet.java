@@ -22,7 +22,7 @@ public class TenantVerifyOtpServlet extends HttpServlet {
 		HttpSession session = req.getSession(false);
 
 		if (session == null) {
-			resp.sendRedirect("tenantForgotPassword.jsp");
+			com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Session Expired", "Please request a new OTP.", "error", "tenantForgotPassword.jsp");
 			return;
 		}
 
@@ -30,19 +30,19 @@ public class TenantVerifyOtpServlet extends HttpServlet {
 		Long expiry = (Long) session.getAttribute("tenantOtpExpiry");
 
 		if (savedOtp == null || expiry == null) {
-			resp.sendRedirect("tenantVerifyOtp.jsp?error=expired");
+			com.pgmanagement.util.JSResponse.showSweetAlert(resp, "OTP Expired", "Please request a new OTP.", "error", "tenantForgotPassword.jsp");
 			return;
 		}
 
 		if (System.currentTimeMillis() > expiry) {
 			session.removeAttribute("tenantResetOtp");
 			session.removeAttribute("tenantOtpExpiry");
-			resp.sendRedirect("tenantVerifyOtp.jsp?error=expired");
+			com.pgmanagement.util.JSResponse.showSweetAlert(resp, "OTP Expired", "Please request a new OTP.", "error", "tenantForgotPassword.jsp");
 			return;
 		}
 
 		if (!savedOtp.equals(userOtp)) {
-			resp.sendRedirect("tenantVerifyOtp.jsp?error=invalid");
+			com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Invalid OTP", "The entered OTP is incorrect.", "error", "tenantVerifyOtp.jsp");
 			return;
 		}
 

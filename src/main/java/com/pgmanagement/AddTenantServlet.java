@@ -160,39 +160,39 @@ public class AddTenantServlet extends HttpServlet {
 
 				roomCon.close();
 
-				resp.sendRedirect("fetch-tenants");
-
-//
-//				pw.println("<html><body style='font-family:Arial;text-align:center;margin-top:100px;'>");
-//				pw.println("<h1 style='color:green;'>Tenant Added Successfully</h1>");
-//				pw.println("<br>");
-//				pw.println("<a href='addTenant.jsp'>Add Another Tenant</a>");
-//				pw.println("<br><br>");
-//				pw.println("<a href='dashboard'>Go To Dashboard</a>");
-//				pw.println("</body></html>");
+				com.pgmanagement.util.JSResponse.showSweetAlertConfirm(
+					resp,
+					"Tenant Added",
+					"Tenant Added Successfully. Do you want to add another tenant?",
+					"success",
+					"addTenant.jsp",
+					"fetch-tenants",
+					"Add Another",
+					"Go to List"
+				);
 
 			}
 
 			else {
 
-				pw.println("<h1>Failed To Add Tenant</h1>");
+				com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Failed", "Failed To Add Tenant", "error", "addTenant.jsp");
 
 			}
 
 		} catch (ClassNotFoundException e) {
 
 			e.printStackTrace();
-			resp.getWriter().println("<h2>MySQL Driver Not Found</h2>");
+			com.pgmanagement.util.JSResponse.showSweetAlert(resp, "System Error", "MySQL Driver Not Found", "error", null);
 
 		} catch (SQLException e) {
 
 			e.printStackTrace();
-			resp.getWriter().println("<h2>SQL Error : " + e.getMessage() + "</h2>");
+			com.pgmanagement.util.JSResponse.showSweetAlert(resp, "SQL Error", e.getMessage(), "error", null);
 
 		} catch (NumberFormatException e) {
 
 			e.printStackTrace();
-			resp.getWriter().println("<h2>Age must be a valid number</h2>");
+			com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Validation Error", "Age must be a valid number", "warning", null);
 
 		} finally {
 

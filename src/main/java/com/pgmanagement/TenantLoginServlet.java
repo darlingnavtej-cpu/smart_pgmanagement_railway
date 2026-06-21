@@ -71,11 +71,7 @@ public class TenantLoginServlet extends HttpServlet {
 				javax.servlet.http.HttpSession session = req.getSession(false);
 				String currentTenant = session != null ? (String) session.getAttribute("current_tenant") : null;
 				String retryUrl = "tenantLogin.jsp" + (currentTenant != null ? "?tenant=" + currentTenant : "");
-				resp.getWriter().println(
-						"<html><body style='font-family:Arial;text-align:center;margin-top:100px;'>"
-								+ "<h2 style='color:red;'>Invalid Email or Password</h2><br>"
-								+ "<a href='" + retryUrl + "'>Try Again</a>"
-								+ "</body></html>");
+				com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Login Failed", "Invalid Email or Password", "error", retryUrl);
 			}
 
 		}
@@ -83,6 +79,7 @@ public class TenantLoginServlet extends HttpServlet {
 		catch (Exception e) {
 
 			e.printStackTrace();
+			com.pgmanagement.util.JSResponse.showSweetAlert(resp, "System Error", e.getMessage(), "error", null);
 
 		}
 

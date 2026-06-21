@@ -50,17 +50,14 @@ public class DeleteRoomServlet extends HttpServlet {
 
             } else {
 
-                resp.getWriter().println(
-                        "<h2>Room Deletion Failed</h2>");
+                com.pgmanagement.util.JSResponse.showSweetAlert(resp, "Failed", "Room Deletion Failed", "error", "fetch-rooms");
 
             }
 
         } catch (ClassNotFoundException | SQLException e) {
 
             e.printStackTrace();
-
-            resp.getWriter().println(
-                    "<h2>Error : " + e.getMessage() + "</h2>");
+            com.pgmanagement.util.JSResponse.showSweetAlert(resp, "System Error", e.getMessage(), "error", "fetch-rooms");
 
         } finally {
 
