@@ -103,7 +103,25 @@ public class TenantRoutingFilter implements Filter {
         // 5. Authenticate and authorize tenant database context
         if (!isPublicPath(path)) {
             session = req.getSession(false);
-            if (isTenantPath(path)) {
+            if (isSharedPath(path)) {
+                if (session == null || (session.getAttribute("tenantId") == null && session.getAttribute("adminUsername") == null)) {
+                    if ("admin".equalsIgnoreCase(tenant)) {
+                        resp.sendRedirect(req.getContextPath() + "/login.jsp");
+                    } else {
+                        resp.sendRedirect(req.getContextPath() + "/tenantLogin.jsp");
+                    }
+                    return;
+                }
+                String authTenant = (String) session.getAttribute("authenticated_tenant");
+                if (authTenant == null || !authTenant.equalsIgnoreCase(tenant)) {
+                    if ("admin".equalsIgnoreCase(tenant)) {
+                        resp.sendRedirect(req.getContextPath() + "/login.jsp?error=unauthorized");
+                    } else {
+                        resp.sendRedirect(req.getContextPath() + "/tenantLogin.jsp?error=unauthorized");
+                    }
+                    return;
+                }
+            } else if (isTenantPath(path)) {
                 if (session == null || session.getAttribute("tenantId") == null) {
                     resp.sendRedirect(req.getContextPath() + "/tenantLogin.jsp");
                     return;
@@ -157,6 +175,16 @@ public class TenantRoutingFilter implements Filter {
         return false;
     }
 
+    private boolean isSharedPath(String path) {
+        if (path == null) {
+            return false;
+        }
+        String p = path.trim().toLowerCase();
+        return p.equals("/about-pg") || p.equals("/aboutpg.jsp") ||
+               p.equals("/today-menu") || p.equals("/todaymenu.jsp") ||
+               p.equals("/fetch-weekly-menu") || p.equals("/tenantweeklymenu.jsp") || p.equals("/adminweeklymenu.jsp");
+    }
+
     private boolean isTenantPath(String path) {
         String lower = path.toLowerCase();
         
@@ -170,6 +198,18 @@ public class TenantRoutingFilter implements Filter {
             lower.contains("approve") ||
             lower.contains("reject") ||
             lower.contains("salary")) {
+            return false;
+        }
+
+        // Exclude admin pages/actions from being identified as tenant paths
+        if (lower.contains("addtenant") || 
+            lower.contains("add-tenant") || 
+            lower.contains("checkouttenant") || 
+            lower.contains("checkout-tenant") || 
+            lower.contains("paidtenant") || 
+            lower.contains("paid-tenant") || 
+            lower.contains("pendingrenttenant") || 
+            lower.contains("pending-rent-tenant")) {
             return false;
         }
 
