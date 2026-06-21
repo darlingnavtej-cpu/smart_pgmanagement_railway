@@ -121,10 +121,19 @@ public class AddTenantServlet extends HttpServlet {
 				);
 
 				roomStmt.executeUpdate();
+				// Retrieve room rent dynamically
+				double roomRent = 10000; // Default fallback
+				try (PreparedStatement rentStmt = roomCon.prepareStatement("SELECT rent FROM room WHERE room_no = ?")) {
+					rentStmt.setInt(1, roomnum);
+					try (ResultSet rentRs = rentStmt.executeQuery()) {
+						if (rentRs.next()) {
+							roomRent = rentRs.getDouble("rent");
+						}
+					}
+				}
+
 				PreparedStatement feeStmt = roomCon.prepareStatement(
-
 						"INSERT INTO fee " + "(tenant_id, month_name, amount, paid_date, status) " + "VALUES(?,?,?,?,?)"
-
 				);
 
 				feeStmt.setInt(1, tenantId);
@@ -135,7 +144,7 @@ public class AddTenantServlet extends HttpServlet {
 
 				feeStmt.setString(2, monthName); // or current month
 
-				feeStmt.setDouble(3, 10000); // room rent
+				feeStmt.setDouble(3, roomRent); // room rent
 
 				feeStmt.setDate(4, java.sql.Date.valueOf(java.time.LocalDate.now()));
 
