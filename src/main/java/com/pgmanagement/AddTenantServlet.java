@@ -7,7 +7,9 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -23,7 +25,6 @@ public class AddTenantServlet extends HttpServlet {
 
 		resp.setContentType("text/html");
 
-		int tenantId = Integer.parseInt(req.getParameter("tenantId"));
 		String name = req.getParameter("name");
 		int age = Integer.parseInt(req.getParameter("age"));
 		String gender = req.getParameter("gender");
@@ -47,25 +48,33 @@ public class AddTenantServlet extends HttpServlet {
 			// Connect to tenant_table schema
 			con = com.pgmanagement.util.DBUtil.getConnection();
 
-			// Insert Query
-			pstmt = con.prepareStatement("INSERT INTO tenant VALUES(?,?,?,?,?,?,?,?,?,?,?)");
-			pstmt.setInt(1, tenantId);
-			pstmt.setString(2, name);
-			pstmt.setInt(3, age);
-			pstmt.setString(4, gender);
-			pstmt.setString(5, phone);
-			pstmt.setString(6, occupation);
-			pstmt.setString(7, institute);
-			pstmt.setString(8, joiningDate);
-			pstmt.setInt(9, roomnum);
-			pstmt.setString(10, email);
-			pstmt.setString(11, hashedPassword);
+			// Insert Query using auto-increment key returning
+			pstmt = con.prepareStatement(
+				"INSERT INTO tenant (tenant_name, age, gender, phone, occupation, institute, joining_date, room_no, email, password) VALUES(?,?,?,?,?,?,?,?,?,?)",
+				Statement.RETURN_GENERATED_KEYS
+			);
+			pstmt.setString(1, name);
+			pstmt.setInt(2, age);
+			pstmt.setString(3, gender);
+			pstmt.setString(4, phone);
+			pstmt.setString(5, occupation);
+			pstmt.setString(6, institute);
+			pstmt.setString(7, joiningDate);
+			pstmt.setInt(8, roomnum);
+			pstmt.setString(9, email);
+			pstmt.setString(10, hashedPassword);
 
 			int row = pstmt.executeUpdate();
+			int tenantId = 0;
 
 			PrintWriter pw = resp.getWriter();
 
 			if (row > 0) {
+				try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
+					if (generatedKeys.next()) {
+						tenantId = generatedKeys.getInt(1);
+					}
+				}
 
 				ActivityUtility.addActivity(
 

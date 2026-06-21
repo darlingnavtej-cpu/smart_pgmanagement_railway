@@ -205,7 +205,7 @@ CREATE TABLE IF NOT EXISTS `room` (
 -- Table: tenant
 -- ----------------------------
 CREATE TABLE IF NOT EXISTS `tenant` (
-  `tenant_id` varchar(20) NOT NULL,
+  `tenant_id` int NOT NULL AUTO_INCREMENT,
   `tenant_name` varchar(20) NOT NULL,
   `age` int NOT NULL,
   `gender` varchar(20) NOT NULL,
@@ -298,5 +298,8 @@ ON DUPLICATE KEY UPDATE `subdomain`=`subdomain`;
 
 -- Switch back to default smart_pg
 USE `smart_pg`;
+
+-- Ensure tenant_id is AUTO_INCREMENT on existing tables
+ALTER TABLE `tenant` MODIFY COLUMN `tenant_id` INT AUTO_INCREMENT;
 
 
