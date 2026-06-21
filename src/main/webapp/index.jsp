@@ -1051,7 +1051,7 @@
 				<li><i class="fa-solid fa-circle-check" style="color: var(--success); margin-right: 8px;"></i> Basic Rent Reminders</li>
 				<li><i class="fa-solid fa-circle-check" style="color: var(--success); margin-right: 8px;"></i> Standard Support</li>
 			</ul>
-			<a href="<%=ctx%>/registerSaaS.jsp" class="btn btn-secondary" style="width: 100%; border-radius: 12px; margin-top: 10px;">Get Started</a>
+			<a href="javascript:void(0)" class="btn btn-secondary" style="width: 100%; border-radius: 12px; margin-top: 10px; pointer-events: none; cursor: default; opacity: 0.7;">Get Started</a>
 		</div>
 
 		<!-- Standard Plan -->
@@ -1065,7 +1065,7 @@
 				<li><i class="fa-solid fa-circle-check" style="color: var(--success); margin-right: 8px;"></i> Automated Rent Reminders</li>
 				<li><i class="fa-solid fa-circle-check" style="color: var(--success); margin-right: 8px;"></i> Priority Email Support</li>
 			</ul>
-			<a href="<%=ctx%>/registerSaaS.jsp" class="btn btn-primary" style="width: 100%; border-radius: 12px; margin-top: 10px;">Get Started</a>
+			<a href="javascript:void(0)" class="btn btn-primary" style="width: 100%; border-radius: 12px; margin-top: 10px; pointer-events: none; cursor: default; opacity: 0.7;">Get Started</a>
 		</div>
 
 		<!-- Premium Plan -->
@@ -1078,7 +1078,7 @@
 				<li><i class="fa-solid fa-circle-check" style="color: var(--success); margin-right: 8px;"></i> Advanced SMS/Email Alerts</li>
 				<li><i class="fa-solid fa-circle-check" style="color: var(--success); margin-right: 8px;"></i> 24/7 Dedicated Support</li>
 			</ul>
-			<a href="<%=ctx%>/registerSaaS.jsp" class="btn btn-secondary" style="width: 100%; border-radius: 12px; margin-top: 10px;">Get Started</a>
+			<a href="javascript:void(0)" class="btn btn-secondary" style="width: 100%; border-radius: 12px; margin-top: 10px; pointer-events: none; cursor: default; opacity: 0.7;">Get Started</a>
 		</div>
 	</div>
 </section>
