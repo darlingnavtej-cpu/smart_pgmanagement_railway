@@ -70,12 +70,13 @@ public class LoginServlet extends HttpServlet {
 			
 			
 			else {
-
 				// Login Failed
+				HttpSession session = req.getSession(false);
+				String currentTenant = session != null ? (String) session.getAttribute("current_tenant") : null;
+				String retryUrl = "login.jsp" + (currentTenant != null ? "?tenant=" + currentTenant : "");
 				PrintWriter pw = resp.getWriter();
 				pw.println("<h1>Invalid Username or Password</h1>");
-				pw.println("<a href='login.jsp'>Try Again</a>");
-
+				pw.println("<a href='" + retryUrl + "'>Try Again</a>");
 			}
 
 		} catch (ClassNotFoundException | SQLException e) {

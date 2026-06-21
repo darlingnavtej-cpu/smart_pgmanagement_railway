@@ -68,17 +68,14 @@ public class TenantLoginServlet extends HttpServlet {
 			}
 
 			else {
-
+				javax.servlet.http.HttpSession session = req.getSession(false);
+				String currentTenant = session != null ? (String) session.getAttribute("current_tenant") : null;
+				String retryUrl = "tenantLogin.jsp" + (currentTenant != null ? "?tenant=" + currentTenant : "");
 				resp.getWriter().println(
-
-						"<html><body " + "style='font-family:Arial;" + "text-align:center;" + "margin-top:100px;'>"
-
-								+ "<h2 style='color:red;'>" + "Invalid Email or Password" + "</h2><br>"
-
-								+ "<a href='tenantLogin.jsp'>" + "Try Again" + "</a>"
-
+						"<html><body style='font-family:Arial;text-align:center;margin-top:100px;'>"
+								+ "<h2 style='color:red;'>Invalid Email or Password</h2><br>"
+								+ "<a href='" + retryUrl + "'>Try Again</a>"
 								+ "</body></html>");
-
 			}
 
 		}

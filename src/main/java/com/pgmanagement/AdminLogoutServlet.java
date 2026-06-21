@@ -18,16 +18,13 @@ public class AdminLogoutServlet extends HttpServlet {
 
 		// Get Existing Session
 		HttpSession session = req.getSession(false);
-
-		// Invalidate Session
+		String currentTenant = null;
 		if (session != null) {
-
+			currentTenant = (String) session.getAttribute("current_tenant");
 			session.invalidate();
-
 		}
-
 		// Redirect To Login Page
-		resp.sendRedirect("login.jsp");
+		resp.sendRedirect("login.jsp" + (currentTenant != null ? "?tenant=" + currentTenant : ""));
 
 	}
 }

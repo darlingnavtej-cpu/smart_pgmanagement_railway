@@ -69,12 +69,10 @@ public class TenantRoutingFilter implements Filter {
         if (tenant == null) {
             String serverName = req.getServerName(); // e.g. royal.smartpg.com
             
-            // Check for direct IP address, localhost, or Railway internal domains
+            // Check for direct IP address, localhost, or internal domains
             if (serverName.equalsIgnoreCase("localhost") || 
                 serverName.equals("127.0.0.1") || 
-                serverName.contains("internal") || 
-                serverName.contains("railway") ||
-                serverName.contains("smart-pg-management")) {
+                serverName.contains("internal")) {
                 tenant = "admin";
             } else {
                 String[] parts = serverName.split("\\.");

@@ -17,14 +17,12 @@ public class LogoutServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		HttpSession session = req.getSession(false);
-
+		String currentTenant = null;
 		if (session != null) {
-
+			currentTenant = (String) session.getAttribute("current_tenant");
 			session.invalidate();
-
 		}
-
-		resp.sendRedirect("login.jsp");
+		resp.sendRedirect("login.jsp" + (currentTenant != null ? "?tenant=" + currentTenant : ""));
 
 	}
 }

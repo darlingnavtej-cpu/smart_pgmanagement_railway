@@ -18,17 +18,13 @@ public class TenantLogoutServlet extends HttpServlet {
 			HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		HttpSession session =
-				req.getSession(false);
-
+		HttpSession session = req.getSession(false);
+		String currentTenant = null;
 		if (session != null) {
-
+			currentTenant = (String) session.getAttribute("current_tenant");
 			session.invalidate();
-
 		}
-
-		resp.sendRedirect(
-				"tenantLogin.jsp");
+		resp.sendRedirect("tenantLogin.jsp" + (currentTenant != null ? "?tenant=" + currentTenant : ""));
 
 	}
 
