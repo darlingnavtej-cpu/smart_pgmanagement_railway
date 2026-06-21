@@ -125,7 +125,7 @@ body {
 
 		<h2>Add Payment Details</h2>
 
-		<form action="add-payment-details" method="post">
+		<form action="add-payment-details" method="post" enctype="multipart/form-data">
 
 			<div class="form-group">
 
@@ -161,8 +161,8 @@ body {
 
 			<div class="form-group">
 
-				<label>QR Image Name</label> <input type="text" name="qrImage"
-					placeholder="example : qr.png">
+				<label>Upload QR Code Image</label> <input type="file" name="qrImage"
+					accept="image/*" required>
 
 			</div>
 

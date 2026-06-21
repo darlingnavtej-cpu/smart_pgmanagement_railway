@@ -210,7 +210,12 @@ body{
 	<h2>Edit Details</h2>
 
 	<form action="update-payment-details"
-		method="post">
+		method="post" enctype="multipart/form-data">
+
+		<input
+		type="hidden"
+		name="existingQrImage"
+		value="<%=rs.getString("qr_image")%>">
 
 		<input
 		type="hidden"
@@ -279,13 +284,12 @@ body{
 
 		<div class="form-group">
 
-			<label>QR Image Name</label>
+			<label>Upload New QR Code Image (optional)</label>
 
 			<input
-			type="text"
+			type="file"
 			name="qrImage"
-			value="<%=rs.getString("qr_image")%>"
-			required>
+			accept="image/*">
 
 		</div>
 

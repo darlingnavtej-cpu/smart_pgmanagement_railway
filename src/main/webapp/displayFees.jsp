@@ -145,7 +145,6 @@ tr:hover{
             <th>Amount</th>
             <th>Paid Date</th>
             <th>Status</th>
-            <th>Receipt</th>
             <th>Update</th>
             <th>Delete</th>
         </tr>
@@ -184,16 +183,6 @@ tr:hover{
                 }
                 %>
             </td>
-              <td>
-
-	<a class="generate-btn"
-		href="generate-receipt?feeId=<%=rs.getInt("fee_id")%>">
-
-		🧾 Generate
-
-	</a>
-
-</td>
             <td>
                 <a class="update-btn"
                    href="find-fee-by-id?feeId=<%=rs.getInt(1)%>">

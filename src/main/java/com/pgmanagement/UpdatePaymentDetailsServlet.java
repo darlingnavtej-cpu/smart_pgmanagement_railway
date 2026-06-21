@@ -1,19 +1,27 @@
 package com.pgmanagement;
 
 import java.io.IOException;
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
 import com.pgmanagement.util.ActivityUtility;
 
 @WebServlet("/update-payment-details")
+@MultipartConfig(
+    fileSizeThreshold = 1024 * 1024 * 2,  // 2MB
+    maxFileSize = 1024 * 1024 * 10,       // 10MB
+    maxRequestSize = 1024 * 1024 * 50     // 50MB
+)
 public class UpdatePaymentDetailsServlet extends HttpServlet {
 
 	@Override
@@ -36,7 +44,25 @@ public class UpdatePaymentDetailsServlet extends HttpServlet {
 
 			String upiId = req.getParameter("upiId");
 
-			String qrImage = req.getParameter("qrImage");
+			String existingQrImage = req.getParameter("existingQrImage");
+			String qrImage = existingQrImage;
+
+			Part filePart = req.getPart("qrImage");
+			if (filePart != null && filePart.getSize() > 0) {
+				String fileName = filePart.getSubmittedFileName();
+				String extension = "";
+				int dotIndex = fileName.lastIndexOf('.');
+				if (dotIndex >= 0) {
+					extension = fileName.substring(dotIndex);
+				}
+				qrImage = "qr_" + System.currentTimeMillis() + extension;
+				String uploadPath = req.getServletContext().getRealPath("/images");
+				File uploadDir = new File(uploadPath);
+				if (!uploadDir.exists()) {
+					uploadDir.mkdirs();
+				}
+				filePart.write(uploadPath + File.separator + qrImage);
+			}
 
 			// Load Driver
 
