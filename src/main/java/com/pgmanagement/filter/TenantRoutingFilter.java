@@ -183,7 +183,8 @@ public class TenantRoutingFilter implements Filter {
         String p = path.trim().toLowerCase();
         return p.equals("/about-pg") || p.equals("/aboutpg.jsp") ||
                p.equals("/today-menu") || p.equals("/todaymenu.jsp") ||
-               p.equals("/fetch-weekly-menu") || p.equals("/tenantweeklymenu.jsp") || p.equals("/adminweeklymenu.jsp");
+               p.equals("/fetch-weekly-menu") || p.equals("/tenantweeklymenu.jsp") || p.equals("/adminweeklymenu.jsp") ||
+               p.equals("/generate-receipt") || p.equals("/receipt.jsp");
     }
 
     private boolean isTenantPath(String path) {
