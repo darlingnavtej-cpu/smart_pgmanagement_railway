@@ -1,5 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%
+	String currentTenant = (String) session.getAttribute("current_tenant");
+	if (currentTenant == null) {
+		currentTenant = request.getParameter("tenant");
+	}
+	boolean hasTenant = (currentTenant != null && !currentTenant.trim().isEmpty() && !currentTenant.equalsIgnoreCase("admin"));
+%>
 
 <!DOCTYPE html>
 <html>
@@ -432,8 +439,29 @@ body{
 		<h2>Admin Login</h2>
 
 		<p>Login to access the Smart PG Management Dashboard</p>
+		
+		<% if (hasTenant) { %>
+			<div style="background-color: #eef2ff; color: #4f46e5; padding: 10px; border-radius: 10px; text-align: center; margin-bottom: 20px; font-weight: 600; font-size: 14px;">
+				<i class="fa-solid fa-circle-info"></i> Logging into PG Domain: <span style="text-transform: uppercase; color: #1e3a8a;"><%= currentTenant %></span>
+			</div>
+		<% } %>
 
 		<form action="login" method="post">
+			<% if (hasTenant) { %>
+				<input type="hidden" name="tenant" value="<%= currentTenant %>">
+			<% } else { %>
+				<div class="form-group">
+					<label>PG Subdomain / Code</label>
+					<div class="input-box">
+						<i class="fa-solid fa-building"></i>
+						<input
+							type="text"
+							name="tenant"
+							placeholder="Enter PG Subdomain (e.g., royal)"
+							required>
+					</div>
+				</div>
+			<% } %>
 
 			<div class="form-group">
 
