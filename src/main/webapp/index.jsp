@@ -752,121 +752,288 @@
 		flex-grow: 1;
 	}
 
-	/* PG Rooms Gallery Preview Section */
-	.gallery-section {
+	/* Software Tour Interface Gallery Section [NEW] */
+	.screens-section {
 		background-color: var(--bg-primary);
 	}
 
-	.gallery-grid {
+	.screens-grid {
 		display: grid;
-		grid-template-columns: repeat(3, 1fr);
-		gap: 24px;
+		grid-template-columns: 1fr 1fr;
+		gap: 36px;
 	}
 
-	.gallery-card {
+	.screen-card {
 		background: var(--surface-card);
 		border-radius: var(--radius-lg);
-		overflow: hidden;
 		border: 1px solid var(--border-light);
+		padding: 30px;
 		box-shadow: var(--shadow-md);
 		transition: var(--transition-normal);
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
 	}
 
-	.gallery-card:hover {
+	.screen-card:hover {
 		transform: translateY(-6px);
 		box-shadow: var(--shadow-lg);
+		border-color: rgba(37, 99, 235, 0.15);
 	}
 
-	.gallery-img-container {
-		position: relative;
-		height: 240px;
+	.screen-img-container {
+		border-radius: var(--radius-md);
 		overflow: hidden;
+		border: 1px solid var(--border-light);
+		box-shadow: var(--shadow-sm);
 	}
 
-	.gallery-img {
+	.screen-img {
 		width: 100%;
-		height: 100%;
-		object-fit: cover;
-		transition: var(--transition-normal);
+		display: block;
 	}
 
-	.gallery-card:hover .gallery-img {
-		transform: scale(1.06);
-	}
-
-	.gallery-tag {
-		position: absolute;
-		top: 16px;
-		left: 16px;
-		background: rgba(30, 64, 175, 0.85);
-		backdrop-filter: blur(8px);
-		color: var(--text-white);
-		padding: 4px 12px;
-		border-radius: 999px;
-		font-size: 12px;
-		font-weight: 600;
-	}
-
-	.gallery-info {
-		padding: 24px;
-	}
-
-	.gallery-info h4 {
-		font-size: 19px;
+	.screen-info h4 {
+		font-size: 20px;
 		margin-bottom: 8px;
-	}
-
-	.gallery-info p {
-		font-size: 14px;
-		color: var(--text-muted);
-		margin-bottom: 18px;
-	}
-
-	.gallery-amenities {
 		display: flex;
-		flex-wrap: wrap;
-		gap: 8px;
-		margin-bottom: 18px;
-		border-bottom: 1px solid rgba(15, 23, 42, 0.06);
-		padding-bottom: 16px;
-	}
-
-	.amenity-chip {
-		font-size: 12px;
-		padding: 4px 10px;
-		background-color: var(--bg-primary);
-		border-radius: 6px;
-		color: var(--text-muted);
-		font-weight: 600;
-	}
-
-	.gallery-footer {
-		display: flex;
-		justify-content: space-between;
 		align-items: center;
+		gap: 10px;
 	}
 
-	.gallery-price {
-		font-size: 18px;
-		font-weight: 800;
+	.screen-info h4 i {
 		color: var(--primary);
 	}
 
-	.gallery-price span {
-		font-size: 12px;
+	.screen-info p {
+		font-size: 14px;
 		color: var(--text-muted);
-		font-weight: 500;
+		line-height: 1.6;
 	}
 
-	.availability-status {
+	/* Interactive Savings Calculator Widget [NEW] */
+	.calculator-section {
+		background-color: #ffffff;
+		border-top: 1px solid var(--border-light);
+		border-bottom: 1px solid var(--border-light);
+	}
+
+	.calc-container {
+		max-width: 900px;
+		margin: 0 auto;
+		background: linear-gradient(135deg, rgba(37, 99, 235, 0.03) 0%, rgba(14, 165, 233, 0.01) 100%);
+		border: 1px solid var(--border-light);
+		border-radius: var(--radius-xl);
+		padding: 40px;
+		display: grid;
+		grid-template-columns: 1.1fr 0.9fr;
+		gap: 40px;
+		box-shadow: var(--shadow-md);
+	}
+
+	.calc-inputs {
 		display: flex;
-		align-items: center;
-		gap: 6px;
-		font-size: 12px;
-		font-weight: 700;
+		flex-direction: column;
+		gap: 28px;
 	}
 
-	/* Interactive Compare Portal (Admin vs Tenant Matrix) */
+	.slider-group {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+	}
+
+	.slider-label-row {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		font-weight: 700;
+		font-size: 15px;
+	}
+
+	.slider-label-row span.val {
+		color: var(--primary);
+		font-size: 18px;
+		font-family: 'Outfit', sans-serif;
+	}
+
+	.calc-slider {
+		-webkit-appearance: none;
+		width: 100%;
+		height: 8px;
+		border-radius: 999px;
+		background: var(--border-light);
+		outline: none;
+	}
+
+	.calc-slider::-webkit-slider-thumb {
+		-webkit-appearance: none;
+		appearance: none;
+		width: 22px;
+		height: 22px;
+		border-radius: 50%;
+		background: var(--primary);
+		cursor: pointer;
+		box-shadow: var(--shadow-sm);
+		transition: transform 0.1s;
+	}
+
+	.calc-slider::-webkit-slider-thumb:hover {
+		transform: scale(1.15);
+	}
+
+	.calc-outputs {
+		background: #ffffff;
+		border: 1px solid var(--border-light);
+		border-radius: var(--radius-lg);
+		padding: 30px;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		gap: 20px;
+		box-shadow: var(--shadow-sm);
+	}
+
+	.calc-output-item {
+		border-bottom: 1px solid rgba(15, 23, 42, 0.05);
+		padding-bottom: 16px;
+	}
+
+	.calc-output-item:last-child {
+		border-bottom: none;
+		padding-bottom: 0;
+	}
+
+	.calc-output-item span {
+		font-size: 12px;
+		font-weight: 600;
+		color: var(--text-muted);
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		display: block;
+	}
+
+	.calc-output-item strong {
+		font-family: 'Outfit', sans-serif;
+		font-size: 28px;
+		font-weight: 800;
+		color: var(--bg-secondary);
+		display: block;
+		margin-top: 4px;
+	}
+
+	.calc-output-item.highlight strong {
+		color: var(--primary);
+		font-size: 34px;
+	}
+
+	/* Interactive Testimonials Carousel Section [NEW] */
+	.feedback-section {
+		background-color: var(--bg-primary);
+	}
+
+	.feedback-carousel-wrapper {
+		max-width: 800px;
+		margin: 0 auto;
+		position: relative;
+		overflow: hidden;
+		padding: 20px 10px;
+	}
+
+	.feedback-track {
+		display: flex;
+		transition: transform 0.5s ease-in-out;
+		width: 100%;
+	}
+
+	.feedback-slide {
+		min-width: 100%;
+		flex-shrink: 0;
+		background: #ffffff;
+		border: 1px solid var(--border-light);
+		border-radius: var(--radius-lg);
+		padding: 40px;
+		box-shadow: var(--shadow-md);
+		text-align: center;
+	}
+
+	.feedback-stars {
+		color: var(--primary);
+		font-size: 18px;
+		margin-bottom: 20px;
+	}
+
+	.feedback-quote {
+		font-size: 18px;
+		font-style: italic;
+		color: var(--text-main);
+		line-height: 1.6;
+		margin-bottom: 24px;
+		font-family: 'Inter', sans-serif;
+	}
+
+	.feedback-profile h5 {
+		font-size: 16px;
+		font-weight: 800;
+		color: var(--bg-secondary);
+	}
+
+	.feedback-profile span {
+		font-size: 13px;
+		color: var(--text-muted);
+	}
+
+	.carousel-nav-btn {
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		width: 44px;
+		height: 44px;
+		border-radius: 50%;
+		background: #ffffff;
+		border: 1px solid var(--border-light);
+		color: var(--text-main);
+		cursor: pointer;
+		display: grid;
+		place-items: center;
+		z-index: 10;
+		box-shadow: var(--shadow-sm);
+		transition: var(--transition-fast);
+	}
+
+	.carousel-nav-btn:hover {
+		background-color: var(--primary-light);
+		color: var(--primary);
+		border-color: rgba(37, 99, 235, 0.2);
+	}
+
+	.carousel-nav-btn.prev { left: -10px; }
+	.carousel-nav-btn.next { right: -10px; }
+
+	.carousel-dots {
+		display: flex;
+		justify-content: center;
+		gap: 8px;
+		margin-top: 24px;
+	}
+
+	.carousel-dot {
+		width: 10px;
+		height: 10px;
+		border-radius: 50%;
+		background-color: var(--text-light);
+		border: none;
+		cursor: pointer;
+		transition: var(--transition-fast);
+	}
+
+	.carousel-dot.active {
+		background-color: var(--primary);
+		width: 24px;
+		border-radius: 999px;
+	}
+
+	/* Compare Portals Section */
 	.compare-section {
 		background-color: #ffffff;
 	}
@@ -1407,8 +1574,15 @@
 			display: none;
 		}
 
-		.gallery-grid {
-			grid-template-columns: repeat(2, 1fr);
+		.screens-grid {
+			grid-template-columns: 1fr;
+			max-width: 600px;
+			margin: 0 auto;
+		}
+
+		.calc-container {
+			grid-template-columns: 1fr;
+			max-width: 600px;
 		}
 
 		.pricing-grid {
@@ -1468,12 +1642,6 @@
 			margin: 0 auto;
 		}
 
-		.gallery-grid {
-			grid-template-columns: 1fr;
-			max-width: 440px;
-			margin: 0 auto;
-		}
-
 		.support-panel {
 			flex-direction: column;
 			text-align: center;
@@ -1514,8 +1682,9 @@
 			<a href="#why" class="nav-link">Why Us</a>
 			<a href="#workflow" class="nav-link">Workflow</a>
 			<a href="#features" class="nav-link">Features</a>
-			<a href="#rooms" class="nav-link">PG Rooms</a>
-			<a href="#compare" class="nav-link">Portal Matrix</a>
+			<a href="#interface" class="nav-link">Software Tour</a>
+			<a href="#calculator" class="nav-link">Calculator</a>
+			<a href="#feedback" class="nav-link">Feedback</a>
 			<a href="#pricing" class="nav-link">Pricing</a>
 			<a href="#faq" class="nav-link">FAQs</a>
 		</nav>
@@ -1540,8 +1709,9 @@
 	<a href="#why" class="nav-link" onclick="toggleMenu()"><i class="fa-solid fa-circle-question" style="margin-right: 8px;"></i> Why Us</a>
 	<a href="#workflow" class="nav-link" onclick="toggleMenu()"><i class="fa-solid fa-gears" style="margin-right: 8px;"></i> Workflow</a>
 	<a href="#features" class="nav-link" onclick="toggleMenu()"><i class="fa-solid fa-star" style="margin-right: 8px;"></i> Features</a>
-	<a href="#rooms" class="nav-link" onclick="toggleMenu()"><i class="fa-solid fa-bed" style="margin-right: 8px;"></i> PG Rooms</a>
-	<a href="#compare" class="nav-link" onclick="toggleMenu()"><i class="fa-solid fa-arrow-right-arrow-left" style="margin-right: 8px;"></i> Portal Matrix</a>
+	<a href="#interface" class="nav-link" onclick="toggleMenu()"><i class="fa-solid fa-desktop" style="margin-right: 8px;"></i> Software Tour</a>
+	<a href="#calculator" class="nav-link" onclick="toggleMenu()"><i class="fa-solid fa-calculator" style="margin-right: 8px;"></i> Savings Calculator</a>
+	<a href="#feedback" class="nav-link" onclick="toggleMenu()"><i class="fa-solid fa-comments" style="margin-right: 8px;"></i> Feedback</a>
 	<a href="#pricing" class="nav-link" onclick="toggleMenu()"><i class="fa-solid fa-tag" style="margin-right: 8px;"></i> Pricing</a>
 	<a href="#faq" class="nav-link" onclick="toggleMenu()"><i class="fa-solid fa-circle-question" style="margin-right: 8px;"></i> FAQs</a>
 	<div style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
@@ -1664,7 +1834,7 @@
 			<div class="badge badge-warning">Why Traditional PGs Suffer</div>
 			<h3>Eliminate the Mess of Manual PG Administration</h3>
 			<p>
-				Running a paying guest accommodation is stressful when you rely on notebooks and text messages. Here is how manual operations drag businesses down, and how our digital suite brings absolute peace of mind.
+				Running a paying guest accommodation is stressful when you rely on notebooks and text messages. Here is how manual operations drag PG operators down, and how our digital suite brings absolute peace of mind.
 			</p>
 			
 			<div class="why-comparison-table">
@@ -1896,82 +2066,83 @@
 	</div>
 </section>
 
-<!-- Gallery Rooms Preview -->
-<section class="section-padding gallery-section" id="rooms">
+<!-- Software tour Gallery Section (Real Interface screenshots) [NEW] -->
+<section class="section-padding screens-section" id="interface">
 	<div class="container">
 		<div class="section-header">
-			<div class="badge badge-success"><i class="fa-solid fa-eye"></i> Live Demo Room Previews</div>
-			<h3>Beautiful Rooms. Modern Comfort.</h3>
-			<p>A marketing preview demonstrating how PG owners can showcase their rooms and allow tenants to check real-time bed availabilities.</p>
+			<div class="badge badge-success"><i class="fa-solid fa-desktop"></i> Real-time software screenshots</div>
+			<h3>Explore the User Interfaces</h3>
+			<p>Visual previews of the actual dashboards and modules built to automate management routines for both administrators and tenants.</p>
 		</div>
 
-		<div class="gallery-grid">
-			<!-- Room 1 -->
-			<div class="gallery-card">
-				<div class="gallery-img-container">
-					<img src="<%=request.getContextPath()%>/images/pg1.jpg" alt="Premium Single AC Sharing Room" class="gallery-img">
-					<span class="gallery-tag">Premium Single</span>
+		<div class="screens-grid">
+			<!-- Screen 1: Admin Dashboard -->
+			<div class="screen-card">
+				<div class="screen-img-container">
+					<img src="<%=request.getContextPath()%>/images/admin_dashboard.png" alt="Smart PG Owner Admin Control Panel Mockup" class="screen-img">
 				</div>
-				<div class="gallery-info">
-					<h4>AC Deluxe Single Room</h4>
-					<p>Perfect for corporate workers looking for ultimate privacy and peace of mind.</p>
-					<div class="gallery-amenities">
-						<span class="amenity-chip"><i class="fa-solid fa-wifi"></i> High-Speed WiFi</span>
-						<span class="amenity-chip"><i class="fa-solid fa-snowflake"></i> Air Conditioning</span>
-						<span class="amenity-chip"><i class="fa-solid fa-soap"></i> Daily Cleaning</span>
-					</div>
-					<div class="gallery-footer">
-						<div class="gallery-price">₹12,500 <span>/ month</span></div>
-						<div class="availability-status" style="color: var(--primary);">
-							<span class="pulse-dot"></span> 2 Vacancies Left
-						</div>
-					</div>
+				<div class="screen-info">
+					<h4><i class="fa-solid fa-chart-line"></i> Centralized Admin Dashboard</h4>
+					<p>Provides PG operators complete business control. Access critical KPI trackers (occupancy counts, check-ins), view revenue line-graphs, download expense lists, track active complaints, and review staff salary ledgers.</p>
 				</div>
 			</div>
 
-			<!-- Room 2 -->
-			<div class="gallery-card">
-				<div class="gallery-img-container">
-					<img src="<%=request.getContextPath()%>/images/pg2.jpg" alt="Standard Double AC Sharing Room" class="gallery-img">
-					<span class="gallery-tag">Standard Double</span>
+			<!-- Screen 2: Tenant Mobile View -->
+			<div class="screen-card">
+				<div class="screen-img-container">
+					<img src="<%=request.getContextPath()%>/images/tenant_dashboard.png" alt="Smart PG Resident Tenant Mobile Panel Mockup" class="screen-img">
 				</div>
-				<div class="gallery-info">
-					<h4>Standard Double Sharing</h4>
-					<p>Spacious room shared by two tenants, fully furnished with individual lockers.</p>
-					<div class="gallery-amenities">
-						<span class="amenity-chip"><i class="fa-solid fa-wifi"></i> WiFi</span>
-						<span class="amenity-chip"><i class="fa-solid fa-snowflake"></i> AC Optional</span>
-						<span class="amenity-chip"><i class="fa-solid fa-box"></i> Private Wardrobe</span>
+				<div class="screen-info">
+					<h4><i class="fa-solid fa-mobile-screen-button"></i> Mobile-Friendly Tenant Portal</h4>
+					<p>Empowers resident tenants with a self-service workspace. Residents verify their bed allocation, retrieve monthly rent bills, pay balances, download PDF transaction receipts, check weekly food menu boards, and report helpdesk complaints.</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- Savings Calculator Widget Section [NEW] -->
+<section class="section-padding calculator-section" id="calculator">
+	<div class="container">
+		<div class="section-header">
+			<div class="badge badge-primary">Savings Estimator</div>
+			<h3>Calculate Your Return on Investment</h3>
+			<p>Drag the sliders to input your PG details and see how much administrative work and revenue leakage you can recover with Smart PG.</p>
+		</div>
+
+		<div class="calc-container">
+			<div class="calc-inputs">
+				<!-- Input 1: Beds -->
+				<div class="slider-group">
+					<div class="slider-label-row">
+						<span>Total Capacity (Beds)</span>
+						<span class="val" id="bedsVal">80 Beds</span>
 					</div>
-					<div class="gallery-footer">
-						<div class="gallery-price">₹8,000 <span>/ month</span></div>
-						<div class="availability-status" style="color: var(--primary);">
-							<i class="fa-solid fa-circle" style="color: var(--primary); font-size: 8px;"></i> 1 Bed Available
-						</div>
+					<input type="range" min="10" max="500" value="80" class="calc-slider" id="bedsSlider" oninput="calculateSavings()" aria-label="Adjust total capacity in beds">
+				</div>
+
+				<!-- Input 2: Rent -->
+				<div class="slider-group">
+					<div class="slider-label-row">
+						<span>Avg Monthly Rent per Bed</span>
+						<span class="val" id="rentVal">₹7,500</span>
 					</div>
+					<input type="range" min="2000" max="25000" step="500" value="7500" class="calc-slider" id="rentSlider" oninput="calculateSavings()" aria-label="Adjust average monthly rent per bed">
 				</div>
 			</div>
 
-			<!-- Room 3 -->
-			<div class="gallery-card">
-				<div class="gallery-img-container">
-					<img src="<%=request.getContextPath()%>/images/pg3.jpg" alt="Standard Triple Non-AC Sharing Room" class="gallery-img">
-					<span class="gallery-tag">Budget Triple</span>
+			<div class="calc-outputs">
+				<div class="calc-output-item">
+					<span>Expected Monthly Revenue</span>
+					<strong id="revenueOutput">₹6,00,000</strong>
 				</div>
-				<div class="gallery-info">
-					<h4>Classic Triple Sharing</h4>
-					<p>An affordable, highly collaborative living option for budget-conscious students.</p>
-					<div class="gallery-amenities">
-						<span class="amenity-chip"><i class="fa-solid fa-wifi"></i> WiFi Included</span>
-						<span class="amenity-chip"><i class="fa-solid fa-mattress-pillow"></i> Soft Beds</span>
-						<span class="amenity-chip"><i class="fa-solid fa-shirt"></i> Laundry Service</span>
-					</div>
-					<div class="gallery-footer">
-						<div class="gallery-price">₹5,500 <span>/ month</span></div>
-						<div class="availability-status" style="color: var(--text-muted);">
-							<i class="fa-solid fa-circle" style="color: var(--text-muted); font-size: 8px;"></i> House Full
-						</div>
-					</div>
+				<div class="calc-output-item">
+					<span>Avg. Revenue Loss (Without System - 8%)</span>
+					<strong style="color: var(--danger);" id="leakageOutput">₹48,000</strong>
+				</div>
+				<div class="calc-output-item highlight">
+					<span>Estimated Monthly Recovery (With Smart PG)</span>
+					<strong id="savingsOutput">₹48,000</strong>
 				</div>
 			</div>
 		</div>
@@ -2051,6 +2222,72 @@
 						<p class="matrix-desc">Write complaint notes, report repair issues, and receive instant status updates.</p>
 					</div>
 				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- Feedback Testimonial Carousel Section [NEW] -->
+<section class="section-padding feedback-section" id="feedback">
+	<div class="container">
+		<div class="section-header">
+			<div class="badge badge-primary">Client Reviews</div>
+			<h3>Loved by Leading PG Owners</h3>
+			<p>Read experiences from hostel operators and PG managers who modernized their business with Smart PG.</p>
+		</div>
+
+		<div class="feedback-carousel-wrapper">
+			<button class="carousel-nav-btn prev" onclick="moveSlide(-1)" aria-label="Previous testimonial"><i class="fa-solid fa-chevron-left"></i></button>
+			<button class="carousel-nav-btn next" onclick="moveSlide(1)" aria-label="Next testimonial"><i class="fa-solid fa-chevron-right"></i></button>
+			
+			<div class="feedback-track" id="carouselTrack">
+				<!-- Slide 1 -->
+				<div class="feedback-slide">
+					<div class="feedback-stars">
+						<i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+					</div>
+					<p class="feedback-quote">
+						"Before using Smart PG, I spent hours calling tenants to follow up on late rent. Now, the system sends automated reminders, and payments are verified instantly. My rent leakage dropped to zero!"
+					</p>
+					<div class="feedback-profile">
+						<h5>Ramesh Gowda</h5>
+						<span>Owner, Sri Lakshmi Luxury PG (Bangalore)</span>
+					</div>
+				</div>
+
+				<!-- Slide 2 -->
+				<div class="feedback-slide">
+					<div class="feedback-stars">
+						<i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+					</div>
+					<p class="feedback-quote">
+						"The complaint tracking feature is a lifesaver. My tenants register geyser or WiFi tickets directly. It gets solved in hours, and they don't have to keep calling my personal phone anymore."
+					</p>
+					<div class="feedback-profile">
+						<h5>Adithya Verma</h5>
+						<span>Manager, Elite Student Hostels (BTM Layout)</span>
+					</div>
+				</div>
+
+				<!-- Slide 3 -->
+				<div class="feedback-slide">
+					<div class="feedback-stars">
+						<i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+					</div>
+					<p class="feedback-quote">
+						"Managing three branches used to require a mountain of notebooks. Smart PG consolidated all branches into one dashboard. I can check profit statements from my home easily."
+					</p>
+					<div class="feedback-profile">
+						<h5>Priya Krishnan</h5>
+						<span>Director, Royal Comfort PG Chain</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="carousel-dots">
+				<button class="carousel-dot active" onclick="gotoSlide(0)" aria-label="Go to testimonial slide 1"></button>
+				<button class="carousel-dot" onclick="gotoSlide(1)" aria-label="Go to testimonial slide 2"></button>
+				<button class="carousel-dot" onclick="gotoSlide(2)" aria-label="Go to testimonial slide 3"></button>
 			</div>
 		</div>
 	</div>
@@ -2244,9 +2481,9 @@
 				<li><a href="#why">Why Us</a></li>
 				<li><a href="#workflow">Workflow</a></li>
 				<li><a href="#features">Key Features</a></li>
-				<li><a href="#rooms">Rooms Gallery</a></li>
-				<li><a href="#compare">Portal Matrix</a></li>
-				<li><a href="#pricing">SaaS Pricing</a></li>
+				<li><a href="#interface">Software Tour</a></li>
+				<li><a href="#calculator">Calculator</a></li>
+				<li><a href="#feedback">Feedback</a></li>
 			</ul>
 		</div>
 
@@ -2270,7 +2507,7 @@
 				</li>
 				<li>
 					<i class="fa-solid fa-location-dot"></i>
-					<span>Metro Station Road, Indiranagar, Bangalore, India</span>
+					<span>BTM Stage 1, Bangalore, India</span>
 				</li>
 				<li>
 					<i class="fa-solid fa-calendar-day"></i>
@@ -2426,6 +2663,56 @@
 			}
 		});
 	});
+
+	// Interactive Savings Calculator logic [NEW]
+	function calculateSavings() {
+		const beds = parseInt(document.getElementById('bedsSlider').value);
+		const rent = parseInt(document.getElementById('rentSlider').value);
+		
+		document.getElementById('bedsVal').innerText = beds + " Beds";
+		document.getElementById('rentVal').innerText = "₹" + rent.toLocaleString('en-IN');
+		
+		const expectedRevenue = beds * rent;
+		const leakageLoss = Math.round(expectedRevenue * 0.08); // 8% leakage
+		const recoverySavings = leakageLoss;
+		
+		document.getElementById('revenueOutput').innerText = "₹" + expectedRevenue.toLocaleString('en-IN');
+		document.getElementById('leakageOutput').innerText = "₹" + leakageLoss.toLocaleString('en-IN');
+		document.getElementById('savingsOutput').innerText = "₹" + recoverySavings.toLocaleString('en-IN');
+	}
+	
+	// Initialize Savings Calculator on load
+	calculateSavings();
+
+	// Testimonials Carousel Logic [NEW]
+	let currentSlide = 0;
+	const slides = document.querySelectorAll('.feedback-slide');
+	const dots = document.querySelectorAll('.carousel-dot');
+	const totalSlides = slides.length;
+
+	function moveSlide(step) {
+		currentSlide = (currentSlide + step + totalSlides) % totalSlides;
+		updateCarousel();
+	}
+
+	function gotoSlide(slideIndex) {
+		currentSlide = slideIndex;
+		updateCarousel();
+	}
+
+	function updateCarousel() {
+		const track = document.getElementById('carouselTrack');
+		track.style.transform = `translateX(-${currentSlide * 100}%)`;
+		
+		// Update dots
+		dots.forEach((dot, index) => {
+			if (index === currentSlide) {
+				dot.classList.add('active');
+			} else {
+				dot.classList.remove('active');
+			}
+		});
+	}
 </script>
 
 </body>
