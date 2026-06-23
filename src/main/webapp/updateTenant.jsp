@@ -337,7 +337,7 @@ to {
 
 			</div>
 
-			<form action="update-tenant" method="post">
+			<form action="update-tenant" method="post" onsubmit="return validateForm()">
 
 				<div class="form-grid">
 
@@ -411,6 +411,20 @@ to {
 
 					</div>
 
+					<div class="form-group">
+
+						<label>Aadhaar Number</label> <input type="text" name="aadharNumber"
+							value="<%=rs.getString("aadhar_number") != null ? rs.getString("aadhar_number") : ""%>" required>
+
+					</div>
+
+					<div class="form-group">
+
+						<label>Address</label> <input type="text" name="address"
+							value="<%=rs.getString("address") != null ? rs.getString("address") : ""%>" required>
+
+					</div>
+
 				</div>
 
 				<div class="btn-box">
@@ -438,6 +452,26 @@ to {
 	</div>
 
 	<div class="footer">Smart PG Management System © 2026</div>
+
+	<script>
+		function validateForm() {
+			let phoneInput = document.getElementsByName("phone")[0];
+			let phone = phoneInput ? phoneInput.value : "";
+			if (phone && !/^[0-9]{10}$/.test(phone)) {
+				alert("Phone number must contain exactly 10 digits");
+				return false;
+			}
+
+			let aadharInput = document.getElementsByName("aadharNumber")[0];
+			let aadhar = aadharInput ? aadharInput.value : "";
+			if (aadhar && !/^[0-9]{12}$/.test(aadhar)) {
+				alert("Aadhaar number must contain exactly 12 digits");
+				return false;
+			}
+
+			return true;
+		}
+	</script>
 
 </body>
 </html>

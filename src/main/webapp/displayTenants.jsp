@@ -429,6 +429,8 @@ tr:hover{
 				<th>Institute</th>
 				<th>Joining Date</th>
 				<th>Room Number</th>
+				<th>Aadhaar Number</th>
+				<th>Address</th>
 				<th>Email</th>
 				<th class="no-print">Send Email</th>
 				<th class="no-print">Checkout</th>
@@ -453,6 +455,8 @@ tr:hover{
 				<td><%=rs.getString(7)%></td>
 				<td><%=rs.getString(8)%></td>
 				<td><%=rs.getInt(9)%></td>
+				<td><%=rs.getString("aadhar_number") != null ? rs.getString("aadhar_number") : "-"%></td>
+				<td><%=rs.getString("address") != null ? rs.getString("address") : "-"%></td>
 				<td><%=rs.getString(10)%></td>
 
 				<td class="no-print">

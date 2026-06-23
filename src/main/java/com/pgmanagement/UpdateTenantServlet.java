@@ -40,6 +40,8 @@ public class UpdateTenantServlet extends HttpServlet {
 			String joiningDate = req.getParameter("joiningDate");
 			int rmnum = Integer.parseInt(req.getParameter("roomnum"));
 			String email = req.getParameter("email");
+			String aadharNumber = req.getParameter("aadharNumber");
+			String address = req.getParameter("address");
 
 			// Load Driver
 			Class.forName("com.mysql.cj.jdbc.Driver");
@@ -50,7 +52,7 @@ public class UpdateTenantServlet extends HttpServlet {
 			// Update Query
 
 			pstmt = con.prepareStatement(
-					"update tenant set tenant_name=?, age=?, gender=?, phone=?, occupation=?, institute=?, joining_date=?, room_no=? , email=? where tenant_id=?");
+					"update tenant set tenant_name=?, age=?, gender=?, phone=?, occupation=?, institute=?, joining_date=?, room_no=? , email=?, aadhar_number=?, address=? where tenant_id=?");
 
 			pstmt.setString(1, tenantName);
 			pstmt.setInt(2, tenantAge);
@@ -61,7 +63,9 @@ public class UpdateTenantServlet extends HttpServlet {
 			pstmt.setString(7, joiningDate);
 			pstmt.setInt(8, rmnum);
 			pstmt.setString(9, email);
-			pstmt.setInt(10, tenantId);
+			pstmt.setString(10, aadharNumber);
+			pstmt.setString(11, address);
+			pstmt.setInt(12, tenantId);
 
 			int row = pstmt.executeUpdate();
 

@@ -368,6 +368,14 @@ to {
 						<label>Email</label> <input type="email" name="email" required>
 					</div>
 
+					<div class="form-group">
+						<label>Aadhaar Number</label> <input type="text" name="aadharNumber" required placeholder="Enter 12-digit Aadhaar Number">
+					</div>
+
+					<div class="form-group">
+						<label>Address</label> <input type="text" name="address" required placeholder="Enter Address">
+					</div>
+
 				</div>
 
 				<div class="btn-box">
@@ -401,6 +409,12 @@ to {
 
 			if (!/^[0-9]{10}$/.test(phone)) {
 				alert("Phone number must contain exactly 10 digits");
+				return false;
+			}
+
+			let aadhar = document.getElementsByName("aadharNumber")[0].value;
+			if (!/^[0-9]{12}$/.test(aadhar)) {
+				alert("Aadhaar number must contain exactly 12 digits");
 				return false;
 			}
 

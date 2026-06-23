@@ -34,6 +34,8 @@ public class AddTenantServlet extends HttpServlet {
 		String joiningDate = req.getParameter("joiningDate");
 		int roomnum = Integer.parseInt(req.getParameter("roomnnum"));
 		String email = req.getParameter("email");
+		String aadharNumber = req.getParameter("aadharNumber");
+		String address = req.getParameter("address");
 		String password = phone.substring(phone.length() - 4);
 		String hashedPassword = com.pgmanagement.util.HashUtil.hashPassword(password);
 
@@ -50,7 +52,7 @@ public class AddTenantServlet extends HttpServlet {
 
 			// Insert Query using auto-increment key returning
 			pstmt = con.prepareStatement(
-				"INSERT INTO tenant (tenant_name, age, gender, phone, occupation, institute, joining_date, room_no, email, password) VALUES(?,?,?,?,?,?,?,?,?,?)",
+				"INSERT INTO tenant (tenant_name, age, gender, phone, occupation, institute, joining_date, room_no, email, password, aadhar_number, address) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)",
 				Statement.RETURN_GENERATED_KEYS
 			);
 			pstmt.setString(1, name);
@@ -63,6 +65,8 @@ public class AddTenantServlet extends HttpServlet {
 			pstmt.setInt(8, roomnum);
 			pstmt.setString(9, email);
 			pstmt.setString(10, hashedPassword);
+			pstmt.setString(11, aadharNumber);
+			pstmt.setString(12, address);
 
 			int row = pstmt.executeUpdate();
 			int tenantId = 0;

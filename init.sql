@@ -216,8 +216,28 @@ CREATE TABLE IF NOT EXISTS `tenant` (
   `room_no` int NOT NULL,
   `email` varchar(100) NOT NULL,
   `password` varchar(100) NOT NULL,
+  `aadhar_number` varchar(20) DEFAULT NULL,
+  `address` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`tenant_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Migration/Alter statements for existing schemas
+ALTER TABLE `tenant` ADD COLUMN IF NOT EXISTS `aadhar_number` varchar(20) DEFAULT NULL;
+ALTER TABLE `tenant` ADD COLUMN IF NOT EXISTS `address` varchar(255) DEFAULT NULL;
+
+-- Apply to test subdomains database schemas
+CREATE DATABASE IF NOT EXISTS `smart_pg_royal`;
+USE `smart_pg_royal`;
+ALTER TABLE `tenant` ADD COLUMN IF NOT EXISTS `aadhar_number` varchar(20) DEFAULT NULL;
+ALTER TABLE `tenant` ADD COLUMN IF NOT EXISTS `address` varchar(255) DEFAULT NULL;
+
+CREATE DATABASE IF NOT EXISTS `smart_pg_palms`;
+USE `smart_pg_palms`;
+ALTER TABLE `tenant` ADD COLUMN IF NOT EXISTS `aadhar_number` varchar(20) DEFAULT NULL;
+ALTER TABLE `tenant` ADD COLUMN IF NOT EXISTS `address` varchar(255) DEFAULT NULL;
+
+-- Switch back to default smart_pg
+USE `smart_pg`;
 
 -- ----------------------------
 -- Table: tenant_checkout
