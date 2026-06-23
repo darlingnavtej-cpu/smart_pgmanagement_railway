@@ -179,7 +179,8 @@ tr:hover{
 
 .update-btn,
 .delete-btn,
-.checkout-btn{
+.checkout-btn,
+.email-btn{
 	text-decoration:none;
 	color:white;
 	padding:8px 12px;
@@ -212,6 +213,14 @@ tr:hover{
 
 .checkout-btn:hover{
 	background:#ea580c;
+}
+
+.email-btn{
+	background:#a855f7;
+}
+
+.email-btn:hover{
+	background:#9333ea;
 }
 
 /* FOOTER */
@@ -288,7 +297,7 @@ tr:hover{
 		font-size: 12pt;
 	}
 	.header, .back-btn, .footer, .action-bar, .no-print,
-	.update-btn, .delete-btn, .checkout-btn, .view-btn, .receipt-btn {
+	.update-btn, .delete-btn, .checkout-btn, .view-btn, .receipt-btn, .email-btn {
 		display: none !important;
 	}
 	.container {
@@ -421,6 +430,7 @@ tr:hover{
 				<th>Joining Date</th>
 				<th>Room Number</th>
 				<th>Email</th>
+				<th class="no-print">Send Email</th>
 				<th class="no-print">Checkout</th>
 				<th class="no-print">Update</th>
 				<th class="no-print">Delete</th>
@@ -444,6 +454,12 @@ tr:hover{
 				<td><%=rs.getString(8)%></td>
 				<td><%=rs.getInt(9)%></td>
 				<td><%=rs.getString(10)%></td>
+
+				<td class="no-print">
+					<a class="email-btn" href="sendMail.jsp?email=<%=rs.getString(10)%>&name=<%=rs.getString(2)%>&id=<%=rs.getInt(1)%>">
+						<i class="fa-solid fa-envelope"></i> Send Mail
+					</a>
+				</td>
 
 				<td class="no-print">
 
