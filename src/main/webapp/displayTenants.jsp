@@ -1,6 +1,16 @@
 <%@page import="java.sql.ResultSet"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 pageEncoding="UTF-8"%>
+<%!
+private boolean hasColumn(ResultSet rs, String columnName) {
+    try {
+        rs.findColumn(columnName);
+        return true;
+    } catch (java.sql.SQLException e) {
+        return false;
+    }
+}
+%>
 
 <!DOCTYPE html>
 
@@ -446,21 +456,21 @@ tr:hover{
 
 			<tr>
 
-				<td><%=rs.getInt(1)%></td>
-				<td><%=rs.getString(2)%></td>
-				<td><%=rs.getInt(3)%></td>
-				<td><%=rs.getString(4)%></td>
-				<td><%=rs.getString(5)%></td>
-				<td><%=rs.getString(6)%></td>
-				<td><%=rs.getString(7)%></td>
-				<td><%=rs.getString(8)%></td>
-				<td><%=rs.getInt(9)%></td>
-				<td><%=rs.getString("aadhar_number") != null ? rs.getString("aadhar_number") : "-"%></td>
-				<td><%=rs.getString("address") != null ? rs.getString("address") : "-"%></td>
-				<td><%=rs.getString(10)%></td>
+				<td><%=rs.getInt("tenant_id")%></td>
+				<td><%=rs.getString("tenant_name")%></td>
+				<td><%=rs.getInt("age")%></td>
+				<td><%=rs.getString("gender")%></td>
+				<td><%=rs.getString("phone")%></td>
+				<td><%=rs.getString("occupation")%></td>
+				<td><%=rs.getString("institute")%></td>
+				<td><%=rs.getString("joining_date")%></td>
+				<td><%=rs.getInt("room_no")%></td>
+				<td><%= hasColumn(rs, "aadhar_number") && rs.getString("aadhar_number") != null ? rs.getString("aadhar_number") : "-" %></td>
+				<td><%= hasColumn(rs, "address") && rs.getString("address") != null ? rs.getString("address") : "-" %></td>
+				<td><%=rs.getString("email")%></td>
 
 				<td class="no-print">
-					<a class="email-btn" href="sendMail.jsp?email=<%=rs.getString(10)%>&name=<%=rs.getString(2)%>&id=<%=rs.getInt(1)%>">
+					<a class="email-btn" href="sendMail.jsp?email=<%=rs.getString("email")%>&name=<%=rs.getString("tenant_name")%>&id=<%=rs.getInt("tenant_id")%>">
 						<i class="fa-solid fa-envelope"></i> Send Mail
 					</a>
 				</td>
@@ -480,7 +490,7 @@ tr:hover{
 				<td class="no-print">
 
 					<a class="update-btn"
-						href="find-tenant-by-id?tenantId=<%=rs.getInt(1)%>">
+						href="find-tenant-by-id?tenantId=<%=rs.getInt("tenant_id")%>">
 
 						<i class="fa-solid fa-pen"></i>
 						Update
@@ -492,7 +502,7 @@ tr:hover{
 				<td class="no-print">
 
 					<a class="delete-btn"
-						href="delete-tenant?tenantId=<%=rs.getInt(1)%>"
+						href="delete-tenant?tenantId=<%=rs.getInt("tenant_id")%>"
 						onclick="return confirm('Are you sure you want to delete this tenant?')">
 
 						<i class="fa-solid fa-trash"></i>
