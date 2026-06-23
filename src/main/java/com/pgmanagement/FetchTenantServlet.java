@@ -30,6 +30,14 @@ public class FetchTenantServlet extends HttpServlet {
         // Create Connection
         con = com.pgmanagement.util.DBUtil.getConnection();
 
+        // Run migrations dynamically to ensure columns exist in active schema
+        try (java.sql.Statement migrationStmt = con.createStatement()) {
+            migrationStmt.executeUpdate("ALTER TABLE tenant ADD COLUMN IF NOT EXISTS aadhar_number varchar(20) DEFAULT NULL");
+            migrationStmt.executeUpdate("ALTER TABLE tenant ADD COLUMN IF NOT EXISTS address varchar(255) DEFAULT NULL");
+        } catch (Exception migrationEx) {
+            System.err.println("Database auto-migration warning: " + migrationEx.getMessage());
+        }
+
         // Fetch Query
         pstmt = con.prepareStatement(
                 "SELECT * FROM tenant");
