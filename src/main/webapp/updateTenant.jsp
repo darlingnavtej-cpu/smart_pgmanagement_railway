@@ -1,6 +1,16 @@
 <%@page import="java.sql.ResultSet"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%!
+private boolean hasColumn(ResultSet rs, String columnName) {
+    try {
+        rs.findColumn(columnName);
+        return true;
+    } catch (java.sql.SQLException e) {
+        return false;
+    }
+}
+%>
 
 <!DOCTYPE html>
 
@@ -342,88 +352,88 @@ to {
 				<div class="form-grid">
 
 					<div class="form-group">
-
-						<label>Tenant ID</label> <input type="number" class="readonly"
-							name="tenantId" value="<%=rs.getInt(1)%>" readonly>
-
-					</div>
-
-					<div class="form-group">
-
-						<label>Tenant Name</label> <input type="text" name="name"
-							value="<%=rs.getString(2)%>">
-
-					</div>
-
-					<div class="form-group">
-
-						<label>Age</label> <input type="number" name="age"
-							value="<%=rs.getInt(3)%>">
-
-					</div>
-
-					<div class="form-group">
-
-						<label>Gender</label> <input type="text" name="gender"
-							value="<%=rs.getString(4)%>">
-
-					</div>
-
-					<div class="form-group">
-
-						<label>Phone</label> <input type="text" name="phone"
-							value="<%=rs.getString(5)%>">
-
-					</div>
-
-					<div class="form-group">
-
-						<label>Occupation</label> <input type="text" name="occupation"
-							value="<%=rs.getString(6)%>">
-
-					</div>
-
-					<div class="form-group full-width">
-
-						<label>Institute</label> <input type="text" name="institute"
-							value="<%=rs.getString(7)%>">
-
-					</div>
-
-					<div class="form-group">
-
-						<label>Joining Date</label> <input type="date" name="joiningDate"
-							value="<%=rs.getString(8)%>">
-
-					</div>
-
-					<div class="form-group">
-
-						<label>Room Number</label> <input type="number" name="roomnum"
-							value="<%=rs.getInt(9)%>">
-
-					</div>
-
-					<div class="form-group full-width">
-
-						<label>Email</label> <input type="email" name="email"
-							value="<%=rs.getString(10)%>">
-
-					</div>
-
-					<div class="form-group">
-
-						<label>Aadhaar Number</label> <input type="text" name="aadharNumber"
-							value="<%=rs.getString("aadhar_number") != null ? rs.getString("aadhar_number") : ""%>" required>
-
-					</div>
-
-					<div class="form-group">
-
-						<label>Address</label> <input type="text" name="address"
-							value="<%=rs.getString("address") != null ? rs.getString("address") : ""%>" required>
-
-					</div>
+ 
+ 						<label>Tenant ID</label> <input type="number" class="readonly"
+ 							name="tenantId" value="<%=rs.getInt("tenant_id")%>" readonly>
+ 
+ 					</div>
+ 
+ 					<div class="form-group">
+ 
+ 						<label>Tenant Name</label> <input type="text" name="name"
+ 							value="<%=rs.getString("tenant_name")%>">
+ 
+ 					</div>
+ 
+ 					<div class="form-group">
+ 
+ 						<label>Age</label> <input type="number" name="age"
+ 							value="<%=rs.getInt("age")%>">
+ 
+ 					</div>
+ 
+ 					<div class="form-group">
+ 
+ 						<label>Gender</label> <input type="text" name="gender"
+ 							value="<%=rs.getString("gender")%>">
+ 
+ 					</div>
+ 
+ 					<div class="form-group">
+ 
+ 						<label>Phone</label> <input type="text" name="phone"
+ 							value="<%=rs.getString("phone")%>">
+ 
+ 					</div>
+ 
+ 					<div class="form-group">
+ 
+ 						<label>Occupation</label> <input type="text" name="occupation"
+ 							value="<%=rs.getString("occupation")%>">
+ 
+ 					</div>
+ 
+ 					<div class="form-group full-width">
+ 
+ 						<label>Institute</label> <input type="text" name="institute"
+ 							value="<%=rs.getString("institute")%>">
+ 
+ 					</div>
+ 
+ 					<div class="form-group">
+ 
+ 						<label>Joining Date</label> <input type="date" name="joiningDate"
+ 							value="<%=rs.getString("joining_date")%>">
+ 
+ 					</div>
+ 
+ 					<div class="form-group">
+ 
+ 						<label>Room Number</label> <input type="number" name="roomnum"
+ 							value="<%=rs.getInt("room_no")%>">
+ 
+ 					</div>
+ 
+ 					<div class="form-group full-width">
+ 
+ 						<label>Email</label> <input type="email" name="email"
+ 							value="<%=rs.getString("email")%>">
+ 
+ 					</div>
+ 
+ 					<div class="form-group">
+ 
+ 						<label>Aadhaar Number</label> <input type="text" name="aadharNumber"
+ 							value="<%= hasColumn(rs, "aadhar_number") && rs.getString("aadhar_number") != null ? rs.getString("aadhar_number") : "" %>" required>
+ 
+ 					</div>
+ 
+ 					<div class="form-group">
+ 
+ 						<label>Address</label> <input type="text" name="address"
+ 							value="<%= hasColumn(rs, "address") && rs.getString("address") != null ? rs.getString("address") : "" %>" required>
+ 
+ 					</div>
 
 				</div>
 
