@@ -322,6 +322,142 @@ tr:hover {
 		font-size: 24px;
 	}
 }
+
+/* PRINT BUTTON */
+.print-btn {
+	background: linear-gradient(135deg, #1e3a8a, #4f46e5);
+	color: white;
+	border: none;
+	padding: 12px 18px;
+	border-radius: 12px;
+	font-weight: 600;
+	cursor: pointer;
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	transition: all 0.3s ease;
+	box-shadow: 0 4px 10px rgba(79, 70, 229, 0.2);
+}
+
+.print-btn:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 6px 15px rgba(79, 70, 229, 0.3);
+}
+
+.print-btn:active {
+	transform: translateY(0);
+}
+
+/* PRINT ONLY ELEMENT */
+.print-only {
+	display: none;
+}
+
+@media print {
+	@page {
+		size: auto;
+		margin: 15mm 15mm 15mm 15mm;
+	}
+	body {
+		background: white !important;
+		color: black !important;
+		font-size: 12pt;
+	}
+	.header, .back-btn, .footer, .action-bar, .no-print,
+	.update-btn, .delete-btn, .checkout-btn, .view-btn, .receipt-btn {
+		display: none !important;
+	}
+	.container {
+		width: 100% !important;
+		margin: 0 !important;
+		padding: 0 !important;
+	}
+	.table-card {
+		box-shadow: none !important;
+		border: none !important;
+		padding: 0 !important;
+		margin: 0 !important;
+	}
+	.table-wrapper {
+		overflow: visible !important;
+	}
+	table {
+		width: 100% !important;
+		min-width: unset !important;
+		border-collapse: collapse !important;
+		page-break-inside: auto;
+	}
+	tr {
+		page-break-inside: avoid;
+		page-break-after: auto;
+	}
+	thead {
+		display: table-header-group;
+	}
+	tr:nth-child(even) {
+		background-color: #f9f9f9 !important;
+		-webkit-print-color-adjust: exact;
+		print-color-adjust: exact;
+	}
+	th, td {
+		border: 1px solid #ccc !important;
+		padding: 8px !important;
+		text-align: center !important;
+		font-size: 10pt !important;
+		white-space: normal !important;
+	}
+	th {
+		background-color: #eaeaea !important;
+		color: #000 !important;
+		font-weight: bold !important;
+		-webkit-print-color-adjust: exact;
+		print-color-adjust: exact;
+	}
+	.page-title h2 {
+		color: #000 !important;
+		font-size: 20pt !important;
+		margin-bottom: 5px !important;
+	}
+	.page-title p {
+		color: #555 !important;
+		font-size: 11pt !important;
+	}
+	.print-only {
+		display: block !important;
+		text-align: center;
+		margin-bottom: 20px;
+		font-size: 16px;
+		color: #333;
+	}
+	/* Summary cards in pendingRentTenants.jsp */
+	.summary {
+		display: flex !important;
+		flex-direction: row !important;
+		justify-content: space-around !important;
+		margin-top: 30px !important;
+		page-break-inside: avoid;
+	}
+	.card {
+		flex: 1 !important;
+		border: 1px solid #ccc !important;
+		box-shadow: none !important;
+		margin: 0 10px !important;
+		padding: 15px !important;
+		background: #fff !important;
+	}
+	.card i {
+		display: none !important;
+	}
+	.card h3 {
+		font-size: 12pt !important;
+		color: #000 !important;
+	}
+	.card p {
+		font-size: 18pt !important;
+		color: #000 !important;
+	}
+}
+
 </style>
 
 </head>
@@ -365,6 +501,7 @@ tr:hover {
 				</h2>
 
 				<p>Tenants with outstanding rent payments</p>
+				<p class="print-only">Filtered Month: <%= selectedMonth %></p>
 
 			</div>
 
@@ -387,6 +524,9 @@ tr:hover {
 				</a> <a href="fetch-pending-fees?month=<%= selectedMonth %>" class="action-btn"> <i
 					class="fa-solid fa-rotate-right"></i> Refresh
 				</a>
+				<button onclick="window.print()" class="action-btn print-btn" style="border: none; cursor: pointer;">
+					<i class="fa-solid fa-print"></i> Print
+				</button>
 			</div>
 
 			<div class="table-wrapper">

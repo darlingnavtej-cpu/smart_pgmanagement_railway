@@ -279,6 +279,115 @@ tr:hover{
 	}
 }
 
+/* PRINT BUTTON */
+.print-btn {
+	background: linear-gradient(135deg, #1e3a8a, #4f46e5);
+	color: white;
+	border: none;
+	padding: 10px 20px;
+	border-radius: 10px;
+	font-size: 14px;
+	font-weight: 600;
+	cursor: pointer;
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	transition: all 0.3s ease;
+	box-shadow: 0 4px 10px rgba(79, 70, 229, 0.2);
+}
+
+.print-btn:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 6px 15px rgba(79, 70, 229, 0.3);
+}
+
+.print-btn:active {
+	transform: translateY(0);
+}
+
+/* PRINT ONLY ELEMENT */
+.print-only {
+	display: none;
+}
+
+@media print {
+	@page {
+		size: auto;
+		margin: 15mm 15mm 15mm 15mm;
+	}
+	body {
+		background: white !important;
+		color: black !important;
+		font-size: 12pt;
+	}
+	.header, .back-btn, .footer, .action-bar, .no-print,
+	.update-btn, .delete-btn, .checkout-btn, .view-btn, .receipt-btn {
+		display: none !important;
+	}
+	.container {
+		width: 100% !important;
+		margin: 0 !important;
+		padding: 0 !important;
+	}
+	.table-card {
+		box-shadow: none !important;
+		border: none !important;
+		padding: 0 !important;
+		margin: 0 !important;
+	}
+	.table-wrapper {
+		overflow: visible !important;
+	}
+	table {
+		width: 100% !important;
+		min-width: unset !important;
+		border-collapse: collapse !important;
+		page-break-inside: auto;
+	}
+	tr {
+		page-break-inside: avoid;
+		page-break-after: auto;
+	}
+	thead {
+		display: table-header-group;
+	}
+	tr:nth-child(even) {
+		background-color: #f9f9f9 !important;
+		-webkit-print-color-adjust: exact;
+		print-color-adjust: exact;
+	}
+	th, td {
+		border: 1px solid #ccc !important;
+		padding: 8px !important;
+		text-align: center !important;
+		font-size: 10pt !important;
+		white-space: normal !important;
+	}
+	th {
+		background-color: #eaeaea !important;
+		color: #000 !important;
+		font-weight: bold !important;
+		-webkit-print-color-adjust: exact;
+		print-color-adjust: exact;
+	}
+	.page-title h2 {
+		color: #000 !important;
+		font-size: 20pt !important;
+		margin-bottom: 5px !important;
+	}
+	.page-title p {
+		color: #555 !important;
+		font-size: 11pt !important;
+	}
+	.print-only {
+		display: block !important;
+		text-align: center;
+		margin-bottom: 20px;
+		font-size: 16px;
+		color: #333;
+	}
+}
+
 </style>
 
 </head>
@@ -328,6 +437,12 @@ tr:hover{
 
 	</div>
 
+	<div class="action-bar no-print" style="display: flex; justify-content: flex-end; margin-bottom: 20px;">
+		<button onclick="window.print()" class="print-btn">
+			<i class="fa-solid fa-print"></i> Print Records
+		</button>
+	</div>
+
 	<%
 	ResultSet rs=(ResultSet)request.getAttribute("resultSet");
 	%>
@@ -343,9 +458,9 @@ tr:hover{
 				<th>Available Beds</th>
 				<th>Status</th>
 				<th>Rent</th>
-				<th>Update</th>
-				<th>Delete</th>
-				<th>View</th>
+				<th class="no-print">Update</th>
+				<th class="no-print">Delete</th>
+				<th class="no-print">View</th>
 			</tr>
 
 			<%
@@ -388,7 +503,7 @@ tr:hover{
 
 				<td>₹ <%=rs.getInt("rent")%></td>
 
-				<td>
+				<td class="no-print">
 
 					<a class="update-btn"
 						href="find-room-by-id?roomNo=<%=rs.getInt("room_no")%>">
@@ -400,7 +515,7 @@ tr:hover{
 
 				</td>
 
-				<td>
+				<td class="no-print">
 
 					<a class="delete-btn"
 						href="delete-room?roomNo=<%=rs.getInt("room_no")%>"
@@ -413,7 +528,7 @@ tr:hover{
 
 				</td>
 
-				<td>
+				<td class="no-print">
 
 					<a class="view-btn"
 						href="view-room-members?roomNo=<%=rs.getInt("room_no")%>">
