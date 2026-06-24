@@ -179,7 +179,7 @@ public class RegisterTenantServlet extends HttpServlet {
 
         // Run DDL statements on the new database schema
         Class.forName("com.mysql.cj.jdbc.Driver");
-        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + dbName, "root", "admin");
+        try (Connection conn = DBUtil.getConnection(dbName);
              Statement sqlStatement = conn.createStatement()) {
             for (String sql : statementsToExecute) {
                 try {
@@ -193,7 +193,7 @@ public class RegisterTenantServlet extends HttpServlet {
 
     private void seedNewTenant(String dbName, String pgName, String ownerName, String email, String password) throws Exception {
         Class.forName("com.mysql.cj.jdbc.Driver");
-        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + dbName, "root", "admin")) {
+        try (Connection conn = DBUtil.getConnection(dbName)) {
             
             // Seed PG Info (id=1 is hardcoded throughout the application)
             String insertPgInfo = "INSERT INTO pg_info (id, pg_name, owner_name, email, rating) VALUES (1, ?, ?, ?, 5.0) " +

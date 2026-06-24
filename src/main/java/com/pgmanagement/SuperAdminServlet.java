@@ -301,7 +301,7 @@ public class SuperAdminServlet extends HttpServlet {
                 boolean dbOnline = false;
 
                 // Query details directly from the isolated tenant database
-                try (Connection tenantCon = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + dbName, "root", "admin");
+                try (Connection tenantCon = DBUtil.getConnection(dbName);
                      PreparedStatement tPstmt = tenantCon.prepareStatement("SELECT pg_name, owner_name, email FROM pg_info LIMIT 1");
                      ResultSet tRs = tPstmt.executeQuery()) {
                     if (tRs.next()) {

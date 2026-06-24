@@ -21,30 +21,19 @@ for i in {1..30}; do
   sleep 2
 done
 
-# Check if we can already login with password 'admin'
-if mysql -h "$MYSQLHOST" -P "$MYSQLPORT" -u root -padmin -e "SELECT 1;" >/dev/null 2>&1; then
-  echo "Connection verified! Root password is already 'admin'."
+# Verify connection using Railway credentials
+if mysql -h "$MYSQLHOST" -P "$MYSQLPORT" -u "$MYSQLUSER" -p"$MYSQLPASSWORD" -e "SELECT 1;" >/dev/null 2>&1; then
+  echo "Connection verified using Railway database credentials."
 else
-  echo "Could not connect with 'admin'. Attempting to set root password to 'admin' using Railway credentials..."
-  # Connect using Railway default credentials and set root password to 'admin'
-  # (Crucial because Java code is hardcoded to use password 'admin')
-  mysql -h "$MYSQLHOST" -P "$MYSQLPORT" -u "$MYSQLUSER" -p"$MYSQLPASSWORD" -e "
-    ALTER USER 'root'@'%' IDENTIFIED BY 'admin';
-    FLUSH PRIVILEGES;
-  "
-  if [ $? -eq 0 ]; then
-    echo "Root password successfully updated to 'admin'!"
-  else
-    echo "ERROR: Failed to update root password to 'admin' using Railway credentials."
-    exit 1
-  fi
+  echo "ERROR: Could not connect to Railway MySQL using the provided credentials!"
+  exit 1
 fi
 
 # Run database migrations/initialization if not done
-if ! mysql -h "$MYSQLHOST" -P "$MYSQLPORT" -u root -padmin -e "USE smart_pg;" >/dev/null 2>&1; then
+if ! mysql -h "$MYSQLHOST" -P "$MYSQLPORT" -u "$MYSQLUSER" -p"$MYSQLPASSWORD" -e "USE smart_pg;" >/dev/null 2>&1; then
   echo "Database smart_pg not found. Initializing schema..."
   if [ -f "/opt/init.sql" ]; then
-    mysql -h "$MYSQLHOST" -P "$MYSQLPORT" -u root -padmin < /opt/init.sql
+    mysql -h "$MYSQLHOST" -P "$MYSQLPORT" -u "$MYSQLUSER" -p"$MYSQLPASSWORD" < /opt/init.sql
     echo "Database schema and views successfully initialized!"
   else
     echo "ERROR: init.sql not found at /opt/init.sql!"
@@ -53,10 +42,10 @@ if ! mysql -h "$MYSQLHOST" -P "$MYSQLPORT" -u root -padmin -e "USE smart_pg;" >/
 else
   echo "Database smart_pg already initialized. Checking compatibility views and master schema..."
   if [ -f "/opt/init.sql" ]; then
-    mysql -h "$MYSQLHOST" -P "$MYSQLPORT" -u root -padmin < /opt/init.sql
+    mysql -h "$MYSQLHOST" -P "$MYSQLPORT" -u "$MYSQLUSER" -p"$MYSQLPASSWORD" < /opt/init.sql
   fi
   # Ensure the compatibility views exist even if the DB was already created
-  mysql -h "$MYSQLHOST" -P "$MYSQLPORT" -u root -padmin -e "
+  mysql -h "$MYSQLHOST" -P "$MYSQLPORT" -u "$MYSQLUSER" -p"$MYSQLPASSWORD" -e "
     CREATE DATABASE IF NOT EXISTS pg_info_table;
     CREATE OR REPLACE VIEW pg_info_table.pg_info AS SELECT * FROM smart_pg.pg_info;
     CREATE DATABASE IF NOT EXISTS tenant_table;
@@ -67,11 +56,11 @@ fi
 
 # Initialize smart_pg_royal and smart_pg_palms test databases if they don't exist
 for test_db in smart_pg_royal smart_pg_palms; do
-  if ! mysql -h "$MYSQLHOST" -P "$MYSQLPORT" -u root -padmin -e "USE $test_db;" >/dev/null 2>&1; then
+  if ! mysql -h "$MYSQLHOST" -P "$MYSQLPORT" -u "$MYSQLUSER" -p"$MYSQLPASSWORD" -e "USE $test_db;" >/dev/null 2>&1; then
     echo "Creating and initializing test database $test_db..."
-    mysql -h "$MYSQLHOST" -P "$MYSQLPORT" -u root -padmin -e "CREATE DATABASE IF NOT EXISTS $test_db;"
+    mysql -h "$MYSQLHOST" -P "$MYSQLPORT" -u "$MYSQLUSER" -p"$MYSQLPASSWORD" -e "CREATE DATABASE IF NOT EXISTS $test_db;"
     # Run schema replacing USE `smart_pg` with USE `test_db`
-    sed "s/USE \`smart_pg\`/USE \`$test_db\`/g" /opt/init.sql | mysql -h "$MYSQLHOST" -P "$MYSQLPORT" -u root -padmin
+    sed "s/USE \`smart_pg\`/USE \`$test_db\`/g" /opt/init.sql | mysql -h "$MYSQLHOST" -P "$MYSQLPORT" -u "$MYSQLUSER" -p"$MYSQLPASSWORD"
     echo "Test database $test_db successfully initialized!"
   fi
 done

@@ -18,7 +18,7 @@ public class PasswordMigrationUtil {
             Class.forName("com.mysql.cj.jdbc.Driver");
             
             // 1. Get all SaaS tenant databases from the master routing table
-            try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/smart_pg_master", "root", "admin");
+            try (Connection conn = DBUtil.getMasterConnection();
                  Statement stmt = conn.createStatement();
                  ResultSet rs = stmt.executeQuery("SELECT db_name FROM tenant_routing")) {
                 while (rs.next()) {
@@ -35,7 +35,7 @@ public class PasswordMigrationUtil {
             for (String schema : schemas) {
                 System.out.println("\nProcessing database schema: " + schema);
                 
-                try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + schema, "root", "admin")) {
+                try (Connection conn = DBUtil.getConnection(schema)) {
                     
                     // A. Migrate admin passwords (newreg table)
                     try (Statement stmt = conn.createStatement();
