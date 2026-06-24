@@ -87,7 +87,7 @@ public class SuperAdminServlet extends HttpServlet {
             String clientIp = getClientIpAddress(req);
             boolean ipAllowed = false;
             for (String allowedIp : allowedIpsConfig.split(",")) {
-                if (clientIp.equals(allowedIp.trim())) {
+                if (clientIp.equalsIgnoreCase(allowedIp.trim())) {
                     ipAllowed = true;
                     break;
                 }
