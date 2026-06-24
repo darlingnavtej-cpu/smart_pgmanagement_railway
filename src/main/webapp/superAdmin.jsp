@@ -383,16 +383,87 @@
                 padding: 12px 15px;
             }
         }
+
+        /* Modal Overlay */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .modal-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 30px;
+            width: 100%;
+            max-width: 440px;
+            box-shadow: var(--shadow);
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h2 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .modal-header h2 i {
+            color: var(--primary);
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 24px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .close-btn:hover {
+            color: var(--danger);
+        }
     </style>
 </head>
 <body>
 
 <% if (!isAuthenticated) { %>
-    <!-- LOGIN VIEW -->
+    <!-- LOGIN/FORGOT/RESET VIEW -->
     <div class="login-container">
         <div class="login-card">
             <h1>Super Admin Console</h1>
-            <p>Smart PG SaaS Management Portal</p>
+            
+            <% String state = (String) request.getAttribute("state"); %>
+            
+            <% if ("forgot-password".equals(state)) { %>
+                <p>Reset Master Passcode via Registered Email</p>
+            <% } else if ("verify-otp".equals(state)) { %>
+                <p>Enter 6-Digit Verification OTP</p>
+            <% } else if ("reset-password".equals(state)) { %>
+                <p>Create a secure master passcode</p>
+            <% } else { %>
+                <p>Smart PG SaaS Management Portal</p>
+            <% } %>
 
             <% if (errorMessage != null) { %>
                 <div class="alert">
@@ -400,14 +471,61 @@
                     <span><%= errorMessage %></span>
                 </div>
             <% } %>
-
-            <form action="super-admin?action=login" method="post">
-                <div class="input-group">
-                    <label for="password">Enter Master Passcode</label>
-                    <input type="password" id="password" name="password" placeholder="••••••••" required autofocus>
+            
+            <% String successMsg = (String) request.getAttribute("successMessage"); %>
+            <% if (successMsg != null) { %>
+                <div class="alert alert-success" style="background: rgba(16, 185, 129, 0.15); border: 1px solid var(--success); color: #a7f3d0;">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <span><%= successMsg %></span>
                 </div>
-                <button type="submit" class="btn">Authenticate</button>
-            </form>
+            <% } %>
+
+            <% if ("forgot-password".equals(state)) { %>
+                <form action="super-admin?action=send-otp" method="post">
+                    <div class="input-group">
+                        <label for="email">Registered Email Address</label>
+                        <input type="email" id="email" name="email" value="smartpgmanage@gmail.com" readonly style="background: var(--surface-hover); color: var(--text-muted); cursor: not-allowed;">
+                    </div>
+                    <button type="submit" class="btn">Send Verification OTP</button>
+                    <div style="text-align: center; margin-top: 15px;">
+                        <a href="super-admin" style="color: var(--text-muted); text-decoration: none; font-size: 13px; font-weight: 600;">Back to Login</a>
+                    </div>
+                </form>
+            <% } else if ("verify-otp".equals(state)) { %>
+                <form action="super-admin?action=verify-otp" method="post">
+                    <div class="input-group">
+                        <label for="otp">Enter OTP</label>
+                        <input type="text" id="otp" name="otp" placeholder="123456" pattern="\d{6}" maxlength="6" required autofocus>
+                    </div>
+                    <button type="submit" class="btn">Verify OTP</button>
+                    <div style="text-align: center; margin-top: 15px;">
+                        <a href="super-admin?action=forgot-form" style="color: var(--text-muted); text-decoration: none; font-size: 13px; font-weight: 600;">Resend OTP</a>
+                    </div>
+                </form>
+            <% } else if ("reset-password".equals(state)) { %>
+                <form action="super-admin?action=reset-password" method="post">
+                    <div class="input-group">
+                        <label for="password">New Passcode</label>
+                        <input type="password" id="password" name="password" placeholder="••••••••" required autofocus>
+                    </div>
+                    <div class="input-group">
+                        <label for="confirmPassword">Confirm Passcode</label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="btn">Reset Passcode</button>
+                </form>
+            <% } else { %>
+                <form action="super-admin?action=login" method="post">
+                    <div class="input-group">
+                        <label for="password">Enter Master Passcode</label>
+                        <input type="password" id="password" name="password" placeholder="••••••••" required autofocus>
+                    </div>
+                    <button type="submit" class="btn">Authenticate</button>
+                    <div style="text-align: center; margin-top: 15px;">
+                        <a href="super-admin?action=forgot-form" style="color: var(--primary); text-decoration: none; font-size: 13px; font-weight: 600;">Forgot Passcode?</a>
+                    </div>
+                </form>
+            <% } %>
         </div>
     </div>
 <% } else { %>
@@ -418,6 +536,9 @@
             <span>SaaS Registry & Database Manager</span>
         </div>
         <div class="header-actions">
+            <a href="#changePasscodeModal" class="logout-link" onclick="openChangePasscodeModal(event)">
+                <i class="fa-solid fa-key"></i> Change Passcode
+            </a>
             <a href="super-admin?action=logout" class="logout-link">
                 <i class="fa-solid fa-right-from-bracket"></i> Logout
             </a>
@@ -551,6 +672,49 @@
             </div>
         </div>
     </div>
+
+    <!-- CHANGE PASSCODE MODAL -->
+    <div id="changePasscodeModal" class="modal-overlay" style="display: none;">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h2><i class="fa-solid fa-key"></i> Change Master Passcode</h2>
+                <button class="close-btn" onclick="closeChangePasscodeModal()">&times;</button>
+            </div>
+            <form action="super-admin?action=change-password" method="post">
+                <div class="input-group">
+                    <label for="oldPassword">Current Passcode</label>
+                    <input type="password" id="oldPassword" name="oldPassword" required>
+                </div>
+                <div class="input-group">
+                    <label for="newPassword">New Passcode</label>
+                    <input type="password" id="newPassword" name="newPassword" required>
+                </div>
+                <div class="input-group">
+                    <label for="confirmNewPassword">Confirm New Passcode</label>
+                    <input type="password" id="confirmNewPassword" name="confirmNewPassword" required>
+                </div>
+                <button type="submit" class="btn">Update Passcode</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function openChangePasscodeModal(e) {
+            e.preventDefault();
+            document.getElementById('changePasscodeModal').style.display = 'flex';
+        }
+
+        function closeChangePasscodeModal() {
+            document.getElementById('changePasscodeModal').style.display = 'none';
+        }
+
+        window.addEventListener('click', function(e) {
+            var modal = document.getElementById('changePasscodeModal');
+            if (e.target == modal) {
+                closeChangePasscodeModal();
+            }
+        });
+    </script>
 <% } %>
 
 </body>

@@ -2,6 +2,8 @@ package com.pgmanagement;
 
 import com.pgmanagement.util.DBUtil;
 import com.pgmanagement.filter.TenantRoutingFilter;
+import com.pgmanagement.util.EmailUtility;
+import com.pgmanagement.util.HashUtil;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -33,9 +35,45 @@ public class SuperAdminServlet extends HttpServlet {
         processRequest(req, resp);
     }
 
+    private void ensureSuperAdminTable() {
+        try (Connection con = DBUtil.getMasterConnection();
+             Statement stmt = con.createStatement()) {
+            // Create table in the master database if it doesn't exist
+            stmt.execute("CREATE TABLE IF NOT EXISTS `super_admin_config` (" +
+                         "  `email` varchar(100) NOT NULL," +
+                         "  `password_hash` varchar(100) NOT NULL," +
+                         "  PRIMARY KEY (`email`)" +
+                         ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
+            
+            // Seed default super admin if database is blank
+            try (ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM super_admin_config")) {
+                if (rs.next() && rs.getInt(1) == 0) {
+                    String defaultPass = System.getenv("SUPER_ADMIN_PASSWORD");
+                    if (defaultPass == null || defaultPass.trim().isEmpty()) {
+                        defaultPass = "superadmin123";
+                    }
+                    String hashed = HashUtil.hashPassword(defaultPass);
+                    try (PreparedStatement pstmt = con.prepareStatement(
+                            "INSERT INTO super_admin_config (email, password_hash) VALUES (?, ?)")) {
+                        pstmt.setString(1, "smartpgmanage@gmail.com");
+                        pstmt.setString(2, hashed);
+                        pstmt.executeUpdate();
+                        System.out.println("SuperAdminServlet: Seeded default super admin account for smartpgmanage@gmail.com");
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("SuperAdminServlet: Error checking/creating super_admin_config table:");
+            e.printStackTrace();
+        }
+    }
+
     private void processRequest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession(true);
         String action = req.getParameter("action");
+
+        // Ensure table exists on first touch
+        ensureSuperAdminTable();
 
         // Handle logout
         if ("logout".equals(action)) {
@@ -44,32 +82,175 @@ public class SuperAdminServlet extends HttpServlet {
             return;
         }
 
+        // =====================================================================
+        // UNRESTRICTED ACTIONS (Forgot Password OTP flow)
+        // =====================================================================
+        if ("forgot-form".equals(action)) {
+            req.setAttribute("state", "forgot-password");
+            req.getRequestDispatcher("/superAdmin.jsp").forward(req, resp);
+            return;
+        }
+
+        if ("send-otp".equals(action)) {
+            String email = req.getParameter("email");
+            if ("smartpgmanage@gmail.com".equalsIgnoreCase(email)) {
+                int otp = (int) (Math.random() * 900000) + 100000;
+                session.setAttribute("superAdminOtp", otp);
+                session.setAttribute("superAdminResetEmail", email);
+                
+                String subject = "Smart PG Super Admin Passcode Reset OTP";
+                String body = "Dear Super Admin,\n\n"
+                        + "Your OTP for resetting the Master Passcode is:\n\n"
+                        + otp + "\n\n"
+                        + "This OTP is valid for 5 minutes. Do not share this OTP with anyone.\n\n"
+                        + "Regards,\n"
+                        + "Smart PG SaaS Ecosystem";
+                
+                EmailUtility.sendEmail(email, subject, body);
+                req.setAttribute("state", "verify-otp");
+                req.setAttribute("successMessage", "OTP sent successfully to smartpgmanage@gmail.com!");
+            } else {
+                req.setAttribute("state", "forgot-password");
+                req.setAttribute("errorMessage", "Invalid registered email address!");
+            }
+            req.getRequestDispatcher("/superAdmin.jsp").forward(req, resp);
+            return;
+        }
+
+        if ("verify-otp".equals(action)) {
+            String userOtp = req.getParameter("otp");
+            Integer originalOtp = (Integer) session.getAttribute("superAdminOtp");
+            if (originalOtp != null && userOtp != null && userOtp.trim().equals(String.valueOf(originalOtp))) {
+                req.setAttribute("state", "reset-password");
+            } else {
+                req.setAttribute("state", "verify-otp");
+                req.setAttribute("errorMessage", "Invalid OTP code entered. Please try again.");
+            }
+            req.getRequestDispatcher("/superAdmin.jsp").forward(req, resp);
+            return;
+        }
+
+        if ("reset-password".equals(action)) {
+            String password = req.getParameter("password");
+            String confirmPassword = req.getParameter("confirmPassword");
+            String email = (String) session.getAttribute("superAdminResetEmail");
+            
+            if (email == null) {
+                resp.sendRedirect(req.getContextPath() + "/super-admin");
+                return;
+            }
+            
+            if (password == null || !password.equals(confirmPassword)) {
+                req.setAttribute("state", "reset-password");
+                req.setAttribute("errorMessage", "Passwords do not match!");
+                req.getRequestDispatcher("/superAdmin.jsp").forward(req, resp);
+                return;
+            }
+            
+            try (Connection con = DBUtil.getMasterConnection();
+                 PreparedStatement pstmt = con.prepareStatement(
+                         "UPDATE super_admin_config SET password_hash = ? WHERE email = ?")) {
+                pstmt.setString(1, HashUtil.hashPassword(password));
+                pstmt.setString(2, email);
+                pstmt.executeUpdate();
+                
+                session.removeAttribute("superAdminOtp");
+                session.removeAttribute("superAdminResetEmail");
+                
+                req.setAttribute("successMessage", "Master Passcode reset successfully! Log in now.");
+            } catch (Exception e) {
+                e.printStackTrace();
+                req.setAttribute("state", "reset-password");
+                req.setAttribute("errorMessage", "Database update failed: " + e.getMessage());
+            }
+            req.getRequestDispatcher("/superAdmin.jsp").forward(req, resp);
+            return;
+        }
+
         // Handle login challenge
         if ("login".equals(action)) {
             String password = req.getParameter("password");
-            String configPassword = System.getenv("SUPER_ADMIN_PASSWORD");
-            if (configPassword == null || configPassword.trim().isEmpty()) {
-                configPassword = "superadmin123"; // default fallback
+            boolean authenticated = false;
+            String email = "smartpgmanage@gmail.com";
+            
+            try (Connection con = DBUtil.getMasterConnection();
+                 PreparedStatement pstmt = con.prepareStatement(
+                         "SELECT password_hash FROM super_admin_config WHERE email = ?")) {
+                pstmt.setString(1, email);
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    if (rs.next()) {
+                        String dbHash = rs.getString("password_hash");
+                        if (dbHash != null && dbHash.equals(HashUtil.hashPassword(password))) {
+                            authenticated = true;
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
-            if (configPassword.equals(password)) {
+            if (authenticated) {
                 session.setAttribute("superAdminLoggedIn", true);
                 resp.sendRedirect(req.getContextPath() + "/super-admin");
             } else {
-                req.setAttribute("errorMessage", "Invalid super admin password!");
+                req.setAttribute("errorMessage", "Invalid master passcode!");
                 req.getRequestDispatcher("/superAdmin.jsp").forward(req, resp);
             }
             return;
         }
 
-        // Validate super admin authentication
+        // =====================================================================
+        // RESTRICTED ACTIONS (Requires authentication)
+        // =====================================================================
         Boolean loggedIn = (Boolean) session.getAttribute("superAdminLoggedIn");
         if (loggedIn == null || !loggedIn) {
             req.getRequestDispatcher("/superAdmin.jsp").forward(req, resp);
             return;
         }
 
-        // Handle admin actions
+        // Handle password change request
+        if ("change-password".equals(action)) {
+            String oldPassword = req.getParameter("oldPassword");
+            String newPassword = req.getParameter("newPassword");
+            String confirmNewPassword = req.getParameter("confirmNewPassword");
+            String email = "smartpgmanage@gmail.com";
+            
+            if (newPassword == null || !newPassword.equals(confirmNewPassword)) {
+                req.setAttribute("errorMessage", "New passwords do not match!");
+            } else {
+                boolean verified = false;
+                try (Connection con = DBUtil.getMasterConnection();
+                     PreparedStatement pstmt = con.prepareStatement(
+                             "SELECT password_hash FROM super_admin_config WHERE email = ?")) {
+                    pstmt.setString(1, email);
+                    try (ResultSet rs = pstmt.executeQuery()) {
+                        if (rs.next()) {
+                            String dbHash = rs.getString("password_hash");
+                            if (dbHash != null && dbHash.equals(HashUtil.hashPassword(oldPassword))) {
+                                verified = true;
+                            }
+                        }
+                    }
+                    
+                    if (verified) {
+                        try (PreparedStatement updatePstmt = con.prepareStatement(
+                                "UPDATE super_admin_config SET password_hash = ? WHERE email = ?")) {
+                            updatePstmt.setString(1, HashUtil.hashPassword(newPassword));
+                            updatePstmt.setString(2, email);
+                            updatePstmt.executeUpdate();
+                            req.setAttribute("successMessage", "Master passcode updated successfully!");
+                        }
+                    } else {
+                        req.setAttribute("errorMessage", "Incorrect current passcode!");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    req.setAttribute("errorMessage", "Database update failed: " + e.getMessage());
+                }
+            }
+        }
+
+        // Handle admin tenant actions
         if (action != null) {
             String subdomain = req.getParameter("subdomain");
             if (subdomain != null && !subdomain.trim().isEmpty()) {
