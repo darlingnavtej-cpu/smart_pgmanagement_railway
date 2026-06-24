@@ -68,7 +68,37 @@ public class SuperAdminServlet extends HttpServlet {
         }
     }
 
+    private String getClientIpAddress(HttpServletRequest request) {
+        String xff = request.getHeader("X-Forwarded-For");
+        if (xff != null && !xff.trim().isEmpty()) {
+            return xff.split(",")[0].trim();
+        }
+        String cf = request.getHeader("CF-Connecting-IP");
+        if (cf != null && !cf.trim().isEmpty()) {
+            return cf.trim();
+        }
+        return request.getRemoteAddr();
+    }
+
     private void processRequest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        // Enforce IP restriction if environment variable is configured
+        String allowedIpsConfig = System.getenv("ALLOWED_SUPER_ADMIN_IPS");
+        if (allowedIpsConfig != null && !allowedIpsConfig.trim().isEmpty()) {
+            String clientIp = getClientIpAddress(req);
+            boolean ipAllowed = false;
+            for (String allowedIp : allowedIpsConfig.split(",")) {
+                if (clientIp.equals(allowedIp.trim())) {
+                    ipAllowed = true;
+                    break;
+                }
+            }
+            if (!ipAllowed) {
+                System.err.println("SuperAdminServlet: Blocked unauthorized IP access attempt to Super Admin: " + clientIp);
+                resp.sendError(HttpServletResponse.SC_FORBIDDEN, "Access Denied: IP address not authorized.");
+                return;
+            }
+        }
+
         HttpSession session = req.getSession(true);
         String action = req.getParameter("action");
 
